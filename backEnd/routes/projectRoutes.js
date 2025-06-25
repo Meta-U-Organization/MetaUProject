@@ -4,7 +4,7 @@ const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 
 
-router.get('/books', async (req, res) => {
+router.get('/users', async (req, res) => {
   const users = await prisma.user.findMany()
   res.json(users)
 })
