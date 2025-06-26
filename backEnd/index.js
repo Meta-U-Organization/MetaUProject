@@ -2,9 +2,13 @@
 const express = require('express');
 const app = express();
 const PORT = 3000; 
-const projectRoutes = require ('./routes/userCRUD');
+const userRoutes = require ('./routes/userCRUD');
+const requestPostRoutes = require ('./routes/requestPostCRUD');
+
 app.use(express.json());
-app.use(projectRoutes);
+app.use(userRoutes);
+app.use(requestPostRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to my app!')

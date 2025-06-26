@@ -4,20 +4,16 @@ const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 
 //get all users
-router.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany()
+router.get('/requestPosts', async (req, res) => {
+  const users = await prisma.requestPost.findMany()
   res.json(users)
 })
 
 //get individual users
-router.get('/users/:userId', async (req, res) => {
-  const userId = parseInt(req.params.userId);
-  const individualBoard = await prisma.user.findUnique({
-    where:{id:parseInt(userId)},
-    include: {
-        donationPosts:true,
-        requestPosts:true,
-    }
+router.get('/requestPosts/:postId', async (req, res) => {
+  const userId = parseInt(req.params.postId);
+  const individualPost = await prisma.requestPost.findUnique({
+    where:{id:parseInt(postId)},
   });
   res.json(individualBoard);
 })
