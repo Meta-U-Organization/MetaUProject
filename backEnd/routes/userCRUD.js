@@ -24,14 +24,15 @@ router.get('/users/:userId', async (req, res) => {
 
 //post a user to the database
 router.post('/users', async (req, res) => {
-  const { userName, passwordHash, email, name, phoneNumber} = req.body;
+  const { userName, passwordHash, email, name, phoneNumber, address} = req.body;
   const newUser = await prisma.user.create({
     data: {
       userName,
       passwordHash,
       email,
       name,
-      phoneNumber
+      phoneNumber,
+      address
     }
   });
   res.json(newUser);
@@ -49,7 +50,7 @@ router.delete('/users/:userId', async (req, res) => {
 //updates User
 router.put('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const { userName, passwordHash, email, name, phoneNumber} = req.body;
+  const { userName, passwordHash, email, name, phoneNumber, address} = req.body;
   const updatedUser = await prisma.user.update({
     where: { id: parseInt(userId) },
     data: {
@@ -57,7 +58,8 @@ router.put('/users/:userId', async (req, res) => {
       passwordHash,
       email,
       name,
-      phoneNumber
+      phoneNumber,
+      address
     }
   });
   res.json(updatedUser);
