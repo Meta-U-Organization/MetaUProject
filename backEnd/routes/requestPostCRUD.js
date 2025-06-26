@@ -3,60 +3,66 @@ const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 
-//get all users
-router.get('/requestPosts', async (req, res) => {
-  const users = await prisma.requestPost.findMany()
-  res.json(users)
-})
 
-//get individual users
-router.get('/requestPosts/:postId', async (req, res) => {
-  const userId = parseInt(req.params.postId);
+//get individual post
+router.get('/users/:userId/requests/:postId', async (req, res) => {
+  const postId = parseInt(req.params.postId);
+  const userId = parseInt(req.params.userId);
   const individualPost = await prisma.requestPost.findUnique({
-    where:{id:parseInt(postId)},
+    where:{
+      id:parseInt(postId),
+      userId:parseInt(userId)
+    },
   });
-  res.json(individualBoard);
+  res.json(individualPost);
 })
 
-//post a user to the database
-router.post('/users', async (req, res) => {
-  const { userName, passwordHash, email, name, phoneNumber} = req.body;
-  const nBoard = await prisma.user.create({
+//add in a post
+router.post('/users/:userId/requests', async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const {title, description, photo, useState} = req.body;
+  const newRequestPost = await prisma.requestPost.create({
     data: {
-      userName,
-      passwordHash,
-      email,
-      name,
-      phoneNumber
+      title,
+      description,
+      photo,
+      useState,
+      userId
     }
   });
-  res.json(nBoard);
+  res.json(newRequestPost);
 })
 
-//deletes board
-router.delete('/users/:userId', async (req, res) => {
+//deletes post
+router.delete('/users/:userId/requests/:postId', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const deletedUser = await prisma.user.delete({
-    where: { id: parseInt(userId) }
+  const postId = parseInt(req.params.postId);
+  const deletedpost = await prisma.requestPost.delete({
+    where: { id: parseInt(postId),
+      userId: parseInt(userId),
+     }
   }); 
-  res.json(deletedUser);
+  res.json(deletedpost);
 })
 
-//updates User
-router.put('/users/:userId', async (req, res) => {
+//updates post
+router.put('/users/:userId/requests/:postId', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const { userName, passwordHash, email, name, phoneNumber} = req.body;
-  const updatedUser = await prisma.user.update({
-    where: { id: parseInt(userId) },
+  const postId = parseInt(req.params.postId);
+  const {title, description, photo, useState} = req.body;
+  const updatedPost = await prisma.requestPost.update({
+    where: { id: parseInt(postId),
+      userId: parseInt(userId),
+     },
     data: {
-      userName,
-      passwordHash,
-      email,
-      name,
-      phoneNumber
+      title,
+      description,
+      photo,
+      useState,
+      userId
     }
   });
-  res.json(updatedUser);
+  res.json(updatedPost);
 })
 
 module.exports = router
