@@ -16,6 +16,7 @@ model user {
   email         String         @unique
   name          String
   phoneNumber   String
+  address       String
   donationPosts donationPost[]
   requestPosts  requestPost[]
 }

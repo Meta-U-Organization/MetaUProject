@@ -12,20 +12,20 @@ router.get('/users', async (req, res) => {
 //get individual users
 router.get('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const individualBoard = await prisma.user.findUnique({
+  const individualUser = await prisma.user.findUnique({
     where:{id:parseInt(userId)},
     include: {
         donationPosts:true,
         requestPosts:true,
     }
   });
-  res.json(individualBoard);
+  res.json(individualUser);
 })
 
 //post a user to the database
 router.post('/users', async (req, res) => {
   const { userName, passwordHash, email, name, phoneNumber} = req.body;
-  const nBoard = await prisma.user.create({
+  const newUser = await prisma.user.create({
     data: {
       userName,
       passwordHash,
@@ -34,7 +34,7 @@ router.post('/users', async (req, res) => {
       phoneNumber
     }
   });
-  res.json(nBoard);
+  res.json(newUser);
 })
 
 //deletes board
