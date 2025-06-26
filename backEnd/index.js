@@ -1,11 +1,13 @@
 
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 const PORT = 3000; 
-//const projectRoutes = require ('./routes/projectRoutes');
-const { PrismaClient } = require('./generated/prisma')
-const prisma = new PrismaClient;
+const userRoutes = require ('./routes/userCRUD');
+
 app.use(express.json());
+app.use(userRoutes);
+// app.use(requestPostRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('Welcome to my app!')
