@@ -15,7 +15,8 @@ model user {
   passwordHash  String
   email         String         @unique
   name          String
-  phoneNumber   Int
+  phoneNumber   String
+  address       String
   donationPosts donationPost[]
   requestPosts  requestPost[]
 }
