@@ -18,7 +18,6 @@ function App() {
         <Route path="/settings" element={<SettingsPage />}></Route>
         <Route path="/makeAPost" element={<PostCreationPage />}></Route>
         <Route path="/saved" element={<SavedPage />}></Route>
-        {/* <Route path="/:id" element={<BoardPage />}></Route> */}
       </Routes>
     </BrowserRouter>
   );

@@ -7,10 +7,50 @@ function Navigation() {
   const savedPage = `${import.meta.env.VITE_BASE_URL}saved`;
   return (
     <nav>
-      <a href={postCreationPage}>Make a Post</a>
-      <a href={settingsPage}>Settings</a>
-      <a href={itemsPage}>Donation / Requests</a>
-      <a href={savedPage}>Saved</a>
+      <a
+        style={{
+          border: "1px solid black",
+          padding: "3px",
+          borderRadius: "5px",
+          margin: "5px",
+        }}
+        href={postCreationPage}
+      >
+        Make a Post
+      </a>
+      <a
+        style={{
+          border: "1px solid black",
+          padding: "3px",
+          borderRadius: "5px",
+          margin: "5px",
+        }}
+        href={settingsPage}
+      >
+        Settings
+      </a>
+      <a
+        style={{
+          border: "1px solid black",
+          padding: "3px",
+          borderRadius: "5px",
+          margin: "5px",
+        }}
+        href={itemsPage}
+      >
+        Donation / Requests
+      </a>
+      <a
+        style={{
+          border: "1px solid black",
+          padding: "3px",
+          borderRadius: "5px",
+          margin: "5px",
+        }}
+        href={savedPage}
+      >
+        Saved
+      </a>
     </nav>
   );
 }
