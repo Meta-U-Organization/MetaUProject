@@ -6,11 +6,12 @@ import { useEffect } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
-  const [user, setUser] = useState([]);
-  const backednUrl = import.meta.env.VITE_BACKEND;
+  const [updatePosts, setUpdatePosts] = useState(true);
+  const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
+  const backendUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
-    if (isDonationItem) {
+    if (isDonationList) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
     } else {
       document.getElementById("changeItemButton").innerHTML = "Go to Requests";
@@ -19,12 +20,11 @@ function MyPosts() {
   };
 
   useEffect(() => {
-    fetch(`${backednUrl}users/2`)
+    fetch(`${backendUrl}users/2`)
       .then((response) => response.json())
       .then((user) => setUser(user))
       .catch((error) => console.error("Error fetching posts:", error));
-  }, [isDonationList]);
-
+  }, [isDonationList, updatePosts]);
   return (
     <div>
       <header>
@@ -35,13 +35,19 @@ function MyPosts() {
         </button>
       </header>
       <main>
-        {isDonationItem
+        {isDonationList
           ? user.donationPosts.map((item) => {
               return (
                 <Item
+                  onPostChange={setUpdatePosts}
+                  updatePosts={updatePosts}
+                  userId={"2"}
+                  postType={"donations"}
+                  isMyPost={true}
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  postId={item.id}
                   useState={item.useState}
                 />
               );
@@ -49,9 +55,15 @@ function MyPosts() {
           : user.requestPosts.map((item) => {
               return (
                 <Item
+                  onPostChange={setUpdatePosts}
+                  updatePosts={updatePosts}
+                  userId={"2"}
+                  postType={"requests"}
+                  isMyPost={true}
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  postId={item.id}
                   useState={item.useState}
                 />
               );

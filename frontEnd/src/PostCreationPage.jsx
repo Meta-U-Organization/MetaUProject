@@ -2,7 +2,7 @@ import "./App.css";
 import Navigation from "./components/nav";
 //main page layout for the page
 function PostCreationPage() {
-  const backednUrl = import.meta.env.VITE_BACKEND;
+  const backendUrl = import.meta.env.VITE_BACKEND;
 
   const makePost = async (event) => {
     event.preventDefault();
@@ -11,14 +11,14 @@ function PostCreationPage() {
     formData.delete("type");
     if (readableData.type === "donation") {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backednUrl}users/2/donations`, {
+      const response = await fetch(`${backendUrl}users/2/donations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
       });
     } else {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backednUrl}users/2/requests`, {
+      const response = await fetch(`${backendUrl}users/2/requests`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
