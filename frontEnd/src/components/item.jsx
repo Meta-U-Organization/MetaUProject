@@ -11,6 +11,7 @@ function Item({
   updatePosts,
 }) {
   const backendUrl = import.meta.env.VITE_BACKEND;
+
   const deleteItem = async (event) => {
     event.preventDefault();
     const response = await fetch(
@@ -22,14 +23,60 @@ function Item({
     );
     onPostChange(!updatePosts);
   };
+
+  const editItem = (event) => {
+    event.preventDefault();
+    // const response = fetch(`${backendUrl}users/${userId}/${postType}/${postId}`, {
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(newData),
+    // });
+  };
+
+  if (document.getElementById("useStates")) {
+    document.getElementById("useStates").value = useState;
+  }
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
     >
       <div style={{ width: "44%", marginLeft: "6%" }}>
-        <h2>{title}</h2>
-        <p>{description}</p>
-        <p>Use State: {useState}</p>
+        {isMyPost ? (
+          <div>
+            <label htmlFor="title">Title: </label>
+            <input name="title" type="text" placeholder={title}></input>
+          </div>
+        ) : (
+          <h2>{title}</h2>
+        )}
+
+        {isMyPost ? (
+          <div>
+            <label htmlFor="description">Description: </label>
+            <input
+              name="description"
+              type="text"
+              placeholder={description}
+            ></input>
+          </div>
+        ) : (
+          <p>{description}</p>
+        )}
+        <p>
+          Use State:
+          {isMyPost ? (
+            <div>
+              <select name="useState" id="useStates">
+                <option value="Used Like New">Used Like New</option>
+                <option value="Used">Used</option>
+                <option value="New">New</option>
+              </select>
+            </div>
+          ) : (
+            ` ${useState}`
+          )}
+        </p>
+        {isMyPost && <button onClick={editItem}>Submit Edits</button>}
         {isMyPost && <button onClick={deleteItem}>Delete</button>}
       </div>
       <div style={{ width: "44%" }}>
