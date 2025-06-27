@@ -4,6 +4,18 @@ const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 
 
+//get all posts
+router.get('/users/:userId/donations', async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const allDonations = await prisma.donationPost.findMany({
+    where:{
+      userId:parseInt(userId)
+    },
+  });
+  res.json(allDonations);
+})
+
+
 //get individual post
 router.get('/users/:userId/donations/:postId', async (req, res) => {
   const postId = parseInt(req.params.postId);

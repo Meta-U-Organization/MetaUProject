@@ -5,6 +5,7 @@ function Navigation() {
   const postCreationPage = `${import.meta.env.VITE_BASE_URL}makeAPost`;
   const settingsPage = `${import.meta.env.VITE_BASE_URL}settings`;
   const savedPage = `${import.meta.env.VITE_BASE_URL}saved`;
+  const myPosts = `${import.meta.env.VITE_BASE_URL}myPosts`;
   return (
     <nav>
       <a
@@ -39,6 +40,17 @@ function Navigation() {
         href={savedPage}
       >
         Saved
+      </a>
+      <a
+        style={{
+          border: "1px solid black",
+          padding: "3px",
+          borderRadius: "5px",
+          margin: "5px",
+        }}
+        href={myPosts}
+      >
+        My Posts
       </a>
       <a
         style={{
