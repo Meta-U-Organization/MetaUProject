@@ -3,10 +3,13 @@ const express = require('express');
 const app = express();
 const PORT = 3000; 
 const userRoutes = require ('./routes/userCRUD');
+const requestPostRoutes = require ('./routes/requestPostCRUD');
+const donationPostRoutes = require ('./routes/donationPostCRUD');
 
 app.use(express.json());
 app.use(userRoutes);
-// app.use(requestPostRoutes);
+app.use(requestPostRoutes);
+app.use(donationPostRoutes);
 
 
 app.get('/', (req, res) => {
