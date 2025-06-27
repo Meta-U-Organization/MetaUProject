@@ -1,5 +1,25 @@
 //Item framework
-function Item({ title, description, useState }) {
+function Item({
+  postType,
+  postId,
+  userId,
+  isMyPost,
+  title,
+  description,
+  useState,
+}) {
+  const backendUrl = import.meta.env.VITE_BACKEND;
+  const deleteItem = async (event) => {
+    event.preventDefault();
+    const response = await fetch(
+      `${backendUrl}users/${userId}/${postType}/${postId}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  };
+  console.log(`${backendUrl}users/${userId}/${postType}/${postId}`);
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
@@ -8,6 +28,7 @@ function Item({ title, description, useState }) {
         <h2>{title}</h2>
         <p>{description}</p>
         <p>Use State: {useState}</p>
+        {isMyPost && <button onClick={deleteItem}>Delete</button>}
       </div>
       <div style={{ width: "44%" }}>
         <img
