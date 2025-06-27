@@ -21,7 +21,7 @@ function Item({
         headers: { "Content-Type": "application/json" },
       }
     );
-    await postOnChange(!updatePosts);
+    postOnChange(!updatePosts);
   };
   if (document.getElementById("useStates")) {
     document.getElementById("useStates").value = useState;
