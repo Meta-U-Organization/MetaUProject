@@ -7,7 +7,7 @@ function Item({
   title,
   description,
   useState,
-  postOnChange,
+  onPostChange,
   updatePosts,
 }) {
   const backendUrl = import.meta.env.VITE_BACKEND;
@@ -22,7 +22,7 @@ function Item({
         headers: { "Content-Type": "application/json" },
       }
     );
-    postOnChange(!updatePosts);
+    onPostChange(!updatePosts);
   };
 
   const editItem = (event) => {
