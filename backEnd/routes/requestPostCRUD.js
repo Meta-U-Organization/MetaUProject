@@ -4,6 +4,26 @@ const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 
 
+//requests querying function
+router.get('/requests', async (req, res) => {
+  const boards = await prisma.requestPost.findMany( {});
+  res.json(boards);
+}
+)
+
+//get all request posts
+router.get('/users/:userId/requests/:postId', async (req, res) => {
+  const postId = parseInt(req.params.postId);
+  const userId = parseInt(req.params.userId);
+  const individualPost = await prisma.requestPost.findUnique({
+    where:{
+      id:parseInt(postId),
+      userId:parseInt(userId)
+    },
+  });
+  res.json(individualPost);
+})
+
 //get individual post
 router.get('/users/:userId/requests/:postId', async (req, res) => {
   const postId = parseInt(req.params.postId);

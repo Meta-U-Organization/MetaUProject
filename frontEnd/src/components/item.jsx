@@ -1,17 +1,13 @@
 //Item framework
-function Item() {
+function Item({ title, description, useState }) {
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
     >
       <div style={{ width: "44%", marginLeft: "6%" }}>
-        <h2>Item Title</h2>
-        <p>
-          Description, dolor sit amet consectetur adipisicing elit. Veritatis
-          ducimus ex ratione, quis sed facilis eveniet, fuga vitae placeat illum
-          porro repellat ad! Reiciendis earum aut ad, nulla maxime incidunt.
-        </p>
-        <p>Use State: Like New</p>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        <p>Use State: {useState}</p>
       </div>
       <div style={{ width: "44%" }}>
         <img

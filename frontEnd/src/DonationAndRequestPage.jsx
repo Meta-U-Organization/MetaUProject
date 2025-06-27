@@ -2,9 +2,12 @@ import { useState } from "react";
 import "./App.css";
 import Item from "./components/Item";
 import Navigation from "./components/nav";
+import { useEffect } from "react";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [itemType, setItemType] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [items, setItems] = useState([]);
   const backednUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
@@ -16,6 +19,12 @@ function DonationAndRequestPage() {
     setItemType(!itemType);
   };
 
+  useEffect(() => {
+    fetch(`${backednUrl}users`)
+      .then((response) => response.json())
+      .then((users) => setUsers(users))
+      .catch((error) => console.error("Error fetching posts:", error));
+  }, []);
   return (
     <div>
       <header>
@@ -26,9 +35,17 @@ function DonationAndRequestPage() {
         </button>
       </header>
       <main>
-        <Item />
-        <Item />
-        <Item />
+        {users.map((user) => {
+          return user.requestPosts.map((item) => {
+            return (
+              <Item
+                title={item.title}
+                description={item.description}
+                key={item.id}
+              />
+            );
+          });
+        })}
       </main>
       <footer>
         Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>

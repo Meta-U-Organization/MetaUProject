@@ -5,7 +5,11 @@ const prisma = new PrismaClient;
 
 //get all users
 router.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany()
+  const users = await prisma.user.findMany({
+    include: {
+        donationPosts:true,
+        requestPosts:true,
+    }})
   res.json(users)
 })
 
