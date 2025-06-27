@@ -25,17 +25,6 @@ function Navigation() {
           borderRadius: "5px",
           margin: "5px",
         }}
-        href={settingsPage}
-      >
-        Settings
-      </a>
-      <a
-        style={{
-          border: "1px solid black",
-          padding: "3px",
-          borderRadius: "5px",
-          margin: "5px",
-        }}
         href={itemsPage}
       >
         Donation / Requests
@@ -50,6 +39,17 @@ function Navigation() {
         href={savedPage}
       >
         Saved
+      </a>
+      <a
+        style={{
+          border: "1px solid black",
+          padding: "3px",
+          borderRadius: "5px",
+          margin: "5px",
+        }}
+        href={settingsPage}
+      >
+        Settings
       </a>
     </nav>
   );

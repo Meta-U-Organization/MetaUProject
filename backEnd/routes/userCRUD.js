@@ -5,7 +5,11 @@ const prisma = new PrismaClient;
 
 //get all users
 router.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany()
+  const users = await prisma.user.findMany({
+    include: {
+        donationPosts:true,
+        requestPosts:true,
+    }})
   res.json(users)
 })
 
@@ -38,7 +42,7 @@ router.post('/users', async (req, res) => {
   res.json(newUser);
 })
 
-//deletes board
+//deletes user
 router.delete('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
   const deletedUser = await prisma.user.delete({
