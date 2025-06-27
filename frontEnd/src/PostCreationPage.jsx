@@ -1,12 +1,12 @@
 import "./App.css";
 import Navigation from "./components/nav";
 //main page layout for the page
-function SavedPage() {
+function PostCreationPage() {
   return (
     <div>
       <header>
         <Navigation />
-        <h1>Saved</h1>
+        <h1>Make a Post</h1>
       </header>
       <main></main>
       <footer>
@@ -16,4 +16,4 @@ function SavedPage() {
   );
 }
 
-export default SavedPage;
+export default PostCreationPage;

@@ -6,7 +6,7 @@ function SettingsPage() {
     <div>
       <header>
         <Navigation />
-        <h1>Community Chest</h1>
+        <h1>Settings</h1>
       </header>
       <main></main>
       <footer>
