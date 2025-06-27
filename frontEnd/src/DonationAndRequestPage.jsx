@@ -42,6 +42,7 @@ function DonationAndRequestPage() {
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  useState={item.useState}
                 />
               );
             });
@@ -52,6 +53,7 @@ function DonationAndRequestPage() {
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  useState={item.useState}
                 />
               );
             });

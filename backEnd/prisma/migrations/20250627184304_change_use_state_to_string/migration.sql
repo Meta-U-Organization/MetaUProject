@@ -5,7 +5,8 @@ CREATE TABLE "user" (
     "password" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "phoneNumber" INTEGER NOT NULL,
+    "phoneNumber" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -16,7 +17,7 @@ CREATE TABLE "donationPost" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
-    "useState" INTEGER NOT NULL,
+    "useState" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "donationPost_pkey" PRIMARY KEY ("id")
