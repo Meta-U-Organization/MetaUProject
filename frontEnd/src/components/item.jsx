@@ -23,14 +23,37 @@ function Item({
     );
     await postOnChange(!updatePosts);
   };
+  if (document.getElementById("useStates")) {
+    document.getElementById("useStates").value = useState;
+  }
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
     >
       <div style={{ width: "44%", marginLeft: "6%" }}>
-        <h2>{title}</h2>
-        <p>{description}</p>
-        <p>Use State: {useState}</p>
+        {isMyPost ? (
+          <input type="text" placeholder={title}></input>
+        ) : (
+          <h2>{title}</h2>
+        )}
+        {isMyPost ? (
+          <input type="text" placeholder={description}></input>
+        ) : (
+          <p>{description}</p>
+        )}
+        <p>
+          Use State:{" "}
+          {isMyPost ? (
+            <select name="useState" id="useStates">
+              <option value="Used Like New">Used Like New</option>
+              <option value="Used">Used</option>
+              <option value="New">New</option>
+            </select>
+          ) : (
+            { useState }
+          )}
+        </p>
+        {isMyPost && <button onClick={deleteItem}>Submit Edits</button>}
         {isMyPost && <button onClick={deleteItem}>Delete</button>}
       </div>
       <div style={{ width: "44%" }}>
