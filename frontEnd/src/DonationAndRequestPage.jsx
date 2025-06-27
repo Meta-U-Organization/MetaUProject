@@ -7,7 +7,7 @@ import { useEffect } from "react";
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
   const [users, setUsers] = useState([]);
-  const backednUrl = import.meta.env.VITE_BACKEND;
+  const backendUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
     if (isDonationItem) {
@@ -19,7 +19,7 @@ function DonationAndRequestPage() {
   };
 
   useEffect(() => {
-    fetch(`${backednUrl}users`)
+    fetch(`${backendUrl}users`)
       .then((response) => response.json())
       .then((users) => setUsers(users))
       .catch((error) => console.error("Error fetching posts:", error));

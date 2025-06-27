@@ -7,7 +7,7 @@ import { useEffect } from "react";
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
   const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
-  const backednUrl = import.meta.env.VITE_BACKEND;
+  const backendUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
     if (isDonationList) {
@@ -19,7 +19,7 @@ function MyPosts() {
   };
 
   useEffect(() => {
-    fetch(`${backednUrl}users/2`)
+    fetch(`${backendUrl}users/2`)
       .then((response) => response.json())
       .then((user) => setUser(user))
       .catch((error) => console.error("Error fetching posts:", error));
@@ -39,9 +39,13 @@ function MyPosts() {
           ? user.donationPosts.map((item) => {
               return (
                 <Item
+                  userId={"2"}
+                  postType={"donations"}
+                  isMyPost={true}
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  postId={item.id}
                   useState={item.useState}
                 />
               );
@@ -49,6 +53,9 @@ function MyPosts() {
           : user.requestPosts.map((item) => {
               return (
                 <Item
+                  userId={"2"}
+                  postType={"requests"}
+                  isMyPost={true}
                   title={item.title}
                   description={item.description}
                   key={item.id}
