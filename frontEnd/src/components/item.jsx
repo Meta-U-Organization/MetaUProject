@@ -14,7 +14,6 @@ function Item({
 
   const deleteItem = async (event) => {
     event.preventDefault();
-
     const response = await fetch(
       `${backendUrl}users/${userId}/${postType}/${postId}`,
       {
