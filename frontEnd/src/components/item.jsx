@@ -36,13 +36,14 @@ function Item({
         ) : (
           <h2>{title}</h2>
         )}
+
         {isMyPost ? (
           <input type="text" placeholder={description}></input>
         ) : (
           <p>{description}</p>
         )}
         <p>
-          Use State:{" "}
+          Use State:
           {isMyPost ? (
             <select name="useState" id="useStates">
               <option value="Used Like New">Used Like New</option>
@@ -50,7 +51,7 @@ function Item({
               <option value="New">New</option>
             </select>
           ) : (
-            { useState }
+            ` ${useState}`
           )}
         </p>
         {isMyPost && <button onClick={deleteItem}>Submit Edits</button>}

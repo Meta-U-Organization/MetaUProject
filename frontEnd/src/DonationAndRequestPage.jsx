@@ -39,9 +39,11 @@ function DonationAndRequestPage() {
             return user.donationPosts.map((item) => {
               return (
                 <Item
+                  isMyPost={false}
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  postId={item.id}
                   useState={item.useState}
                 />
               );
