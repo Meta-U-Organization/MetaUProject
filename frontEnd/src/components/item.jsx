@@ -7,10 +7,13 @@ function Item({
   title,
   description,
   useState,
+  postOnChange,
+  updatePosts,
 }) {
   const backendUrl = import.meta.env.VITE_BACKEND;
   const deleteItem = async (event) => {
     event.preventDefault();
+    console.log(`${backendUrl}users/${userId}/${postType}/${postId}`);
     const response = await fetch(
       `${backendUrl}users/${userId}/${postType}/${postId}`,
       {
@@ -18,8 +21,8 @@ function Item({
         headers: { "Content-Type": "application/json" },
       }
     );
+    await postOnChange(!updatePosts);
   };
-  console.log(`${backendUrl}users/${userId}/${postType}/${postId}`);
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}

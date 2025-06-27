@@ -6,6 +6,7 @@ import { useEffect } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
+  const [updatePosts, setUpdatePosts] = useState(true);
   const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
   const backendUrl = import.meta.env.VITE_BACKEND;
 
@@ -23,8 +24,7 @@ function MyPosts() {
       .then((response) => response.json())
       .then((user) => setUser(user))
       .catch((error) => console.error("Error fetching posts:", error));
-  }, [isDonationList]);
-  console.log(user);
+  }, [isDonationList, updatePosts]);
   return (
     <div>
       <header>
@@ -39,6 +39,8 @@ function MyPosts() {
           ? user.donationPosts.map((item) => {
               return (
                 <Item
+                  postOnChange={setUpdatePosts}
+                  updatePosts={updatePosts}
                   userId={"2"}
                   postType={"donations"}
                   isMyPost={true}
@@ -53,12 +55,15 @@ function MyPosts() {
           : user.requestPosts.map((item) => {
               return (
                 <Item
+                  postOnChange={setUpdatePosts}
+                  updatePosts={updatePosts}
                   userId={"2"}
                   postType={"requests"}
                   isMyPost={true}
                   title={item.title}
                   description={item.description}
                   key={item.id}
+                  postId={item.id}
                   useState={item.useState}
                 />
               );
