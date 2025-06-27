@@ -9,7 +9,7 @@ import SavedPage from "./SavedPage.jsx";
 
 function App() {
   return (
-    //router functionality for when we navigate to board pages
+    //router functionality for when we navigate to pages
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />}></Route>

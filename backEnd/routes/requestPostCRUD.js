@@ -6,8 +6,8 @@ const prisma = new PrismaClient;
 
 //requests querying function
 router.get('/requests', async (req, res) => {
-  const boards = await prisma.requestPost.findMany( {});
-  res.json(boards);
+  const requests = await prisma.requestPost.findMany( {});
+  res.json(requests);
 }
 )
 

@@ -5,17 +5,17 @@ import Navigation from "./components/nav";
 import { useEffect } from "react";
 //main page layout for the page
 function DonationAndRequestPage() {
-  const [itemType, setItemType] = useState(true);
+  const [isDonationItem, setIsDonationItem] = useState(true);
   const [users, setUsers] = useState([]);
   const backednUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
-    if (itemType) {
+    if (isDonationItem) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
     } else {
       document.getElementById("changeItemButton").innerHTML = "Go to Requests";
     }
-    setItemType(!itemType);
+    setIsDonationItem(!isDonationItem);
   };
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function DonationAndRequestPage() {
       .then((response) => response.json())
       .then((users) => setUsers(users))
       .catch((error) => console.error("Error fetching posts:", error));
-  }, [itemType]);
+  }, [isDonationItem]);
   return (
     <div>
       <header>
@@ -35,7 +35,7 @@ function DonationAndRequestPage() {
       </header>
       <main>
         {users.map((user) => {
-          if (itemType) {
+          if (isDonationItem) {
             return user.donationPosts.map((item) => {
               return (
                 <Item

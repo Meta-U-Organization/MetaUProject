@@ -42,7 +42,7 @@ router.post('/users', async (req, res) => {
   res.json(newUser);
 })
 
-//deletes board
+//deletes user
 router.delete('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
   const deletedUser = await prisma.user.delete({
