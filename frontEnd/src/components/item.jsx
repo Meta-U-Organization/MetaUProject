@@ -11,9 +11,10 @@ function Item({
   updatePosts,
 }) {
   const backendUrl = import.meta.env.VITE_BACKEND;
+
   const deleteItem = async (event) => {
     event.preventDefault();
-    console.log(`${backendUrl}users/${userId}/${postType}/${postId}`);
+
     const response = await fetch(
       `${backendUrl}users/${userId}/${postType}/${postId}`,
       {
@@ -23,6 +24,16 @@ function Item({
     );
     postOnChange(!updatePosts);
   };
+
+  const editItem = (event) => {
+    event.preventDefault();
+    // const response = fetch(`${backendUrl}users/${userId}/${postType}/${postId}`, {
+    //   method: "PUT",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(newData),
+    // });
+  };
+
   if (document.getElementById("useStates")) {
     document.getElementById("useStates").value = useState;
   }
@@ -36,7 +47,7 @@ function Item({
         ) : (
           <h2>{title}</h2>
         )}
-
+        {isMyPost && <br></br>}
         {isMyPost ? (
           <input type="text" placeholder={description}></input>
         ) : (
@@ -54,7 +65,7 @@ function Item({
             ` ${useState}`
           )}
         </p>
-        {isMyPost && <button onClick={deleteItem}>Submit Edits</button>}
+        {isMyPost && <button onClick={editItem}>Submit Edits</button>}
         {isMyPost && <button onClick={deleteItem}>Delete</button>}
       </div>
       <div style={{ width: "44%" }}>
