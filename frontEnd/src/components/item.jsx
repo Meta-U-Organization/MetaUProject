@@ -43,24 +43,36 @@ function Item({
     >
       <div style={{ width: "44%", marginLeft: "6%" }}>
         {isMyPost ? (
-          <input type="text" placeholder={title}></input>
+          <div>
+            <label htmlFor="title">Title: </label>
+            <input name="title" type="text" placeholder={title}></input>
+          </div>
         ) : (
           <h2>{title}</h2>
         )}
-        {isMyPost && <br></br>}
+
         {isMyPost ? (
-          <input type="text" placeholder={description}></input>
+          <div>
+            <label htmlFor="description">Description: </label>
+            <input
+              name="description"
+              type="text"
+              placeholder={description}
+            ></input>
+          </div>
         ) : (
           <p>{description}</p>
         )}
         <p>
           Use State:
           {isMyPost ? (
-            <select name="useState" id="useStates">
-              <option value="Used Like New">Used Like New</option>
-              <option value="Used">Used</option>
-              <option value="New">New</option>
-            </select>
+            <div>
+              <select name="useState" id="useStates">
+                <option value="Used Like New">Used Like New</option>
+                <option value="Used">Used</option>
+                <option value="New">New</option>
+              </select>
+            </div>
           ) : (
             ` ${useState}`
           )}
