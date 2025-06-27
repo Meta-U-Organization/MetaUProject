@@ -39,7 +39,7 @@ function MyPosts() {
           ? user.donationPosts.map((item) => {
               return (
                 <Item
-                  postOnChange={setUpdatePosts}
+                  onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
                   userId={"2"}
                   postType={"donations"}
@@ -55,7 +55,7 @@ function MyPosts() {
           : user.requestPosts.map((item) => {
               return (
                 <Item
-                  postOnChange={setUpdatePosts}
+                  onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
                   userId={"2"}
                   postType={"requests"}
