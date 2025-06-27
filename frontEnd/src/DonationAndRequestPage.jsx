@@ -7,7 +7,6 @@ import { useEffect } from "react";
 function DonationAndRequestPage() {
   const [itemType, setItemType] = useState(true);
   const [users, setUsers] = useState([]);
-  const [items, setItems] = useState([]);
   const backednUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
@@ -24,7 +23,7 @@ function DonationAndRequestPage() {
       .then((response) => response.json())
       .then((users) => setUsers(users))
       .catch((error) => console.error("Error fetching posts:", error));
-  }, []);
+  }, [itemType]);
   return (
     <div>
       <header>
@@ -36,15 +35,27 @@ function DonationAndRequestPage() {
       </header>
       <main>
         {users.map((user) => {
-          return user.requestPosts.map((item) => {
-            return (
-              <Item
-                title={item.title}
-                description={item.description}
-                key={item.id}
-              />
-            );
-          });
+          if (itemType) {
+            return user.donationPosts.map((item) => {
+              return (
+                <Item
+                  title={item.title}
+                  description={item.description}
+                  key={item.id}
+                />
+              );
+            });
+          } else {
+            return user.requestPosts.map((item) => {
+              return (
+                <Item
+                  title={item.title}
+                  description={item.description}
+                  key={item.id}
+                />
+              );
+            });
+          }
         })}
       </main>
       <footer>
