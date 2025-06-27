@@ -6,11 +6,11 @@ import { useEffect } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
   const backednUrl = import.meta.env.VITE_BACKEND;
 
   const changeItemType = () => {
-    if (isDonationItem) {
+    if (isDonationList) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
     } else {
       document.getElementById("changeItemButton").innerHTML = "Go to Requests";
@@ -24,7 +24,7 @@ function MyPosts() {
       .then((user) => setUser(user))
       .catch((error) => console.error("Error fetching posts:", error));
   }, [isDonationList]);
-
+  console.log(user);
   return (
     <div>
       <header>
@@ -35,7 +35,7 @@ function MyPosts() {
         </button>
       </header>
       <main>
-        {isDonationItem
+        {isDonationList
           ? user.donationPosts.map((item) => {
               return (
                 <Item
