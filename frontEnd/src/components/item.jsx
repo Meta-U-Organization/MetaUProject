@@ -13,7 +13,6 @@ function Item({
   const backendUrl = import.meta.env.VITE_BACKEND;
   const deleteItem = async (event) => {
     event.preventDefault();
-
     const response = await fetch(
       `${backendUrl}users/${userId}/${postType}/${postId}`,
       {
