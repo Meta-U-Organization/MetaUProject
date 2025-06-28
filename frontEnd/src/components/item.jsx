@@ -11,7 +11,6 @@ function Item({
   updatePosts,
 }) {
   const backendUrl = import.meta.env.VITE_BACKEND;
-
   const deleteItem = async (event) => {
     event.preventDefault();
 
@@ -25,13 +24,29 @@ function Item({
     onPostChange(!updatePosts);
   };
 
-  const editItem = (event) => {
+  const editItem = async (event) => {
     event.preventDefault();
-    // const response = fetch(`${backendUrl}users/${userId}/${postType}/${postId}`, {
-    //   method: "PUT",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(newData),
-    // });
+    const description = document.getElementById("description").value;
+    console.log(description);
+    const title = document.getElementById("title").value;
+    console.log(title);
+    const useState = document.getElementById("useStates").value;
+    console.log(useState);
+    const response = await fetch(
+      `${backendUrl}users/${userId}/${postType}/${postId}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: postId,
+          title: title,
+          description: description,
+          photo: "",
+          useState: useState,
+          userId: userId,
+        }),
+      }
+    );
   };
 
   if (document.getElementById("useStates")) {
@@ -45,7 +60,12 @@ function Item({
         {isMyPost ? (
           <div>
             <label htmlFor="title">Title: </label>
-            <input name="title" type="text" placeholder={title}></input>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              placeholder={title}
+            ></input>
           </div>
         ) : (
           <h2>{title}</h2>
@@ -56,6 +76,7 @@ function Item({
             <label htmlFor="description">Description: </label>
             <input
               name="description"
+              id="description"
               type="text"
               placeholder={description}
             ></input>
@@ -66,13 +87,11 @@ function Item({
         <p>
           Use State:
           {isMyPost ? (
-            <div>
-              <select name="useState" id="useStates">
-                <option value="Used Like New">Used Like New</option>
-                <option value="Used">Used</option>
-                <option value="New">New</option>
-              </select>
-            </div>
+            <select name="useState" id="useStates">
+              <option value="Used Like New">Used Like New</option>
+              <option value="Used">Used</option>
+              <option value="New">New</option>
+            </select>
           ) : (
             ` ${useState}`
           )}
