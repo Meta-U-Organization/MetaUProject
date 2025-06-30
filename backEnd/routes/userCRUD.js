@@ -36,6 +36,30 @@ router.post("/signup", async (req, res) => {
   res.json(newUser);
 })
 
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "Username and password are required." });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { username }
+  });
+
+  if (!user) {
+    return res.status(401).json({ error: "Invalid username" });
+  }
+
+  const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+
+  if (!isValidPassword) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
+
+  res.json({ message: "Login successful!" });
+
+})
 
 //get all users
 router.get('/users', async (req, res) => {
