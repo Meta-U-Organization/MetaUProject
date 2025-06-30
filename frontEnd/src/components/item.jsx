@@ -23,7 +23,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
     const parentItem = itemRef.current;
     const description = parentItem.querySelector("#description").value;
     const title = parentItem.querySelector("#title").value;
-    const useState = parentItem.querySelector("#useStates").value;
+    const itemState = parentItem.querySelector("#useStates").value;
 
     if (title !== "" && description !== "") {
       const response = await fetch(
@@ -36,7 +36,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
             title: title,
             description: description,
             photo: "",
-            useState: useState,
+            useState: itemState,
             userId: userId,
           }),
         }
