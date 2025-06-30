@@ -29,28 +29,35 @@ function Item({
   const editItem = async (event) => {
     event.preventDefault();
     const parentItem = itemRef.current;
-    console.log(parentItem);
     const description = parentItem.querySelector("#description").value;
-    console.log(description);
     const title = parentItem.querySelector("#title").value;
-    console.log(title);
     const useState = parentItem.querySelector("#useStates").value;
 
-    const response = await fetch(
-      `${backendUrl}users/${userId}/${postType}/${postId}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: postId,
-          title: title,
-          description: description,
-          photo: "",
-          useState: useState,
-          userId: userId,
-        }),
-      }
-    );
+    if (title !== "" && description !== "") {
+      const response = await fetch(
+        `${backendUrl}users/${userId}/${postType}/${postId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: postId,
+            title: title,
+            description: description,
+            photo: "",
+            useState: useState,
+            userId: userId,
+          }),
+        }
+      );
+      parentItem.querySelector("#title").placeholder =
+        parentItem.querySelector("#title").value;
+      parentItem.querySelector("#title").value = "";
+      parentItem.querySelector("#description").placeholder =
+        parentItem.querySelector("#description").value;
+      parentItem.querySelector("#description").value = "";
+    } else {
+      alert("Missing title or");
+    }
   };
   return (
     <div
