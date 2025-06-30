@@ -1,4 +1,5 @@
 //Item framework
+import React, { useRef } from "react";
 function Item({
   postType,
   postId,
@@ -10,7 +11,9 @@ function Item({
   onPostChange,
   updatePosts,
 }) {
+  const itemRef = useRef(null);
   const backendUrl = import.meta.env.VITE_BACKEND;
+
   const deleteItem = async (event) => {
     event.preventDefault();
     const response = await fetch(
@@ -25,12 +28,14 @@ function Item({
 
   const editItem = async (event) => {
     event.preventDefault();
-    const description = document.getElementById("description").value;
+    const parentItem = itemRef.current;
+    console.log(parentItem);
+    const description = parentItem.querySelector("#description").value;
     console.log(description);
-    const title = document.getElementById("title").value;
+    const title = parentItem.querySelector("#title").value;
     console.log(title);
-    const useState = document.getElementById("useStates").value;
-    console.log(useState);
+    const useState = parentItem.querySelector("#useStates").value;
+
     const response = await fetch(
       `${backendUrl}users/${userId}/${postType}/${postId}`,
       {
@@ -47,13 +52,10 @@ function Item({
       }
     );
   };
-
-  if (document.getElementById("useStates")) {
-    document.getElementById("useStates").value = useState;
-  }
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
+      ref={itemRef}
     >
       <div style={{ width: "44%", marginLeft: "6%" }}>
         {isMyPost ? (
@@ -86,7 +88,7 @@ function Item({
         <p>
           Use State:
           {isMyPost ? (
-            <select name="useState" id="useStates">
+            <select name="useState" id="useStates" defaultValue={useState}>
               <option value="Used Like New">Used Like New</option>
               <option value="Used">Used</option>
               <option value="New">New</option>
