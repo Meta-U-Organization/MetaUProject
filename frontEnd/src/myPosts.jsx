@@ -35,33 +35,19 @@ function MyPosts() {
         </button>
       </header>
       <main>
-        {isDonationList
-          ? user.donationPosts.map((item) => {
-              return (
-                <Item
-                  onPostChange={setUpdatePosts}
-                  updatePosts={updatePosts}
-                  userId={"2"}
-                  postType={"donations"}
-                  isMyPost={true}
-                  item={item}
-                  key={item.id}
-                />
-              );
-            })
-          : user.requestPosts.map((item) => {
-              return (
-                <Item
-                  onPostChange={setUpdatePosts}
-                  updatePosts={updatePosts}
-                  userId={"2"}
-                  postType={"requests"}
-                  isMyPost={true}
-                  item={item}
-                  key={item.id}
-                />
-              );
-            })}
+        {user.donationPosts.map((item) => {
+          return (
+            <Item
+              onPostChange={setUpdatePosts}
+              updatePosts={updatePosts}
+              userId={"2"}
+              postType={isDonationList ? "donations" : "requests"}
+              isMyPost={true}
+              item={item}
+              key={item.id}
+            />
+          );
+        })}
       </main>
       <footer>
         Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
