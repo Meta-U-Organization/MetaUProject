@@ -1,9 +1,11 @@
 //Item framework
 import React, { useRef } from "react";
 function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
+  //consts needed through this element
   const itemRef = useRef(null);
   const backendUrl = import.meta.env.VITE_BACKEND;
 
+  /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
     const response = await fetch(
@@ -15,7 +17,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
     );
     onPostChange(!updatePosts);
   };
-
+  /*function to edit an item, will grab certain values and send a put to the server */
   const editItem = async (event) => {
     event.preventDefault();
     const parentItem = itemRef.current;
@@ -49,6 +51,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
       alert("Missing title or Desciption");
     }
   };
+
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
