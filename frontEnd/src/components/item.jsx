@@ -46,7 +46,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
         parentItem.querySelector("#description").value;
       parentItem.querySelector("#description").value = "";
     } else {
-      alert("Missing title or");
+      alert("Missing title or Desciption");
     }
   };
   return (
