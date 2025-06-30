@@ -44,11 +44,8 @@ function MyPosts() {
                   userId={"2"}
                   postType={"donations"}
                   isMyPost={true}
-                  title={item.title}
-                  description={item.description}
+                  item={item}
                   key={item.id}
-                  postId={item.id}
-                  useState={item.useState}
                 />
               );
             })

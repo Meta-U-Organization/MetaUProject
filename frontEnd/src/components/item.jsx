@@ -1,23 +1,13 @@
 //Item framework
 import React, { useRef } from "react";
-function Item({
-  postType,
-  postId,
-  userId,
-  isMyPost,
-  title,
-  description,
-  useState,
-  onPostChange,
-  updatePosts,
-}) {
+function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
   const itemRef = useRef(null);
   const backendUrl = import.meta.env.VITE_BACKEND;
 
   const deleteItem = async (event) => {
     event.preventDefault();
     const response = await fetch(
-      `${backendUrl}users/${userId}/${postType}/${postId}`,
+      `${backendUrl}users/${userId}/${postType}/${item.id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -35,12 +25,12 @@ function Item({
 
     if (title !== "" && description !== "") {
       const response = await fetch(
-        `${backendUrl}users/${userId}/${postType}/${postId}`,
+        `${backendUrl}users/${userId}/${postType}/${item.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: postId,
+            id: item.id,
             title: title,
             description: description,
             photo: "",
@@ -72,11 +62,11 @@ function Item({
               id="title"
               name="title"
               type="text"
-              placeholder={title}
+              placeholder={item.title}
             ></input>
           </div>
         ) : (
-          <h2>{title}</h2>
+          <h2>{item.title}</h2>
         )}
 
         {isMyPost ? (
@@ -86,22 +76,22 @@ function Item({
               name="description"
               id="description"
               type="text"
-              placeholder={description}
+              placeholder={item.description}
             ></input>
           </div>
         ) : (
-          <p>{description}</p>
+          <p>{item.description}</p>
         )}
         <p>
           Use State:
           {isMyPost ? (
-            <select name="useState" id="useStates" defaultValue={useState}>
+            <select name="useState" id="useStates" defaultValue={item.useState}>
               <option value="Used Like New">Used Like New</option>
               <option value="Used">Used</option>
               <option value="New">New</option>
             </select>
           ) : (
-            ` ${useState}`
+            ` ${item.useState}`
           )}
         </p>
         {isMyPost && <button onClick={editItem}>Submit Edits</button>}
