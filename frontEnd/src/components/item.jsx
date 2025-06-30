@@ -18,7 +18,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
     onPostChange(!updatePosts);
   };
   /*function to edit an item, will grab certain values and send a put to the server */
-  const editItem = async (event) => {
+  const postItemEdits = async (event) => {
     event.preventDefault();
     const parentItem = itemRef.current;
     const description = parentItem.querySelector("#description").value;
@@ -83,7 +83,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
               <option value="New">New</option>
             </select>
             <div>
-              <button onClick={editItem}>Submit Edits</button>
+              <button onClick={postItemEdits}>Submit Edits</button>
               <button onClick={deleteItem}>Delete</button>
             </div>
           </div>
