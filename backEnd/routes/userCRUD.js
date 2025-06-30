@@ -50,6 +50,7 @@ router.get('/me', async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
+  
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({ error: "Username and password are required." });
@@ -62,13 +63,13 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res.status(401).json({ error: "Invalid username" });
   }
-
   const isValidPassword = await bcrypt.compare(password, user.passwordHash);
 
   if (!isValidPassword) {
     return res.status(401).json({ error: "Invalid username or password." });
   }
-  console.log("login successful")
+  req.session.user = user;
+  console.log("login successful");
   res.json({ message: "Login successful!" });
 
 })
