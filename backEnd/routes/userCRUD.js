@@ -2,6 +2,40 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
+const bcrypt = require('bcrypt')
+
+
+router.post("/signup", async (req, res) => {
+  const { username, password, email, name, phoneNumber, address} = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "Username and password are required." });
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: { username }
+  });
+
+  if (existingUser) {
+      return res.status(400).json({ error: "Username already taken." });
+  }
+
+  const bcrypt = require("bcrypt");
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const newUser = await prisma.user.create({
+    data: {
+      username,
+      passwordHash,
+      email,
+      name,
+      phoneNumber,
+      address
+    }
+  });
+  res.json(newUser);
+})
+
 
 //get all users
 router.get('/users', async (req, res) => {
@@ -24,22 +58,6 @@ router.get('/users/:userId', async (req, res) => {
     }
   });
   res.json(individualUser);
-})
-
-//post a user to the database
-router.post('/users', async (req, res) => {
-  const { userName, passwordHash, email, name, phoneNumber, address} = req.body;
-  const newUser = await prisma.user.create({
-    data: {
-      userName,
-      passwordHash,
-      email,
-      name,
-      phoneNumber,
-      address
-    }
-  });
-  res.json(newUser);
 })
 
 //deletes user
