@@ -5,7 +5,12 @@ const session = require('express-session');
 const app = express()
 const PORT = 3000; 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 const userRoutes = require ('./routes/userCRUD');
 const requestPostRoutes = require ('./routes/requestPostCRUD');
 const donationPostRoutes = require ('./routes/donationPostCRUD');
@@ -33,7 +38,7 @@ app.use((err, req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-  res.send('Welcome to my app!')
+  res.send('Welcome to my app!');
 });
 
 app.listen(PORT, () => {
