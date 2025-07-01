@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Item from "./components/Item";
+import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
 //main page layout for the page
@@ -17,7 +17,6 @@ function DonationAndRequestPage() {
     }
     setIsDonationItem(!isDonationItem);
   };
-
   useEffect(() => {
     fetch(`${backendUrl}users`)
       .then((response) => response.json())
