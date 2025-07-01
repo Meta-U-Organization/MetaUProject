@@ -1,21 +1,15 @@
 //Item framework
-function Item({
-  postType,
-  postId,
-  userId,
-  isMyPost,
-  title,
-  description,
-  useState,
-  onPostChange,
-  updatePosts,
-}) {
+import React, { useRef } from "react";
+function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
+  //consts needed through this element
+  const itemRef = useRef(null);
   const backendUrl = import.meta.env.VITE_BACKEND;
 
+  /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
     const response = await fetch(
-      `${backendUrl}users/${userId}/${postType}/${postId}`,
+      `${backendUrl}users/${userId}/${postType}/${item.id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -23,61 +17,83 @@ function Item({
     );
     onPostChange(!updatePosts);
   };
-
-  const editItem = (event) => {
+  /*function to edit an item, will grab certain values and send a put to the server */
+  const postItemEdits = async (event) => {
     event.preventDefault();
-    // const response = fetch(`${backendUrl}users/${userId}/${postType}/${postId}`, {
-    //   method: "PUT",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(newData),
-    // });
+    const parentItem = itemRef.current;
+    const description = parentItem.querySelector("#description").value;
+    const title = parentItem.querySelector("#title").value;
+    const itemState = parentItem.querySelector("#useStates").value;
+
+    if (title !== "" && description !== "") {
+      const response = await fetch(
+        `${backendUrl}users/${userId}/${postType}/${item.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: item.id,
+            title: title,
+            description: description,
+            photo: "",
+            useState: itemState,
+            userId: userId,
+          }),
+        }
+      );
+      parentItem.querySelector("#title").placeholder =
+        parentItem.querySelector("#title").value;
+      parentItem.querySelector("#title").value = "";
+      parentItem.querySelector("#description").placeholder =
+        parentItem.querySelector("#description").value;
+      parentItem.querySelector("#description").value = "";
+    } else {
+      alert("Missing title or Desciption");
+    }
   };
 
-  if (document.getElementById("useStates")) {
-    document.getElementById("useStates").value = useState;
-  }
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
+      ref={itemRef}
     >
       <div style={{ width: "44%", marginLeft: "6%" }}>
         {isMyPost ? (
           <div>
-            <label htmlFor="title">Title: </label>
-            <input name="title" type="text" placeholder={title}></input>
-          </div>
-        ) : (
-          <h2>{title}</h2>
-        )}
-
-        {isMyPost ? (
-          <div>
+            <div>
+              <label htmlFor="title">Title: </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                placeholder={item.title}
+              ></input>
+            </div>
             <label htmlFor="description">Description: </label>
             <input
               name="description"
+              id="description"
               type="text"
-              placeholder={description}
+              placeholder={item.description}
             ></input>
+            <br></br>
+            <select name="useState" id="useStates" defaultValue={item.useState}>
+              <option value="Used Like New">Used Like New</option>
+              <option value="Used">Used</option>
+              <option value="New">New</option>
+            </select>
+            <div>
+              <button onClick={postItemEdits}>Submit Edits</button>
+              <button onClick={deleteItem}>Delete</button>
+            </div>
           </div>
         ) : (
-          <p>{description}</p>
+          <div>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+            <p>Use State: {item.useState}</p>
+          </div>
         )}
-        <p>
-          Use State:
-          {isMyPost ? (
-            <div>
-              <select name="useState" id="useStates">
-                <option value="Used Like New">Used Like New</option>
-                <option value="Used">Used</option>
-                <option value="New">New</option>
-              </select>
-            </div>
-          ) : (
-            ` ${useState}`
-          )}
-        </p>
-        {isMyPost && <button onClick={editItem}>Submit Edits</button>}
-        {isMyPost && <button onClick={deleteItem}>Delete</button>}
       </div>
       <div style={{ width: "44%" }}>
         <img

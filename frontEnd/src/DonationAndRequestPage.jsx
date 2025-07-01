@@ -37,27 +37,11 @@ function DonationAndRequestPage() {
         {users.map((user) => {
           if (isDonationItem) {
             return user.donationPosts.map((item) => {
-              return (
-                <Item
-                  isMyPost={false}
-                  title={item.title}
-                  description={item.description}
-                  key={item.id}
-                  postId={item.id}
-                  useState={item.useState}
-                />
-              );
+              return <Item isMyPost={false} item={item} key={item.id} />;
             });
           } else {
             return user.requestPosts.map((item) => {
-              return (
-                <Item
-                  title={item.title}
-                  description={item.description}
-                  key={item.id}
-                  useState={item.useState}
-                />
-              );
+              return <Item isMyPost={false} item={item} key={item.id} />;
             });
           }
         })}
