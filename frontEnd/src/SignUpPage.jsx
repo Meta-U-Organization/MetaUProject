@@ -1,13 +1,13 @@
 import "./App.css";
 //main page layout for the page
-function RegisterPage() {
+function SignUpPage() {
   const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
   const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
 
-  const registerFunc = async (event) => {
+  const signUpFunc = async (event) => {
     event.preventDefault();
-    const formData = new FormData(document.getElementById("register"));
+    const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
     const response = await fetch(`${backendUrl}signUp`, {
       method: "POST",
@@ -26,7 +26,7 @@ function RegisterPage() {
       </header>
       <main>
         <form
-          id="register"
+          id="signUpForm"
           style={{ display: "flex", flexDirection: "column" }}
         >
           <a href={itemsPage}>Sign in with Google</a>
@@ -58,7 +58,7 @@ function RegisterPage() {
             name="address"
             placeholder="Enter your Address"
           ></input>
-          <button type="submit" onClick={registerFunc}>
+          <button type="submit" onClick={signUpFunc}>
             Submit
           </button>
         </form>
@@ -70,4 +70,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage;
+export default SignUpPage;
