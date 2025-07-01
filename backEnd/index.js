@@ -8,7 +8,6 @@ app.use(cors());
 const userRoutes = require ('./routes/userCRUD');
 const requestPostRoutes = require ('./routes/requestPostCRUD');
 const donationPostRoutes = require ('./routes/donationPostCRUD');
-const session = require('express-session');
 app.use(userRoutes);
 app.use(requestPostRoutes);
 app.use(donationPostRoutes);
