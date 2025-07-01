@@ -7,6 +7,7 @@ import SettingsPage from "./SettingsPage.jsx";
 import PostCreationPage from "./PostCreationPage.jsx";
 import SavedPage from "./SavedPage.jsx";
 import MyPosts from "./myPosts.jsx";
+import RegisterPage from "./RegisterPage.jsx";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/makeAPost" element={<PostCreationPage />}></Route>
         <Route path="/saved" element={<SavedPage />}></Route>
         <Route path="/myPosts" element={<MyPosts />}></Route>
+        <Route path="/register" element={<RegisterPage />}></Route>
       </Routes>
     </BrowserRouter>
   );
