@@ -9,6 +9,7 @@ function LoginPage() {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     let readableData = Object.fromEntries(formData);
+    console.log(readableData);
     const response = await fetch(`${backendUrl}login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
