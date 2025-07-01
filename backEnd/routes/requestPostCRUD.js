@@ -15,19 +15,6 @@ router.get('/users/:userId/requests', async (req, res) => {
   res.json(allRequests);
 })
 
-//get all request posts
-router.get('/users/:userId/requests/:postId', async (req, res) => {
-  const postId = parseInt(req.params.postId);
-  const userId = parseInt(req.params.userId);
-  const individualPost = await prisma.requestPost.findUnique({
-    where:{
-      id:parseInt(postId),
-      userId:parseInt(userId)
-    },
-  });
-  res.json(individualPost);
-})
-
 //get individual post
 router.get('/users/:userId/requests/:postId', async (req, res) => {
   const postId = parseInt(req.params.postId);
