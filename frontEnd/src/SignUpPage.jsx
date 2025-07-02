@@ -1,7 +1,6 @@
 import "./App.css";
 //main page layout for the page
 function SignUpPage() {
-  const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
   const loginPage = `${import.meta.env.VITE_BASE_URL}login`;
   const backendUrl = import.meta.env.VITE_BACKEND;
 
