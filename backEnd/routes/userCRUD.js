@@ -37,16 +37,16 @@ router.post("/signup", async (req, res) => {
 })
 
 router.get('/me', async (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+  
   const user = await prisma.user.findUnique({
     where: { id: req.session.userId },
     select: { username: true } // Only return necessary data
   });
 
   res.json({ id: req.session.userId, username: user.username });
-
-  if (!req.session.userId) {
-    return res.status(401).json({ message: "Not logged in" });
-  }
 })
 
 router.post("/login", async (req, res) => {
