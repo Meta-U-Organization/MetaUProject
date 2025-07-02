@@ -9,11 +9,20 @@ function LoginPage() {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     const readableData = Object.fromEntries(formData);
+
     const response = await fetch(`${backendUrl}login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
+      credentials: "include",
     });
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      alert(result.message);
+    } else {
+      window.location.href = mainPage;
+    }
   };
 
   return (
