@@ -9,20 +9,33 @@ function PostCreationPage() {
     const formData = new FormData(document.getElementById("newPostForm"));
     let readableData = Object.fromEntries(formData);
     formData.delete("type");
+
+    const logIn = await fetch(`${backendUrl}me`, {
+      credentials: "include",
+    });
+
+    const logInReadable = await logIn.json();
+
     if (readableData.type === "donation") {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}users/2/donations`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readableData),
-      });
+      const response = await fetch(
+        `${backendUrl}users/${logInReadable.id}/donations`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(readableData),
+        }
+      );
     } else {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}users/2/requests`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readableData),
-      });
+      const response = await fetch(
+        `${backendUrl}users/${logInReadable.id}/requests`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(readableData),
+        }
+      );
     }
   };
 
