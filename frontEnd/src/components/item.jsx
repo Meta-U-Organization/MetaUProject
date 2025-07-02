@@ -13,6 +13,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
       }
     );
     onPostChange(!updatePosts);

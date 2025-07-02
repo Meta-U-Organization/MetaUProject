@@ -8,12 +8,24 @@ function LoginPage() {
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
-    let readableData = Object.fromEntries(formData);
+    const readableData = Object.fromEntries(formData);
+
     const response = await fetch(`${backendUrl}login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
+      credentials: "include",
     });
+    const result = await response.json();
+    if (result.message === "Login successful!") {
+      window.location.href = mainPage;
+    } else if (result.message === "Username and password are required.") {
+      alert("Username and password are required.");
+    } else if (result.message === "Invalid Username") {
+      alert("Invalid Username");
+    } else {
+      alert("Invalid username or password.");
+    }
   };
 
   return (
