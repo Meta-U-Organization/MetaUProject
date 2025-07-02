@@ -46,7 +46,7 @@ router.get('/me', async (req, res) => {
     where: { id: req.session.userId },
     select: { username: true } // Only return necessary data
   });
-  
+
   res.json({ id: req.session.userId, username: user.username });
 })
 
@@ -70,7 +70,6 @@ router.post("/login", async (req, res) => {
     res.json({ message: "Invalid username or password." });
   }
   req.session.userId = user.id;
-  console.log(req.session)
   res.json({ message: "Login successful!" });
 
 })
