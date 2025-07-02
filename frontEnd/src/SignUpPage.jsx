@@ -15,14 +15,11 @@ function SignUpPage() {
     });
 
     const result = await response.json();
-    if (result.message === "Sign Up Succesful!") {
+    console.log(response.status);
+    if (response.status !== 200) {
+      alert(result.message);
+    } else {
       alert("Registration Complete, proceed to login page");
-    } else if (result.message === "Username and password are required.") {
-      alert("Username and password are required.");
-    } else if (result.message === "Username already taken.") {
-      alert("Username already taken.");
-    } else if (result.message === "Email already in use.") {
-      alert("Email already in use.");
     }
   };
 
