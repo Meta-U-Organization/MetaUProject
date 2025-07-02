@@ -17,7 +17,6 @@ function DonationAndRequestPage() {
     }
     setIsDonationItem(!isDonationItem);
   };
-
   useEffect(() => {
     fetch(`${backendUrl}users`)
       .then((response) => response.json())
