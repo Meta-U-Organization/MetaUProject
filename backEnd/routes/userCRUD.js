@@ -9,7 +9,7 @@ router.post("/signup", async (req, res) => {
   const { username, password, email, name, phoneNumber, address} = req.body;
 
   if (!username || !password) {
-    return res.status(400).json({ error: "Username and password are required." });
+    res.json({ message: "Username and password are required." });
   }
 
   const existingUser = await prisma.user.findUnique({
@@ -17,7 +17,15 @@ router.post("/signup", async (req, res) => {
   });
 
   if (existingUser) {
-      return res.status(400).json({ error: "Username already taken." });
+      res.json({ message:  "Username already taken."});
+  }
+
+  const existingEmail = await prisma.user.findUnique({
+    where: { email }
+  });
+
+  if (existingEmail) {
+      res.json({ message:  "Email already in use."});
   }
 
   const bcrypt = require("bcrypt");
@@ -33,7 +41,7 @@ router.post("/signup", async (req, res) => {
       address
     }
   });
-  res.json(newUser);
+  res.json({message:  "Sign Up Succesful!"});
 })
 
 router.get('/me', async (req, res) => {

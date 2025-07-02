@@ -2,7 +2,7 @@ import "./App.css";
 //main page layout for the page
 function SignUpPage() {
   const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
-  const mainPage = `${import.meta.env.VITE_BASE_URL}`;
+  const loginPage = `${import.meta.env.VITE_BASE_URL}login`;
   const backendUrl = import.meta.env.VITE_BACKEND;
 
   const signUpFunc = async (event) => {
@@ -14,13 +14,25 @@ function SignUpPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
     });
+
+    const result = await response.json();
+    console.log(result);
+    if (result.message === "Sign Up Succesful!") {
+      alert("Registration Complete, proceed to login page");
+    } else if (result.message === "Username and password are required.") {
+      alert("Username and password are required.");
+    } else if (result.message === "Username already taken.") {
+      alert("Username already taken.");
+    } else if (result.message === "Email already in use.") {
+      alert("Email already in use.");
+    }
   };
 
   return (
     <div>
       <header>
         <nav>
-          <a href={mainPage}> Home</a>
+          <a href={loginPage}> Login</a>
         </nav>
         <h1>Register</h1>
       </header>
@@ -29,7 +41,6 @@ function SignUpPage() {
           id="signUpForm"
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <a href={itemsPage}>Sign in with Google</a>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>
