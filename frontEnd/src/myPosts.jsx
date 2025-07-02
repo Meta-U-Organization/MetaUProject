@@ -62,7 +62,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={logInReadable.id}
+                  userId={userId}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
