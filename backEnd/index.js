@@ -12,7 +12,6 @@ app.use(userRoutes);
 app.use(requestPostRoutes);
 app.use(donationPostRoutes);
 
-
 app.get('/', (req, res) => {
   res.send('Welcome to my app!')
 });

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Item from "./components/Item";
+import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation

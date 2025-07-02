@@ -1,15 +1,15 @@
 import "./App.css";
 //main page layout for the page
-function LoginPage() {
+function SignUpPage() {
   const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
   const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
 
-  const loginFunc = async (event) => {
+  const signUpFunc = async (event) => {
     event.preventDefault();
-    const formData = new FormData(document.getElementById("login"));
+    const formData = new FormData(document.getElementById("signUpForm"));
     const readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}login`, {
+    const response = await fetch(`${backendUrl}signUp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
@@ -22,10 +22,13 @@ function LoginPage() {
         <nav>
           <a href={mainPage}> Home</a>
         </nav>
-        <h1>Login</h1>
+        <h1>Register</h1>
       </header>
       <main>
-        <form id="login" style={{ display: "flex", flexDirection: "column" }}>
+        <form
+          id="signUpForm"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
           <a href={itemsPage}>Sign in with Google</a>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
@@ -35,7 +38,27 @@ function LoginPage() {
             name="password"
             placeholder="Enter your password"
           ></input>
-          <button type="submit" onClick={loginFunc}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            name="email"
+            placeholder="Enter your email"
+          ></input>
+          <label htmlFor="name">Name</label>
+          <input type="text" name="name" placeholder="Enter your name"></input>
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <input
+            type="text"
+            name="phoneNumber"
+            placeholder="Enter your Phone Number"
+          ></input>
+          <label htmlFor="address">Address</label>
+          <input
+            type="text"
+            name="address"
+            placeholder="Enter your Address"
+          ></input>
+          <button type="submit" onClick={signUpFunc}>
             Submit
           </button>
         </form>
@@ -47,4 +70,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignUpPage;

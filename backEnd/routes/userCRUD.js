@@ -2,6 +2,74 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
+const bcrypt = require('bcrypt')
+
+
+router.post("/signup", async (req, res) => {
+  const { username, password, email, name, phoneNumber, address} = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: "Username and password are required." });
+  }
+
+  const existingUser = await prisma.user.findUnique({
+    where: { username }
+  });
+
+  if (existingUser) {
+      return res.status(400).json({ error: "Username already taken." });
+  }
+  
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const newUser = await prisma.user.create({
+    data: {
+      username,
+      passwordHash,
+      email,
+      name,
+      phoneNumber,
+      address
+    }
+  });
+  res.json(newUser);
+})
+
+router.get('/me', async (req, res) => {
+  const user = await prisma.user.findUnique({
+    where: { id: req.session.userId },
+    select: { username: true } // Only return necessary data
+  });
+
+  res.json({ id: req.session.userId, username: user.username });
+
+  if (!req.session.userId) {
+    return res.status(401).json({ message: "Not logged in" });
+  }
+})
+
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: "Username and password are required." });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { username }
+  });
+
+  if (!user) {
+    return res.status(401).json({ error: "Invalid username" });
+  }
+
+  const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+
+  if (!isValidPassword) {
+    return res.status(401).json({ error: "Invalid username or password." });
+  }
+  res.json({ message: "Login successful!" });
+
+})
 
 //get all users
 router.get('/users', async (req, res) => {
@@ -24,22 +92,6 @@ router.get('/users/:userId', async (req, res) => {
     }
   });
   res.json(individualUser);
-})
-
-//post a user to the database
-router.post('/users', async (req, res) => {
-  const { userName, passwordHash, email, name, phoneNumber, address} = req.body;
-  const newUser = await prisma.user.create({
-    data: {
-      userName,
-      passwordHash,
-      email,
-      name,
-      phoneNumber,
-      address
-    }
-  });
-  res.json(newUser);
 })
 
 //deletes user
