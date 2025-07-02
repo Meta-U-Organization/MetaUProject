@@ -8,7 +8,7 @@ function LoginPage() {
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
-    let readableData = Object.fromEntries(formData);
+    const readableData = Object.fromEntries(formData);
     const response = await fetch(`${backendUrl}login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

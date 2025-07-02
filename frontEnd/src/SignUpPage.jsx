@@ -8,7 +8,7 @@ function SignUpPage() {
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
-    let readableData = Object.fromEntries(formData);
+    const readableData = Object.fromEntries(formData);
     const response = await fetch(`${backendUrl}signUp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
