@@ -8,21 +8,21 @@ function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
   const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
+  const [userId, setUserId] = useState();
   const backendUrl = import.meta.env.VITE_BACKEND;
-  let logInReadable = { id: "" };
+
   useEffect(() => {
-    (async () => {
+    const fetchLogIn = async () => {
       const logIn = await fetch(`${backendUrl}me`, {
         credentials: "include",
       });
-
-      logInReadable = await logIn.json();
-    })().then((res) =>
-      fetch(`${backendUrl}users/${logInReadable.id}`)
-        .then((response) => response.json())
-        .then((user) => setUser(user))
-        .catch((error) => console.error("Error fetching posts:", error))
-    );
+      const logInInfo = await logIn.json();
+      setUserId(logInInfo.id);
+      const user = await fetch(`${backendUrl}users/${logInInfo.id}`);
+      const userRead = await user.json();
+      setUser(userRead);
+    };
+    fetchLogIn();
   }, [isDonationList, updatePosts]);
 
   const changeItemType = () => {
@@ -49,7 +49,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={logInReadable.id}
+                  userId={userId}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
