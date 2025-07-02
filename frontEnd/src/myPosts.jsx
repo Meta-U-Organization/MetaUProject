@@ -9,18 +9,8 @@ function MyPosts() {
   const [updatePosts, setUpdatePosts] = useState(true);
   const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
   const backendUrl = import.meta.env.VITE_BACKEND;
-
-  const changeItemType = () => {
-    if (isDonationList) {
-      document.getElementById("changeItemButton").innerHTML = "Go to Donations";
-    } else {
-      document.getElementById("changeItemButton").innerHTML = "Go to Requests";
-    }
-    setIsDonationList(!isDonationList);
-  };
-
+  let logInReadable = { id: "" };
   useEffect(() => {
-    let logInReadable;
     (async () => {
       const logIn = await fetch(`${backendUrl}me`, {
         credentials: "include",
@@ -34,6 +24,15 @@ function MyPosts() {
         .catch((error) => console.error("Error fetching posts:", error))
     );
   }, [isDonationList, updatePosts]);
+
+  const changeItemType = () => {
+    if (isDonationList) {
+      document.getElementById("changeItemButton").innerHTML = "Go to Donations";
+    } else {
+      document.getElementById("changeItemButton").innerHTML = "Go to Requests";
+    }
+    setIsDonationList(!isDonationList);
+  };
   return (
     <div>
       <header>
@@ -50,7 +49,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={"2"}
+                  userId={logInReadable.id}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
@@ -63,7 +62,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={"2"}
+                  userId={logInReadable.id}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
