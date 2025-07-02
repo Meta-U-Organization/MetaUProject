@@ -15,7 +15,6 @@ function SignUpPage() {
     });
 
     const result = await response.json();
-    console.log(response.status);
     if (response.status !== 200) {
       alert(result.message);
     } else {
