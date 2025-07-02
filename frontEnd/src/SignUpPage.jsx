@@ -16,7 +16,6 @@ function SignUpPage() {
     });
 
     const result = await response.json();
-    console.log(result);
     if (result.message === "Sign Up Succesful!") {
       alert("Registration Complete, proceed to login page");
     } else if (result.message === "Username and password are required.") {
