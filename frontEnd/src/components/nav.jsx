@@ -9,7 +9,7 @@ function Navigation() {
   const backendUrl = import.meta.env.VITE_BACKEND;
   const logOut = async (event) => {
     event.preventDefault();
-    await fetch("http://localhost:3000/logout", {
+    await fetch(`${backendUrl}logout`, {
       method: "POST",
       credentials: "include",
     });
