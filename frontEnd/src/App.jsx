@@ -24,6 +24,11 @@ function App() {
     return IsLoggedInCurrent ? <Outlet /> : <Navigate to="/login" />;
   };
 
+  /*
+    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur quidem culpa doloribus, suscipit possimus hic modi facilis deserunt similique amet!
+sdfdsfdsfyiup=[poi]asdfsdf
+  */
+
   useEffect(() => {
     const fetchLogIn = async () => {
       const logIn = await fetch(`${backendUrl}me`, {
