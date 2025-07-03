@@ -36,6 +36,16 @@ router.post("/signup", async (req, res) => {
   res.json(newUser);
 })
 
+router.post("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Failed to log out" });
+        }
+        res.clearCookie("connect.sid"); // Clear session cookie
+        res.json({ message: "Logged out successfully" });
+    });
+});
+
 router.get('/me', async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Not logged in" });
