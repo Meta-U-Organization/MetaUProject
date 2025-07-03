@@ -51,6 +51,7 @@ function App() {
           element={loggedIn ? <MyPosts /> : <LoginPage />}
         ></Route>
         <Route path="/signUp" element={<SignUpPage />}></Route>
+        <Route path="*" element={<LoginPage />}></Route>
       </Routes>
     </BrowserRouter>
   );
