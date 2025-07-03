@@ -2,28 +2,14 @@ import { useState } from "react";
 import "./App.css";
 import Item from "./components/item";
 import Navigation from "./components/nav";
-import { useEffect } from "react";
+import { Context } from "./App";
+import { useContext } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
-  const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
-  const [userId, setUserId] = useState();
-  const backendUrl = import.meta.env.VITE_BACKEND;
-
-  useEffect(() => {
-    const fetchLogIn = async () => {
-      const logIn = await fetch(`${backendUrl}me`, {
-        credentials: "include",
-      });
-      const logInInfo = await logIn.json();
-      setUserId(logInInfo.id);
-      const user = await fetch(`${backendUrl}users/${logInInfo.id}`);
-      const userRead = await user.json();
-      setUser(userRead);
-    };
-    fetchLogIn();
-  }, [isDonationList, updatePosts]);
+  const userId = useContext(Context).userId;
+  const user = useContext(Context).user;
 
   const changeItemType = () => {
     if (isDonationList) {
