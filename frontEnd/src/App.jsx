@@ -26,7 +26,11 @@ function App() {
 
   /*
     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur quidem culpa doloribus, suscipit possimus hic modi facilis deserunt similique amet!
+<<<<<<< HEAD
 sdfdsfdsfyiup=[poi]asdfsdf
+=======
+sdfdsfdsfyiup=[poi]
+>>>>>>> ac07665e2c3f3fe6d1060bd3b95dc53b88cfbcff
   */
 
   useEffect(() => {
