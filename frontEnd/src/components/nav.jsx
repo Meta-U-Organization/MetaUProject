@@ -6,6 +6,15 @@ function Navigation() {
   const settingsPage = `${import.meta.env.VITE_BASE_URL}settings`;
   const savedPage = `${import.meta.env.VITE_BASE_URL}saved`;
   const myPosts = `${import.meta.env.VITE_BASE_URL}myPosts`;
+  const backendUrl = import.meta.env.VITE_BACKEND;
+  const logOut = async (event) => {
+    event.preventDefault();
+    await fetch("http://localhost:3000/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    window.location.href = "/"; // Redirect to homepage
+  };
   return (
     <nav>
       <a
@@ -63,6 +72,7 @@ function Navigation() {
       >
         Settings
       </a>
+      <button onClick={logOut}>Log Out</button>
     </nav>
   );
 }
