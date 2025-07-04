@@ -1,6 +1,14 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
+
 import MainPage from "./mainPage.jsx";
 import LoginPage from "./LoginPage.jsx";
 import DonationAndRequestPage from "./DonationAndRequestPage.jsx";
@@ -13,9 +21,14 @@ import SignUpPage from "./SignUpPage.jsx";
 export const Context = createContext();
 
 function App() {
-  const backendUrl = import.meta.env.VITE_BACKEND;
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState("1");
   const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
+  const backendUrl = import.meta.env.VITE_BACKEND;
+
+  const PrivateRoutes = ({ IsLoggedInCurrent }) => {
+    return IsLoggedInCurrent ? <Outlet /> : <Navigate to="/login" />;
+  };
 
   useEffect(() => {
     const fetchLogIn = async () => {
@@ -24,11 +37,13 @@ function App() {
       });
       const logInValues = await logIn.json();
       if (logIn.status === 200) {
+        console.log("hello");
+        setLoggedIn(true);
         setUserId(logInValues.id);
+        const user = await fetch(`${backendUrl}users/${logInValues.id}`);
+        const userRead = await user.json();
+        setUser(userRead);
       }
-      const user = await fetch(`${backendUrl}users/${logInValues.id}`);
-      const userRead = await user.json();
-      setUser(userRead);
     };
     fetchLogIn();
   }, []);
@@ -41,10 +56,12 @@ function App() {
           <Route path="/" element={<MainPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/items" element={<DonationAndRequestPage />}></Route>
-          <Route path="/settings" element={<SettingsPage />}></Route>
-          <Route path="/makeAPost" element={<PostCreationPage />}></Route>
-          <Route path="/saved" element={<SavedPage />}></Route>
-          <Route path="/myPosts" element={<MyPosts />}></Route>
+          <Route element={<PrivateRoutes isLoggedInCurrent={isLoggedIn} />}>
+            <Route path="/settings" element={<SettingsPage />}></Route>
+            <Route path="/makeAPost" element={<PostCreationPage />}></Route>
+            <Route path="/saved" element={<SavedPage />}></Route>
+            <Route path="/myPosts" element={<MyPosts />}></Route>
+          </Route>
           <Route path="/signUp" element={<SignUpPage />}></Route>
         </Routes>
       </BrowserRouter>
