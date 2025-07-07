@@ -9,7 +9,6 @@ function PostCreationPage() {
 
   const makePost = async (event) => {
     event.preventDefault();
-    console.log("hi");
     const formData = new FormData(document.getElementById("newPostForm"));
     let readableData = Object.fromEntries(formData);
     formData.delete("type");
