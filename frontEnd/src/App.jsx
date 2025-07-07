@@ -20,16 +20,11 @@ import SignUpPage from "./SignUpPage.jsx";
 export const Context = createContext();
 
 function App() {
-  const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
+  const [user, setUser] = useState(() => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : { donationPosts: [], requestPosts: [] };
+  });
   const backendUrl = import.meta.env.VITE_BACKEND;
-
-  const PrivateRoutes = ({ currentUser }) => {
-    if (currentUser.id) {
-      return <Outlet />;
-    } else {
-      return <Navigate to="/login" />;
-    }
-  };
 
   useEffect(() => {
     const fetchLogIn = async () => {
@@ -37,9 +32,11 @@ function App() {
         credentials: "include",
       });
       const logInValues = await logIn.json();
+      console.log(logInValues);
       if (logIn.status === 200) {
         const user = await fetch(`${backendUrl}users/${logInValues.id}`);
         const userRead = await user.json();
+        localStorage.setItem("user", JSON.stringify(userRead));
         setUser(userRead);
       }
     };
@@ -47,6 +44,16 @@ function App() {
       fetchLogIn();
     }
   }, [user]);
+
+  const PrivateRoutes = ({ currentUser }) => {
+    console.log(currentUser);
+    if (currentUser.id) {
+      return <Outlet />;
+    } else {
+      return <Navigate to="/login" />;
+    }
+  };
+
   return (
     //router functionality for when we navigate to pages
     <Context.Provider value={{ user, setUser }}>
