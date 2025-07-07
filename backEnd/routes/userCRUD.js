@@ -37,7 +37,6 @@ router.post("/signup", async (req, res) => {
 })
 
 router.post("/logout", (req, res) => {
-  console.log(req.session);
     req.session.destroy((err) => {
         if (err) {
             return res.status(500).json({ error: "Failed to log out" });
@@ -45,7 +44,6 @@ router.post("/logout", (req, res) => {
         res.clearCookie("connect.sid"); // Clear session cookie
         res.json({ message: "Logged out successfully" });
     });
-    console.log(req.session);
 });
 
 router.get('/me', async (req, res) => {
