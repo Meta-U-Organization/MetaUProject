@@ -57,7 +57,7 @@ function App() {
   };
   return (
     //router functionality for when we navigate to pages
-    <Context.Provider value={{ user, setUser, updateUserNull }}>
+    <Context.Provider value={{ user, setUser, updateUserNull, backendUrl }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
