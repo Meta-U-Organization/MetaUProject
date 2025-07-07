@@ -8,8 +8,7 @@ import { useContext } from "react";
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
-  const userId = useContext(Context).userId;
-  const user = useContext(Context).user;
+  const { userId, user } = useContext(Context);
 
   const changeItemType = () => {
     if (isDonationList) {
