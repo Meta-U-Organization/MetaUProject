@@ -1,24 +1,30 @@
+import { useContext } from "react";
 import "./App.css";
 import Navigation from "./components/nav";
+import { Context } from "./App";
 //main page layout for the page
 function PostCreationPage() {
   const backendUrl = import.meta.env.VITE_BACKEND;
+  const user = useContext(Context).user;
 
   const makePost = async (event) => {
     event.preventDefault();
+    console.log("hi");
     const formData = new FormData(document.getElementById("newPostForm"));
     let readableData = Object.fromEntries(formData);
     formData.delete("type");
     if (readableData.type === "donation") {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}users/2/donations`, {
+      console.log(`${backendUrl}users/${user.id}/donations`);
+      const response = await fetch(`${backendUrl}users/${user.id}/donations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
       });
     } else {
+      console.log(`${backendUrl}users/${user.id}/donations`);
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}users/2/requests`, {
+      const response = await fetch(`${backendUrl}users/${user.id}/requests`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
