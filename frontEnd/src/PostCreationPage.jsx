@@ -15,14 +15,12 @@ function PostCreationPage() {
     formData.delete("type");
     if (readableData.type === "donation") {
       readableData = Object.fromEntries(formData);
-      console.log(`${backendUrl}users/${user.id}/donations`);
       const response = await fetch(`${backendUrl}users/${user.id}/donations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
       });
     } else {
-      console.log(`${backendUrl}users/${user.id}/donations`);
       readableData = Object.fromEntries(formData);
       const response = await fetch(`${backendUrl}users/${user.id}/requests`, {
         method: "POST",
