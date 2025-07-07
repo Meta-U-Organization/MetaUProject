@@ -56,7 +56,7 @@ function Navigation() {
           navigate("/settings");
         }}
       >
-        settings
+        Settings
       </button>
       <button onClick={logOut}>Log Out</button>
     </nav>
