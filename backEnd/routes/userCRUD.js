@@ -36,6 +36,18 @@ router.post("/signup", async (req, res) => {
   res.json(newUser);
 })
 
+router.post("/logout", (req, res) => {
+  console.log(req.session);
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Failed to log out" });
+        }
+        res.clearCookie("connect.sid"); // Clear session cookie
+        res.json({ message: "Logged out successfully" });
+    });
+    console.log(req.session);
+});
+
 router.get('/me', async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Not logged in" });
@@ -56,7 +68,11 @@ router.post("/login", async (req, res) => {
   }
 
   const user = await prisma.user.findUnique({
-    where: { username }
+    where: { username },
+    include: {
+        donationPosts:true,
+        requestPosts:true,
+    }
   });
 
   if (!user) {
@@ -69,7 +85,7 @@ router.post("/login", async (req, res) => {
     res.json({ message: "Invalid username or password." });
   }
   req.session.userId = user.id;
-  res.json({ message: "Login successful!" });
+  res.json({ message: "Login successful!", user });
 
 })
 
