@@ -32,7 +32,6 @@ function App() {
         credentials: "include",
       });
       const logInValues = await logIn.json();
-      console.log(logInValues);
       if (logIn.status === 200) {
         const user = await fetch(`${backendUrl}users/${logInValues.id}`);
         const userRead = await user.json();
@@ -46,7 +45,6 @@ function App() {
   }, [user]);
 
   const PrivateRoutes = ({ currentUser }) => {
-    console.log(currentUser);
     if (currentUser.id) {
       return <Outlet />;
     } else {
