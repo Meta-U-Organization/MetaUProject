@@ -21,9 +21,10 @@ export const Context = createContext();
 
 function App() {
   const [user, setUser] = useState(() => {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : { donationPosts: [], requestPosts: [] };
+    const user = sessionStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
   });
+
   const backendUrl = import.meta.env.VITE_BACKEND;
 
   useEffect(() => {
@@ -35,26 +36,28 @@ function App() {
       if (logIn.status === 200) {
         const user = await fetch(`${backendUrl}users/${logInValues.id}`);
         const userRead = await user.json();
-        localStorage.setItem("user", JSON.stringify(userRead));
+        sessionStorage.setItem("user", JSON.stringify(userRead));
         setUser(userRead);
       }
     };
-    if (!user.id) {
+    if (user === null) {
       fetchLogIn();
     }
   }, [user]);
 
   const PrivateRoutes = ({ currentUser }) => {
-    if (currentUser.id) {
+    if (currentUser?.id) {
       return <Outlet />;
     } else {
       return <Navigate to="/login" />;
     }
   };
-
+  const updateUserNull = () => {
+    setUser(null);
+  };
   return (
     //router functionality for when we navigate to pages
-    <Context.Provider value={{ user, setUser }}>
+    <Context.Provider value={{ user, setUser, updateUserNull }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
