@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import { useContext } from "react";
+import { Context } from "./App";
 //main page layout for the page
 function LoginPage() {
   const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
   const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
+  const setUser = useContext(Context).setUser;
 
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     const readableData = Object.fromEntries(formData);
-
     const response = await fetch(`${backendUrl}login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -21,7 +23,8 @@ function LoginPage() {
 
     const result = await response.json();
     if (result.message === "Login successful!") {
-      navigate("/items");
+      setUser(result.user);
+      navigate("/");
     } else if (result.message === "Username and password are required.") {
       alert("Username and password are required.");
     } else if (result.message === "Invalid Username") {
