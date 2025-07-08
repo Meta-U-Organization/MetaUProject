@@ -40,7 +40,7 @@ function App() {
         setUser(userRead);
       }
     };
-    if (user === null) {
+    if (user == null) {
       fetchLogIn();
     }
   }, [user]);
