@@ -1,15 +1,16 @@
 //Item framework
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
+import { Context } from "../App";
 function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
   //consts needed through this element
   const itemRef = useRef(null);
-  const backendUrl = import.meta.env.VITE_BACKEND;
+  const { backendUrl } = useContext(Context);
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
     const response = await fetch(
-      `${backendUrl}users/${userId}/${postType}/${item.id}`,
+      `${backendUrl}/users/${userId}/${postType}/${item.id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -28,7 +29,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
 
     if (title !== "" && description !== "") {
       const response = await fetch(
-        `${backendUrl}users/${userId}/${postType}/${item.id}`,
+        `${backendUrl}/users/${userId}/${postType}/${item.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

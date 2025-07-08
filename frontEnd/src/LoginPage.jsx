@@ -4,15 +4,14 @@ import { useContext } from "react";
 import { Context } from "./App";
 //main page layout for the page
 function LoginPage() {
-  const backendUrl = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
-  const setUser = useContext(Context).setUser;
+  const { setUser, backendUrl } = useContext(Context);
 
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     const readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}login`, {
+    const response = await fetch(`${backendUrl}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),

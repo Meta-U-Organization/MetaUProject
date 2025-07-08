@@ -30,12 +30,12 @@ function App() {
 
   useEffect(() => {
     const fetchLogIn = async () => {
-      const logIn = await fetch(`${backendUrl}me`, {
+      const logIn = await fetch(`${backendUrl}/me`, {
         credentials: "include",
       });
       const logInValues = await logIn.json();
       if (logIn.status === 200) {
-        const user = await fetch(`${backendUrl}users/${logInValues.id}`);
+        const user = await fetch(`${backendUrl}/users/${logInValues.id}`);
         const userRead = await user.json();
         sessionStorage.setItem("user", JSON.stringify(userRead));
         setUser(userRead);

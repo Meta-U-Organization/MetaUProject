@@ -1,13 +1,13 @@
 import "./App.css";
 //main page layout for the page
 function SignUpPage() {
-  const backendUrl = import.meta.env.VITE_BACKEND;
+  const { backendUrl } = useContext(Context);
 
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}signUp`, {
+    const response = await fetch(`${backendUrl}/signUp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),

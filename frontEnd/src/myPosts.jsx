@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { useEffect } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
-  const backendUrl = useContext(Context).backendUrl;
+  const { backendUrl } = useContext(Context);
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
   const [donationList, setDonationList] = useState([]);
@@ -25,7 +25,7 @@ function MyPosts() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const currentUser = await fetch(`${backendUrl}users/${user.id}`);
+      const currentUser = await fetch(`${backendUrl}/users/${user.id}`);
       const currentUserValues = await currentUser.json();
       setDonationList(currentUserValues.donationPosts);
       setRequestList(currentUserValues.requestPosts);
