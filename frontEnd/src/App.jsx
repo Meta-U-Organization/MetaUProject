@@ -41,7 +41,7 @@ function App() {
         setUser(userRead);
       }
     };
-    if (user === null) {
+    if (user == null) {
       fetchLogIn();
     }
   }, [user]);
@@ -53,9 +53,11 @@ function App() {
       return <Navigate to="/login" />;
     }
   };
+  
   const updateUserNull = () => {
     setUser(null);
   };
+  
   return (
     //router functionality for when we navigate to pages
     <Context.Provider value={{ user, setUser, updateUserNull, backendUrl }}>
