@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 //main page layout for the page
 function LoginPage() {
   const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
   const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
+  const navigate = useNavigate();
 
   const loginFunc = async (event) => {
     event.preventDefault();
@@ -18,8 +20,12 @@ function LoginPage() {
     });
 
     const result = await response.json();
-    if (response.status !== 200) {
-      alert(result.message);
+    if (result.message === "Login successful!") {
+      navigate("/items");
+    } else if (result.message === "Username and password are required.") {
+      alert("Username and password are required.");
+    } else if (result.message === "Invalid Username") {
+      alert("Invalid Username");
     } else {
       window.location.href = mainPage;
     }

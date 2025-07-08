@@ -8,8 +8,7 @@ import { useContext } from "react";
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
-  const { userId, user } = useContext(Context);
-
+  const user = useContext(Context).user;
   const changeItemType = () => {
     if (isDonationList) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
@@ -34,7 +33,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={userId}
+                  userId={user.id}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
@@ -47,7 +46,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={userId}
+                  userId={user.id}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
