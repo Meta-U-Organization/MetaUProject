@@ -19,9 +19,6 @@ function SignUpPage() {
   return (
     <div>
       <header>
-        <nav>
-          <a href=""> Home</a>
-        </nav>
         <h1>Register</h1>
       </header>
       <main>
@@ -29,7 +26,6 @@ function SignUpPage() {
           id="signUpForm"
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <a href="">Sign in with Google</a>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>
