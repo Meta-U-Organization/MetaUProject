@@ -4,6 +4,13 @@ const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 
 
+const isAuthenticated = (req, res, next) => {
+    if (!req.session.userId) {
+        return res.status(401).json({ error: "You must be logged in to perform this action." });
+    }
+    next();
+};
+
 //get all posts
 router.get('/users/:userId/requests', async (req, res) => {
   const userId = parseInt(req.params.userId);
@@ -29,8 +36,11 @@ router.get('/users/:userId/requests/:postId', async (req, res) => {
 })
 
 //add in a post
-router.post('/users/:userId/requests', async (req, res) => {
+router.post('/users/:userId/requests', isAuthenticated, async (req, res) => {
   const userId = parseInt(req.params.userId);
+  if(req.session.userId !== userId){
+     return res.status(401).json({ message: "Invalid User" });
+  }
   const {title, description, photo, useState} = req.body;
   const newRequestPost = await prisma.requestPost.create({
     data: {
@@ -45,9 +55,12 @@ router.post('/users/:userId/requests', async (req, res) => {
 })
 
 //deletes post
-router.delete('/users/:userId/requests/:postId', async (req, res) => {
+router.delete('/users/:userId/requests/:postId', isAuthenticated, async (req, res) => {
   const userId = parseInt(req.params.userId);
   const postId = parseInt(req.params.postId);
+  if(req.session.userId !== userId){
+     return res.status(401).json({ message: "Invalid User" });
+  }
   const deletedpost = await prisma.requestPost.delete({
     where: { id: parseInt(postId),
       userId: parseInt(userId),
@@ -57,9 +70,12 @@ router.delete('/users/:userId/requests/:postId', async (req, res) => {
 })
 
 //updates post
-router.put('/users/:userId/requests/:postId', async (req, res) => {
+router.put('/users/:userId/requests/:postId', isAuthenticated, async (req, res) => {
   const userId = parseInt(req.params.userId);
   const postId = parseInt(req.params.postId);
+  if(req.session.userId !== userId){
+     return res.status(401).json({ message: "Invalid User" });
+  }
   const {title, description, photo, useState} = req.body;
   const updatedPost = await prisma.requestPost.update({
     where: { id: parseInt(postId),
