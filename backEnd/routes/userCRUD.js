@@ -9,7 +9,7 @@ router.post("/signup", async (req, res) => {
   const { username, password, email, name, phoneNumber, address} = req.body;
 
   if (!username || !password) {
-    return res.status(400).json({ error: "Username and password are required." });
+    return res.status(401).json({ message: "Username and password are required." });
   }
 
   const existingUser = await prisma.user.findUnique({
@@ -17,10 +17,17 @@ router.post("/signup", async (req, res) => {
   });
 
   if (existingUser) {
-      return res.status(400).json({ error: "Username already taken." });
+      return res.status(401).json({ message:  "Username already taken."});
   }
 
-  const bcrypt = require("bcrypt");
+  const existingEmail = await prisma.user.findUnique({
+    where: { email }
+  });
+
+  if (existingEmail) {
+      return res.status(401).json({ message:  "Email already in use."});
+  }
+  
   const passwordHash = await bcrypt.hash(password, 10);
 
   const newUser = await prisma.user.create({
@@ -33,8 +40,18 @@ router.post("/signup", async (req, res) => {
       address
     }
   });
-  res.json(newUser);
+  res.json({message:  "Sign Up Succesful!"});
 })
+
+router.post("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Failed to log out" });
+        }
+        res.clearCookie("connect.sid"); // Clear session cookie
+        res.json({ message: "Logged out successfully" });
+    });
+});
 
 router.get('/me', async (req, res) => {
   if (!req.session.userId) {
@@ -52,24 +69,28 @@ router.get('/me', async (req, res) => {
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    res.json({ message: "Username and password are required." });
+    return res.status(401).json({ message: "Username and password are required." });
   }
 
   const user = await prisma.user.findUnique({
-    where: { username }
+    where: { username },
+    include: {
+        donationPosts:true,
+        requestPosts:true,
+    }
   });
 
   if (!user) {
-    res.json({ message: "Invalid Username" });
+    return res.status(401).json({ message: "Invalid Username" });
   }
 
   const isValidPassword = await bcrypt.compare(password, user.passwordHash);
 
   if (!isValidPassword) {
-    res.json({ message: "Invalid username or password." });
+    return res.status(401).json({ message: "Invalid username or password." });
   }
   req.session.userId = user.id;
-  res.json({ message: "Login successful!" });
+  res.json({ message: "Login successful!", user });
 
 })
 

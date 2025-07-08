@@ -40,7 +40,7 @@ function Navigation() {
           navigate("/settings");
         }}
       >
-        settings
+        Settings
       </button>
     </nav>
   );

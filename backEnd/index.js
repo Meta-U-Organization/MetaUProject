@@ -27,19 +27,10 @@ app.use (session({
   saveUninitialized: false,
 }));
 
+
 app.use(userRoutes);
 app.use(requestPostRoutes);
 app.use(donationPostRoutes);
-
-app.use((err, req, res, next) => {
-  const { message, status = 500 } = err
-  console.log(message)
-  res.status(status).json({ message: '☠️ ' + message })
-})
-
-app.get('/', (req, res) => {
-  res.send('Welcome to my app!');
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)
