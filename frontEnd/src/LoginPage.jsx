@@ -34,9 +34,6 @@ function LoginPage() {
   return (
     <div>
       <header>
-        <nav>
-          <a href=""> Home</a>
-        </nav>
         <h1>Login</h1>
       </header>
       <main>
