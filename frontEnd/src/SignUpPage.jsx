@@ -1,14 +1,14 @@
+import { useContext } from "react";
 import "./App.css";
+import { Context } from "./App";
 //main page layout for the page
 function SignUpPage() {
-  const loginPage = `${import.meta.env.VITE_BASE_URL}login`;
-  const backendUrl = import.meta.env.VITE_BACKEND;
-
+  const { backendUrl } = useContext(Context);
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
-    const readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}signUp`, {
+    let readableData = Object.fromEntries(formData);
+    const response = await fetch(`${backendUrl}/signUp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
@@ -25,9 +25,6 @@ function SignUpPage() {
   return (
     <div>
       <header>
-        <nav>
-          <a href={loginPage}> Login</a>
-        </nav>
         <h1>Register</h1>
       </header>
       <main>

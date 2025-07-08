@@ -3,7 +3,6 @@ import "./App.css";
 import Navigation from "./components/nav";
 //main page layout for the page
 function MainPage() {
-  const loginPage = `${import.meta.env.VITE_BASE_URL}login`;
   return (
     <div>
       <header>

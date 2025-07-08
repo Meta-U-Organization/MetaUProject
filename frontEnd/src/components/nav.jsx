@@ -5,12 +5,12 @@ import { Context } from "../App";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
-  const backendUrl = import.meta.env.VITE_BACKEND;
-  const { setUser } = useContext(Context);
+  const { backendUrl, setUser } = useContext(Context);
+
 
   const logOut = async (event) => {
     event.preventDefault();
-    await fetch(`${backendUrl}logout`, {
+    await fetch(`${backendUrl}/logout`, {
       method: "POST",
       credentials: "include",
     });

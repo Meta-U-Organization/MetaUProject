@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
 import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
+import { Context } from "./App";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
   const [users, setUsers] = useState([]);
-  const backendUrl = import.meta.env.VITE_BACKEND;
+  const { backendUrl } = useContext(Context);
 
   const changeItemType = () => {
     if (isDonationItem) {
@@ -18,7 +19,7 @@ function DonationAndRequestPage() {
     setIsDonationItem(!isDonationItem);
   };
   useEffect(() => {
-    fetch(`${backendUrl}users`)
+    fetch(`${backendUrl}/users`)
       .then((response) => response.json())
       .then((users) => setUsers(users))
       .catch((error) => console.error("Error fetching posts:", error));
