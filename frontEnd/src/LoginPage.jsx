@@ -54,6 +54,13 @@ function LoginPage() {
           <button type="submit" onClick={loginFunc}>
             Submit
           </button>
+          <button
+            onClick={() => {
+              navigate("/signUp");
+            }}
+          >
+            Dont have an account?
+          </button>
         </form>
       </main>
       <footer>
