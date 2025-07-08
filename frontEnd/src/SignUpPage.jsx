@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import "./App.css";
+import { Context } from "./App";
 //main page layout for the page
 function SignUpPage() {
   const { backendUrl } = useContext(Context);
