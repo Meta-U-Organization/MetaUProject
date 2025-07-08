@@ -2,13 +2,13 @@ import { useState } from "react";
 import "./App.css";
 import Item from "./components/item";
 import Navigation from "./components/nav";
-import { useEffect } from "react";
+import { Context } from "./App";
+import { useContext } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
-  const [user, setUser] = useState({ donationPosts: [], requestPosts: [] });
-  const backendUrl = import.meta.env.VITE_BACKEND;
+  const { userId, user } = useContext(Context);
 
   const changeItemType = () => {
     if (isDonationList) {
@@ -18,13 +18,6 @@ function MyPosts() {
     }
     setIsDonationList(!isDonationList);
   };
-
-  useEffect(() => {
-    fetch(`${backendUrl}users/2`)
-      .then((response) => response.json())
-      .then((user) => setUser(user))
-      .catch((error) => console.error("Error fetching posts:", error));
-  }, [isDonationList, updatePosts]);
   return (
     <div>
       <header>
@@ -41,7 +34,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={"2"}
+                  userId={userId}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
@@ -54,7 +47,7 @@ function MyPosts() {
                 <Item
                   onPostChange={setUpdatePosts}
                   updatePosts={updatePosts}
-                  userId={"2"}
+                  userId={userId}
                   postType={isDonationList ? "donations" : "requests"}
                   isMyPost={true}
                   item={item}
