@@ -8,7 +8,9 @@ function LoginPage() {
   const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
-  const setUser = useContext(Context).setUser;
+
+  const { setUser } = useContext(Context);
+
 
   const loginFunc = async (event) => {
     event.preventDefault();
@@ -30,7 +32,7 @@ function LoginPage() {
     } else if (result.message === "Invalid Username") {
       alert("Invalid Username");
     } else {
-      alert("Invalid username or password.");
+      window.location.href = mainPage;
     }
   };
 

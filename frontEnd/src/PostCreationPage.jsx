@@ -12,6 +12,13 @@ function PostCreationPage() {
     const formData = new FormData(document.getElementById("newPostForm"));
     let readableData = Object.fromEntries(formData);
     formData.delete("type");
+
+    const logIn = await fetch(`${backendUrl}me`, {
+      credentials: "include",
+    });
+
+    const logInReadable = await logIn.json();
+
     if (readableData.type === "donation") {
       readableData = Object.fromEntries(formData);
       const response = await fetch(`${backendUrl}users/${user.id}/donations`, {
