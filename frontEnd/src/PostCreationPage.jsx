@@ -13,7 +13,7 @@ function PostCreationPage() {
     let readableData = Object.fromEntries(formData);
     formData.delete("type");
 
-    const logIn = await fetch(`${backendUrl}me`, {
+    const logIn = await fetch(`${backendUrl}/me`, {
       credentials: "include",
     });
 
@@ -23,6 +23,7 @@ function PostCreationPage() {
       readableData = Object.fromEntries(formData);
       const response = await fetch(`${backendUrl}/users/${user.id}/donations`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
       });
@@ -30,6 +31,7 @@ function PostCreationPage() {
       readableData = Object.fromEntries(formData);
       const response = await fetch(`${backendUrl}/users/${user.id}/requests`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(readableData),
       });
@@ -58,8 +60,8 @@ function PostCreationPage() {
           <input type="text" name="description" id="description"></input>
           <label htmlFor="">Photo</label>
           <input type="text" name="photo" id="photo"></input>
-          <label htmlFor="useState">Use State</label>
-          <select name="useState" id="useState">
+          <label htmlFor="itemState">Use State</label>
+          <select name="itemState" id="itemState">
             <option value="Used">Used</option>
             <option value="Used Like New">Used Like New</option>
             <option value="New">New</option>

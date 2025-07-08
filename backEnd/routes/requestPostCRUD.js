@@ -41,13 +41,13 @@ router.post('/users/:userId/requests', isAuthenticated, async (req, res) => {
   if(req.session.userId !== userId){
      return res.status(401).json({ message: "Invalid User" });
   }
-  const {title, description, photo, useState} = req.body;
+  const {title, description, photo, itemState} = req.body;
   const newRequestPost = await prisma.requestPost.create({
     data: {
       title,
       description,
       photo,
-      useState,
+      itemState,
       userId
     }
   });
@@ -76,7 +76,7 @@ router.put('/users/:userId/requests/:postId', isAuthenticated, async (req, res) 
   if(req.session.userId !== userId){
      return res.status(401).json({ message: "Invalid User" });
   }
-  const {title, description, photo, useState} = req.body;
+  const {title, description, photo, itemState} = req.body;
   const updatedPost = await prisma.requestPost.update({
     where: { id: parseInt(postId),
       userId: parseInt(userId),
@@ -85,7 +85,7 @@ router.put('/users/:userId/requests/:postId', isAuthenticated, async (req, res) 
       title,
       description,
       photo,
-      useState,
+      itemState,
       userId
     }
   });
