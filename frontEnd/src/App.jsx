@@ -23,8 +23,9 @@ function App() {
   const LOCAL_STORAGE_USER_KEY = "user";
   const [user, setUser] = useState(() => {
     const user = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
-    return user ? JSON.parse(user) : { donationPosts: [], requestPosts: [] };
+    return user ? JSON.parse(user) : null;
   });
+
   const backendUrl = import.meta.env.VITE_BACKEND;
 
   useEffect(() => {
@@ -36,23 +37,22 @@ function App() {
       if (logIn.status === 200) {
         const user = await fetch(`${backendUrl}users/${logInValues.id}`);
         const userRead = await user.json();
-        localStorage.setItem("user", JSON.stringify(userRead));
+        sessionStorage.setItem("user", JSON.stringify(userRead));
         setUser(userRead);
       }
     };
-    if (!user.id) {
+    if (user == null) {
       fetchLogIn();
     }
   }, [user]);
 
   const PrivateRoutes = ({ currentUser }) => {
-    if (currentUser.id) {
+    if (currentUser?.id) {
       return <Outlet />;
     } else {
       return <Navigate to="/login" />;
     }
   };
-
   return (
     //router functionality for when we navigate to pages
     <Context.Provider value={{ user, setUser }}>
