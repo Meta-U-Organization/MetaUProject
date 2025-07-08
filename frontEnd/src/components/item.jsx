@@ -32,13 +32,14 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
         `${backendUrl}/users/${userId}/${postType}/${item.id}`,
         {
           method: "PUT",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             id: item.id,
             title: title,
             description: description,
             photo: "",
-            useState: itemState,
+            itemState: itemState,
             userId: userId,
           }),
         }
