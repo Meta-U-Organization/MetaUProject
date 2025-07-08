@@ -6,8 +6,7 @@ import { Context } from "../App";
 function Navigation() {
   const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND;
-  const user = useContext(Context).user;
-  const setUserNull = useContext(Context).updateUserNull;
+  const { setUser } = useContext(Context);
 
   const logOut = async (event) => {
     event.preventDefault();
@@ -16,7 +15,7 @@ function Navigation() {
       credentials: "include",
     });
     sessionStorage.clear();
-    setUserNull();
+    setUser(null);
     navigate("/login");
   };
 

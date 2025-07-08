@@ -53,12 +53,9 @@ function App() {
       return <Navigate to="/login" />;
     }
   };
-  const updateUserNull = () => {
-    setUser(null);
-  };
   return (
     //router functionality for when we navigate to pages
-    <Context.Provider value={{ user, setUser, updateUserNull, backendUrl }}>
+    <Context.Provider value={{ user, setUser, backendUrl }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
