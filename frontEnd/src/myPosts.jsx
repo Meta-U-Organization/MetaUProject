@@ -4,11 +4,16 @@ import Item from "./components/item";
 import Navigation from "./components/nav";
 import { Context } from "./App";
 import { useContext } from "react";
+import { useEffect } from "react";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
+  const backendUrl = useContext(Context).backendUrl;
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
-  const user = useContext(Context).user;
+  const [donationList, setDonationList] = useState([]);
+  const [requestList, setRequestList] = useState([]);
+  const { user, setUser } = useContext(Context);
+
   const changeItemType = () => {
     if (isDonationList) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
@@ -17,6 +22,17 @@ function MyPosts() {
     }
     setIsDonationList(!isDonationList);
   };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const currentUser = await fetch(`${backendUrl}users/${user.id}`);
+      const currentUserValues = await currentUser.json();
+      setDonationList(currentUserValues.donationPosts);
+      setRequestList(currentUserValues.requestPosts);
+    };
+    fetchPosts();
+  }, [updatePosts, isDonationList]);
+
   return (
     <div>
       <header>
@@ -28,7 +44,7 @@ function MyPosts() {
       </header>
       <main>
         {isDonationList
-          ? user.donationPosts.map((item) => {
+          ? donationList.map((item) => {
               return (
                 <Item
                   onPostChange={setUpdatePosts}
@@ -41,7 +57,7 @@ function MyPosts() {
                 />
               );
             })
-          : user.requestPosts.map((item) => {
+          : requestList.map((item) => {
               return (
                 <Item
                   onPostChange={setUpdatePosts}

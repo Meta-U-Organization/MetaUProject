@@ -20,9 +20,9 @@ import SignUpPage from "./SignUpPage.jsx";
 export const Context = createContext();
 
 function App() {
-  const LOCAL_STORAGE_USER_KEY = "user";
+  const SESSION_STORAGE_USER_KEY = "user";
   const [user, setUser] = useState(() => {
-    const user = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
+    const user = sessionStorage.getItem(SESSION_STORAGE_USER_KEY);
     return user ? JSON.parse(user) : null;
   });
 
@@ -55,7 +55,7 @@ function App() {
   };
   return (
     //router functionality for when we navigate to pages
-    <Context.Provider value={{ user, setUser }}>
+    <Context.Provider value={{ user, setUser, backendUrl }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
