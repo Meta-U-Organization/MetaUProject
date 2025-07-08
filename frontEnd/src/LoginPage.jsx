@@ -4,8 +4,6 @@ import { useContext } from "react";
 import { Context } from "./App";
 //main page layout for the page
 function LoginPage() {
-  const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
-  const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
   const setUser = useContext(Context).setUser;
@@ -38,13 +36,13 @@ function LoginPage() {
     <div>
       <header>
         <nav>
-          <a href={mainPage}> Home</a>
+          <a href=""> Home</a>
         </nav>
         <h1>Login</h1>
       </header>
       <main>
         <form id="login" style={{ display: "flex", flexDirection: "column" }}>
-          <a href={itemsPage}>Sign in with Google</a>
+          <a href="">Sign in with Google</a>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>

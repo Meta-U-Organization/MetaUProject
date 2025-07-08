@@ -1,8 +1,6 @@
 import "./App.css";
 //main page layout for the page
 function SignUpPage() {
-  const itemsPage = `${import.meta.env.VITE_BASE_URL}items`;
-  const mainPage = `${import.meta.env.VITE_BASE_URL}`;
   const backendUrl = import.meta.env.VITE_BACKEND;
 
   const signUpFunc = async (event) => {
@@ -20,7 +18,7 @@ function SignUpPage() {
     <div>
       <header>
         <nav>
-          <a href={mainPage}> Home</a>
+          <a href=""> Home</a>
         </nav>
         <h1>Register</h1>
       </header>
@@ -29,7 +27,7 @@ function SignUpPage() {
           id="signUpForm"
           style={{ display: "flex", flexDirection: "column" }}
         >
-          <a href={itemsPage}>Sign in with Google</a>
+          <a href="">Sign in with Google</a>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>
