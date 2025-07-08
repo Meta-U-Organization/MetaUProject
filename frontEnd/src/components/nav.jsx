@@ -5,9 +5,8 @@ import { Context } from "../App";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
-  const { backendUrl } = useContext(Context);
-  const user = useContext(Context).user;
-  const setUserNull = useContext(Context).updateUserNull;
+  const { backendUrl, setUser } = useContext(Context);
+
 
   const logOut = async (event) => {
     event.preventDefault();
@@ -16,7 +15,7 @@ function Navigation() {
       credentials: "include",
     });
     sessionStorage.clear();
-    setUserNull();
+    setUser(null);
     navigate("/login");
   };
 

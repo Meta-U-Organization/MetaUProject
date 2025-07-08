@@ -12,7 +12,7 @@ function MyPosts() {
   const [updatePosts, setUpdatePosts] = useState(true);
   const [donationList, setDonationList] = useState([]);
   const [requestList, setRequestList] = useState([]);
-  const user = useContext(Context).user;
+  const { user, setUser } = useContext(Context);
 
   const changeItemType = () => {
     if (isDonationList) {

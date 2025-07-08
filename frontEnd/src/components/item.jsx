@@ -20,12 +20,12 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
     onPostChange(!updatePosts);
   };
   /*function to edit an item, will grab certain values and send a put to the server */
-  const editItem = async (event) => {
+  const postItemEdits = async (event) => {
     event.preventDefault();
     const parentItem = itemRef.current;
     const description = parentItem.querySelector("#description").value;
     const title = parentItem.querySelector("#title").value;
-    const useState = parentItem.querySelector("#useStates").value;
+    const itemState = parentItem.querySelector("#useStates").value;
 
     if (title !== "" && description !== "") {
       const response = await fetch(
@@ -38,7 +38,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
             title: title,
             description: description,
             photo: "",
-            useState: useState,
+            useState: itemState,
             userId: userId,
           }),
         }
@@ -62,20 +62,15 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
       <div style={{ width: "44%", marginLeft: "6%" }}>
         {isMyPost ? (
           <div>
-            <label htmlFor="title">Title: </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              placeholder={item.title}
-            ></input>
-          </div>
-        ) : (
-          <h2>{item.title}</h2>
-        )}
-
-        {isMyPost ? (
-          <div>
+            <div>
+              <label htmlFor="title">Title: </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                placeholder={item.title}
+              ></input>
+            </div>
             <label htmlFor="description">Description: </label>
             <input
               name="description"
@@ -83,24 +78,24 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
               type="text"
               placeholder={item.description}
             ></input>
-          </div>
-        ) : (
-          <p>{item.description}</p>
-        )}
-        <p>
-          Use State:
-          {isMyPost ? (
+            <br></br>
             <select name="useState" id="useStates" defaultValue={item.useState}>
               <option value="Used Like New">Used Like New</option>
               <option value="Used">Used</option>
               <option value="New">New</option>
             </select>
-          ) : (
-            ` ${item.useState}`
-          )}
-        </p>
-        {isMyPost && <button onClick={editItem}>Submit Edits</button>}
-        {isMyPost && <button onClick={deleteItem}>Delete</button>}
+            <div>
+              <button onClick={postItemEdits}>Submit Edits</button>
+              <button onClick={deleteItem}>Delete</button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+            <p>Use State: {item.useState}</p>
+          </div>
+        )}
       </div>
       <div style={{ width: "44%" }}>
         <img

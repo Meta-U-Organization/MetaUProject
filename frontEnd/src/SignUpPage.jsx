@@ -4,7 +4,6 @@ import { Context } from "./App";
 //main page layout for the page
 function SignUpPage() {
   const { backendUrl } = useContext(Context);
-
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
@@ -14,6 +13,13 @@ function SignUpPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(readableData),
     });
+
+    const result = await response.json();
+    if (response.status !== 200) {
+      alert(result.message);
+    } else {
+      alert("Registration Complete, proceed to login page");
+    }
   };
 
   return (

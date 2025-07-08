@@ -27,7 +27,7 @@ function LoginPage() {
     } else if (result.message === "Invalid Username") {
       alert("Invalid Username");
     } else {
-      alert("Invalid username or password.");
+      window.location.href = mainPage;
     }
   };
 
