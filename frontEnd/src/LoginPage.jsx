@@ -38,7 +38,6 @@ function LoginPage() {
       </header>
       <main>
         <form id="login" style={{ display: "flex", flexDirection: "column" }}>
-          <a href="">Sign in with Google</a>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>
