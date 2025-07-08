@@ -1,8 +1,8 @@
 -- CreateTable
 CREATE TABLE "user" (
     "id" SERIAL NOT NULL,
-    "userName" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE "donationPost" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
-    "useState" TEXT NOT NULL,
+    "itemState" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "donationPost_pkey" PRIMARY KEY ("id")
@@ -29,14 +29,14 @@ CREATE TABLE "requestPost" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
-    "useState" INTEGER NOT NULL,
+    "itemState" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "requestPost_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "user_userName_key" ON "user"("userName");
+CREATE UNIQUE INDEX "user_username_key" ON "user"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
