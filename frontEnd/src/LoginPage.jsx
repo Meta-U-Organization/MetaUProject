@@ -16,15 +16,12 @@ function LoginPage() {
       body: JSON.stringify(readableData),
       credentials: "include",
     });
+
     const result = await response.json();
-    if (result.message === "Login successful!") {
-      window.location.href = mainPage;
-    } else if (result.message === "Username and password are required.") {
-      alert("Username and password are required.");
-    } else if (result.message === "Invalid Username") {
-      alert("Invalid Username");
+    if (response.status !== 200) {
+      alert(result.message);
     } else {
-      alert("Invalid username or password.");
+      window.location.href = mainPage;
     }
   };
 
