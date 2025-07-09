@@ -26,6 +26,7 @@ export default function useCCFetch () {
             setErrorMsg(null)
             setData(newData)
         }
+        setLoading(false);
     }
     return({loading, update, fetchData, data, errorType, errorMsg});
 }
