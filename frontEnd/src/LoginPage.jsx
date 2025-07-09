@@ -1,34 +1,38 @@
 import { useNavigate } from "react-router-dom";
 import "./App.css";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "./App";
+import useCCFetch from "./utils/utils";
 //main page layout for the page
 function LoginPage() {
   const navigate = useNavigate();
   const { setUser, backendUrl } = useContext(Context);
+  const [trig, setTrig] = useState(1);
+  let run = 1;
+  const { fetchData, data } = useCCFetch();
+  useEffect(() => {
+    run++;
+    if (trig === 1 || data == null) {
+      return;
+    } else if (data.message === "Login successful!") {
+      setUser(data.user);
+      navigate("/");
+    } else if (data.message === "Username and password are required.") {
+      alert("Username and password are required.");
+    } else if (data.message === "Invalid Username") {
+      alert("Invalid Username");
+    } else {
+      window.location.href = mainPage;
+    }
+  }),
+    [trig];
 
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     const readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(readableData),
-      credentials: "include",
-    });
-
-    const result = await response.json();
-    if (result.message === "Login successful!") {
-      setUser(result.user);
-      navigate("/");
-    } else if (result.message === "Username and password are required.") {
-      alert("Username and password are required.");
-    } else if (result.message === "Invalid Username") {
-      alert("Invalid Username");
-    } else {
-      window.location.href = mainPage;
-    }
+    fetchData(`${backendUrl}/login`, "POST", JSON.stringify(readableData));
+    setTrig(trig + 1);
   };
 
   return (
