@@ -1,29 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { Context } from "./App";
-import useCCFetch from "./utils/useCCFetch";
+import useSignup from "./utils/useSignup";
+import { useNavigate } from "react-router-dom";
 //main page layout for the page
 function SignUpPage() {
-  const { backendUrl } = useContext(Context);
-  const [loaded, setLoaded] = useState(false);
-  const { fetchData, errorType, errorMsg, update } = useCCFetch();
-
-  useEffect(() => {
-    if (!loaded) {
-      setLoaded(true);
-      return;
-    } else if (errorType) {
-      alert(errorMsg);
-    } else {
-      alert("Registration Complete, proceed to login page");
-    }
-  }, [update]);
-
+  const { fetchSignup, errorType, errorMsg, confirmMessage } = useSignup();
+  const navigate = useNavigate();
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
-    fetchData(`${backendUrl}/signUp`, "POST", JSON.stringify(readableData));
+    await fetchSignup(JSON.stringify(readableData));
+    console.log(errorType);
+  };
+
+  const goToSignIn = (event) => {
+    event.preventDefault();
+    navigate("/login");
   };
 
   return (
@@ -36,6 +30,13 @@ function SignUpPage() {
           id="signUpForm"
           style={{ display: "flex", flexDirection: "column" }}
         >
+          {errorMsg !== null && <h3>{errorMsg}</h3>}
+          {confirmMessage != null && (
+            <div>
+              <h3>{confirmMessage}</h3>
+              <button onClick={goToSignIn}>Please Proceed to Login</button>
+            </div>
+          )}
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>
