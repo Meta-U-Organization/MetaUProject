@@ -5,6 +5,7 @@ import Navigation from "./components/nav";
 import { Context } from "./App";
 import { useContext } from "react";
 import { useEffect } from "react";
+import useCCFetch from "./utils/utils";
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
   const { backendUrl } = useContext(Context);
@@ -13,6 +14,7 @@ function MyPosts() {
   const [donationList, setDonationList] = useState([]);
   const [requestList, setRequestList] = useState([]);
   const { user, setUser } = useContext(Context);
+  const { loading, fetchData, data, errorMsg } = useCCFetch();
 
   const changeItemType = () => {
     if (isDonationList) {
@@ -24,11 +26,15 @@ function MyPosts() {
   };
 
   useEffect(() => {
+    if (data !== null) {
+      setDonationList(data.donationPosts);
+      setRequestList(data.requestPosts);
+    }
+  }, [data]);
+
+  useEffect(() => {
     const fetchPosts = async () => {
-      const currentUser = await fetch(`${backendUrl}/users/${user.id}`);
-      const currentUserValues = await currentUser.json();
-      setDonationList(currentUserValues.donationPosts);
-      setRequestList(currentUserValues.requestPosts);
+      await fetchData(`${backendUrl}/users/${user.id}`, "GET");
     };
     fetchPosts();
   }, [updatePosts, isDonationList]);
