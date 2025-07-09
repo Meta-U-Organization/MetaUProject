@@ -6,7 +6,7 @@ import useCCFetch from "./utils/utils";
 //main page layout for the page
 function PostCreationPage() {
   const { backendUrl, user } = useContext(Context);
-  const { loading, fetchData, data, errorMsg } = useCCFetch();
+  const { loading, fetchData } = useCCFetch();
   const makePost = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("newPostForm"));

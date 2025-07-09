@@ -8,10 +8,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const { setUser, backendUrl } = useContext(Context);
   const [trig, setTrig] = useState(1);
-  let run = 1;
   const { fetchData, data } = useCCFetch();
   useEffect(() => {
-    run++;
     if (trig === 1 || data == null) {
       return;
     } else if (data.message === "Login successful!") {

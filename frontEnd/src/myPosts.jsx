@@ -13,8 +13,8 @@ function MyPosts() {
   const [updatePosts, setUpdatePosts] = useState(true);
   const [donationList, setDonationList] = useState([]);
   const [requestList, setRequestList] = useState([]);
-  const { user, setUser } = useContext(Context);
-  const { loading, fetchData, data, errorMsg } = useCCFetch();
+  const { user } = useContext(Context);
+  const { fetchData, data } = useCCFetch();
 
   const changeItemType = () => {
     if (isDonationList) {

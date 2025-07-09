@@ -4,11 +4,13 @@ import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
 import { Context } from "./App";
+import useCCFetch from "./utils/utils";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
   const [users, setUsers] = useState([]);
   const { backendUrl } = useContext(Context);
+  const { fetchData, data } = useCCFetch();
 
   const changeItemType = () => {
     if (isDonationItem) {
@@ -18,11 +20,16 @@ function DonationAndRequestPage() {
     }
     setIsDonationItem(!isDonationItem);
   };
+
   useEffect(() => {
-    fetch(`${backendUrl}/users`)
-      .then((response) => response.json())
-      .then((users) => setUsers(users))
-      .catch((error) => console.error("Error fetching posts:", error));
+    if (data != null) {
+      console.log(data);
+      setUsers(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    fetchData(`${backendUrl}/users`, "GET");
   }, [isDonationItem]);
   return (
     <div>
