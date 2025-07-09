@@ -1,24 +1,23 @@
 //Item framework
 import React, { useContext, useRef } from "react";
 import { Context } from "../App";
+import useCCFetch from "../utils/utils";
 function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
-  //consts needed through this element
   const itemRef = useRef(null);
   const { backendUrl } = useContext(Context);
+  const { loading, fetchData, data, errorMsg } = useCCFetch();
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
-    const response = await fetch(
+    fetchData(
       `${backendUrl}/users/${userId}/${postType}/${item.id}`,
-      {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      }
+      "DELETE",
+      null
     );
     onPostChange(!updatePosts);
   };
+
   /*function to edit an item, will grab certain values and send a put to the server */
   const postItemEdits = async (event) => {
     event.preventDefault();
