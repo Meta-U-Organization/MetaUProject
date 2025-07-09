@@ -10,7 +10,7 @@ function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
   const [users, setUsers] = useState([]);
   const { backendUrl } = useContext(Context);
-  const { fetchData, data } = useCCFetch();
+  const { fetchData, data, loading } = useCCFetch();
 
   const changeItemType = () => {
     if (isDonationItem) {
@@ -40,17 +40,21 @@ function DonationAndRequestPage() {
         </button>
       </header>
       <main>
-        {users.map((user) => {
-          if (isDonationItem) {
-            return user.donationPosts.map((item) => {
-              return <Item isMyPost={false} item={item} key={item.id} />;
-            });
-          } else {
-            return user.requestPosts.map((item) => {
-              return <Item isMyPost={false} item={item} key={item.id} />;
-            });
-          }
-        })}
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : (
+          users.map((user) => {
+            if (isDonationItem) {
+              return user.donationPosts.map((item) => {
+                return <Item isMyPost={false} item={item} key={item.id} />;
+              });
+            } else {
+              return user.requestPosts.map((item) => {
+                return <Item isMyPost={false} item={item} key={item.id} />;
+              });
+            }
+          })
+        )}
       </main>
       <footer>
         Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
