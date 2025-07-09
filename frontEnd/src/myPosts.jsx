@@ -5,16 +5,14 @@ import Navigation from "./components/nav";
 import { Context } from "./App";
 import { useContext } from "react";
 import { useEffect } from "react";
-import useCCFetch from "./utils/utils";
+import useMyPosts from "./utils/useMyPosts.js";
+
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
-  const { backendUrl } = useContext(Context);
+  const { user } = useContext(Context);
+  const { fetchMyPosts, donations, requests, loading } = useMyPosts(user.id);
   const [isDonationList, setIsDonationList] = useState(true);
   const [updatePosts, setUpdatePosts] = useState(true);
-  const [donationList, setDonationList] = useState([]);
-  const [requestList, setRequestList] = useState([]);
-  const { user } = useContext(Context);
-  const { fetchData, data, update, loading } = useCCFetch();
 
   const changeItemType = () => {
     if (isDonationList) {
@@ -26,15 +24,8 @@ function MyPosts() {
   };
 
   useEffect(() => {
-    if (data !== null) {
-      setDonationList(data.donationPosts);
-      setRequestList(data.requestPosts);
-    }
-  }, [update, updatePosts]);
-
-  useEffect(() => {
-    fetchData(`${backendUrl}/users/${user.id}`, "GET");
-  }, [updatePosts, isDonationList]);
+    fetchMyPosts();
+  }, []);
 
   return (
     <div>
@@ -49,11 +40,13 @@ function MyPosts() {
         {loading ? (
           <h1>Loading...</h1>
         ) : isDonationList ? (
-          donationList.map((item) => {
+          donations?.map((item) => {
             return (
               <Item
-                onPostChange={setUpdatePosts}
-                updatePosts={updatePosts}
+                onPostChange={() => {
+                  console.log("triggered");
+                  fetchMyPosts();
+                }}
                 userId={user.id}
                 postType={isDonationList ? "donations" : "requests"}
                 isMyPost={true}
@@ -63,11 +56,12 @@ function MyPosts() {
             );
           })
         ) : (
-          requestList.map((item) => {
+          requests?.map((item) => {
             return (
               <Item
-                onPostChange={setUpdatePosts}
-                updatePosts={updatePosts}
+                onPostChange={() => {
+                  fetchMyPosts();
+                }}
                 userId={user.id}
                 postType={isDonationList ? "donations" : "requests"}
                 isMyPost={true}

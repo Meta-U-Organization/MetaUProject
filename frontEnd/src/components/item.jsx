@@ -1,8 +1,9 @@
 //Item framework
 import React, { useContext, useRef } from "react";
 import { Context } from "../App";
-import useCCFetch from "../utils/utils";
-function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
+import useCCFetch from "../utils/useCCFetch";
+
+function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
   const { backendUrl } = useContext(Context);
   const { fetchData } = useCCFetch();
@@ -10,12 +11,12 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
-    fetchData(
+    await fetchData(
       `${backendUrl}/users/${userId}/${postType}/${item.id}`,
       "DELETE",
       null
     );
-    onPostChange(!updatePosts);
+    onPostChange();
   };
 
   /*function to edit an item, will grab certain values and send a put to the server */
@@ -87,9 +88,12 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
           </div>
         ) : (
           <div>
+            {postType === "donations" && (
+              <button onClick={sendRequestForDonation}>Request Item</button>
+            )}
             <h2>{item.title}</h2>
             <p>{item.description}</p>
-            <p>Use State: {item.useState}</p>
+            <p>Use State: {item.itemState}</p>
           </div>
         )}
       </div>
