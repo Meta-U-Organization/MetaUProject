@@ -2,39 +2,30 @@ import { useContext } from "react";
 import "./App.css";
 import Navigation from "./components/nav";
 import { Context } from "./App";
+import useCCFetch from "./utils/utils";
 //main page layout for the page
 function PostCreationPage() {
-  const { backendUrl } = useContext(Context);
-  const user = useContext(Context).user;
-
+  const { backendUrl, user } = useContext(Context);
+  const { loading, fetchData, data, errorMsg } = useCCFetch();
   const makePost = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("newPostForm"));
     let readableData = Object.fromEntries(formData);
     formData.delete("type");
-
-    const logIn = await fetch(`${backendUrl}/me`, {
-      credentials: "include",
-    });
-
-    const logInReadable = await logIn.json();
-
     if (readableData.type === "donation") {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}/users/${user.id}/donations`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readableData),
-      });
+      fetchData(
+        `${backendUrl}/users/${user.id}/donations`,
+        "POST",
+        JSON.stringify(readableData)
+      );
     } else {
       readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}/users/${user.id}/requests`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readableData),
-      });
+      fetchData(
+        `${backendUrl}/users/${user.id}/requests`,
+        "POST",
+        JSON.stringify(readableData)
+      );
     }
   };
 
@@ -67,7 +58,7 @@ function PostCreationPage() {
             <option value="New">New</option>
           </select>
           <button onClick={makePost} type="submit">
-            Submit
+            {loading ? "Loading" : "Submit"}
           </button>
         </form>
       </main>
