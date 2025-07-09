@@ -27,21 +27,17 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
     const itemState = parentItem.querySelector("#useStates").value;
 
     if (title !== "" && description !== "") {
-      const response = await fetch(
+      fetchData(
         `${backendUrl}/users/${userId}/${postType}/${item.id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: item.id,
-            title: title,
-            description: description,
-            photo: "",
-            itemState: itemState,
-            userId: userId,
-          }),
-        }
+        "PUT",
+        JSON.stringify({
+          id: item.id,
+          title: title,
+          description: description,
+          photo: "",
+          itemState: itemState,
+          userId: userId,
+        })
       );
       parentItem.querySelector("#title").placeholder =
         parentItem.querySelector("#title").value;
