@@ -5,25 +5,25 @@ import useCCFetch from "./utils/utils";
 //main page layout for the page
 function SignUpPage() {
   const { backendUrl } = useContext(Context);
-  const [trig, setTrig] = useState(1);
-  const { fetchData, errorType, errorMsg } = useCCFetch();
+  const [loaded, setLoaded] = useState(false);
+  const { fetchData, errorType, errorMsg, update } = useCCFetch();
 
   useEffect(() => {
-    if (trig === 1) {
+    if (!loaded) {
+      setLoaded(true);
       return;
     } else if (errorType) {
       alert(errorMsg);
     } else {
       alert("Registration Complete, proceed to login page");
     }
-  }, [trig]);
+  }, [update]);
 
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
     fetchData(`${backendUrl}/signUp`, "POST", JSON.stringify(readableData));
-    setTrig(trig + 1);
   };
 
   return (
