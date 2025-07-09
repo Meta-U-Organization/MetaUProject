@@ -4,13 +4,12 @@ import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
 import { Context } from "./App";
-import useCCFetch from "./utils/utils";
+import useCCFetch from "./utils/useCCFetch";
+import useAllPosts from "./utils/useAllPosts";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
-  const [users, setUsers] = useState([]);
-  const { backendUrl } = useContext(Context);
-  const { fetchData, data, loading } = useCCFetch();
+  const { fetchAllPosts, users, loading } = useAllPosts();
 
   const changeItemType = () => {
     if (isDonationItem) {
@@ -22,14 +21,9 @@ function DonationAndRequestPage() {
   };
 
   useEffect(() => {
-    if (data != null) {
-      setUsers(data);
-    }
-  }, [data]);
+    fetchAllPosts();
+  }, []);
 
-  useEffect(() => {
-    fetchData(`${backendUrl}/users`, "GET");
-  }, [isDonationItem]);
   return (
     <div>
       <header>
@@ -43,14 +37,28 @@ function DonationAndRequestPage() {
         {loading ? (
           <h1>Loading...</h1>
         ) : (
-          users.map((user) => {
+          users?.map((user) => {
             if (isDonationItem) {
               return user.donationPosts.map((item) => {
-                return <Item isMyPost={false} item={item} key={item.id} />;
+                return (
+                  <Item
+                    isMyPost={false}
+                    postType={"donations"}
+                    item={item}
+                    key={item.id}
+                  />
+                );
               });
             } else {
               return user.requestPosts.map((item) => {
-                return <Item isMyPost={false} item={item} key={item.id} />;
+                return (
+                  <Item
+                    isMyPost={false}
+                    postType={"requests"}
+                    item={item}
+                    key={item.id}
+                  />
+                );
               });
             }
           })
