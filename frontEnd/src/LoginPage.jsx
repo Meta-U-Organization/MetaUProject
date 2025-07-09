@@ -7,30 +7,26 @@ import useCCFetch from "./utils/utils";
 function LoginPage() {
   const navigate = useNavigate();
   const { setUser, backendUrl } = useContext(Context);
-  const [trig, setTrig] = useState(1);
-  const { fetchData, data } = useCCFetch();
+  const [loaded, setLoaded] = useState(false);
+  const { fetchData, data, update, errorMsg } = useCCFetch();
   useEffect(() => {
-    if (trig === 1 || data == null) {
+    if (!loaded || (data == null && errorMsg == null)) {
+      setLoaded(true);
       return;
-    } else if (data.message === "Login successful!") {
+    } else if (data?.message === "Login successful!") {
       setUser(data.user);
       navigate("/");
-    } else if (data.message === "Username and password are required.") {
+    } else if (errorMsg) {
       alert("Username and password are required.");
-    } else if (data.message === "Invalid Username") {
-      alert("Invalid Username");
-    } else {
-      window.location.href = mainPage;
     }
   }),
-    [trig];
+    [update];
 
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     const readableData = Object.fromEntries(formData);
     fetchData(`${backendUrl}/login`, "POST", JSON.stringify(readableData));
-    setTrig(trig + 1);
   };
 
   return (
