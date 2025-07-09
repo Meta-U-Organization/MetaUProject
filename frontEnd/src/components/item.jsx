@@ -88,9 +88,6 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
           </div>
         ) : (
           <div>
-            {postType === "donations" && (
-              <button onClick={sendRequestForDonation}>Request Item</button>
-            )}
             <h2>{item.title}</h2>
             <p>{item.description}</p>
             <p>Use State: {item.itemState}</p>
