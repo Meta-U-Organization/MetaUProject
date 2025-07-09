@@ -5,7 +5,7 @@ import useCCFetch from "../utils/utils";
 function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
   const itemRef = useRef(null);
   const { backendUrl } = useContext(Context);
-  const { loading, fetchData, data, errorMsg } = useCCFetch();
+  const { fetchData } = useCCFetch();
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {

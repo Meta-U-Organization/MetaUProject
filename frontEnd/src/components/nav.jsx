@@ -2,18 +2,16 @@ import { useNavigate } from "react-router-dom";
 import "../App.css";
 import { useContext } from "react";
 import { Context } from "../App";
+import useCCFetch from "../utils/utils";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
   const { backendUrl, setUser } = useContext(Context);
-
+  const { fetchData } = useCCFetch();
 
   const logOut = async (event) => {
     event.preventDefault();
-    await fetch(`${backendUrl}/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
+    fetchData(`${backendUrl}/logout`, "POST", null);
     sessionStorage.clear();
     setUser(null);
     navigate("/login");
