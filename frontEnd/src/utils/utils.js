@@ -16,16 +16,15 @@ export default function useCCFetch () {
         });
         const newData = await backendCall.json();
         if(backendCall.status!==200){
-            setUpdate(!update);
             setErrorType(backendCall.status)
             setErrorMsg(newData.message)
             setData(null)
         }else {
-            setUpdate(!update);
             setErrorType(null)
             setErrorMsg(null)
             setData(newData)
         }
+        setUpdate(!update);
         setLoading(false);
     }
     return({loading, update, fetchData, data, errorType, errorMsg});

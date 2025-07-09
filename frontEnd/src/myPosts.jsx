@@ -14,7 +14,7 @@ function MyPosts() {
   const [donationList, setDonationList] = useState([]);
   const [requestList, setRequestList] = useState([]);
   const { user } = useContext(Context);
-  const { fetchData, data } = useCCFetch();
+  const { fetchData, data, update } = useCCFetch();
 
   const changeItemType = () => {
     if (isDonationList) {
@@ -30,13 +30,10 @@ function MyPosts() {
       setDonationList(data.donationPosts);
       setRequestList(data.requestPosts);
     }
-  }, [data]);
+  }, [update, updatePosts]);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      await fetchData(`${backendUrl}/users/${user.id}`, "GET");
-    };
-    fetchPosts();
+    fetchData(`${backendUrl}/users/${user.id}`, "GET");
   }, [updatePosts, isDonationList]);
 
   return (

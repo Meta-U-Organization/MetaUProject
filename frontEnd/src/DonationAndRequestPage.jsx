@@ -23,7 +23,6 @@ function DonationAndRequestPage() {
 
   useEffect(() => {
     if (data != null) {
-      console.log(data);
       setUsers(data);
     }
   }, [data]);
