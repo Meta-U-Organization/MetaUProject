@@ -3,8 +3,9 @@ import { useState } from "react";
 export default function useCCFetch () {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
+    const[errorType, setErrorType] = useState(null);
     const[errorMsg, setErrorMsg] = useState(null);
-    const sampleData = {
+    const defaultData = {
         title: "",
         description: "",
         photo: "",
@@ -17,14 +18,18 @@ export default function useCCFetch () {
             credentials: "include",
             method: method,
             headers: { "Content-Type": "application/json" },
-            body: body==null ?  JSON.stringify(sampleData) : body,
+            body: body==null ?  JSON.stringify(defaultData) : body,
         });
+        const newData = await backendCall.json();
         if(backendCall.status!==200){
-            setErrorMsg(backendCall.status)
+            setErrorType(backendCall.status)
+            setErrorMsg(newData.message)
+            setData(null)
         }else {
-            setData(await backendCall.json())
+            setErrorType(null)
+            setErrorMsg(null)
+            setData(newData)
         }
-        setLoading(false);
     }
-    return({loading, fetchData, data, errorMsg});
+    return({loading, fetchData, data, errorType, errorMsg});
 }

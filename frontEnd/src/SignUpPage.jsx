@@ -1,25 +1,29 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { Context } from "./App";
+import useCCFetch from "./utils/utils";
 //main page layout for the page
 function SignUpPage() {
   const { backendUrl } = useContext(Context);
+  const [trig, setTrig] = useState(1);
+  const { fetchData, errorType, errorMsg } = useCCFetch();
+
+  useEffect(() => {
+    if (trig === 1) {
+      return;
+    } else if (errorType) {
+      alert(errorMsg);
+    } else {
+      alert("Registration Complete, proceed to login page");
+    }
+  }, [trig]);
+
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}/signUp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(readableData),
-    });
-
-    const result = await response.json();
-    if (response.status !== 200) {
-      alert(result.message);
-    } else {
-      alert("Registration Complete, proceed to login page");
-    }
+    fetchData(`${backendUrl}/signUp`, "POST", JSON.stringify(readableData));
+    setTrig(trig + 1);
   };
 
   return (
