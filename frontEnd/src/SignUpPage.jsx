@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import "./App.css";
 import { Context } from "./App";
-import useCCFetch from "./utils/utils";
+import useCCFetch from "./utils/useCCFetch";
 //main page layout for the page
 function SignUpPage() {
   const { backendUrl } = useContext(Context);

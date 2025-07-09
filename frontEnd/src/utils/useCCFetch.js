@@ -14,6 +14,7 @@ export default function useCCFetch () {
             headers: { "Content-Type": "application/json" },
             ...(body!==null ? {body: body}: {})
         });
+        
         const newData = await backendCall.json();
         if(backendCall.status!==200){
             setErrorType(backendCall.status)
@@ -29,3 +30,5 @@ export default function useCCFetch () {
     }
     return({loading, update, fetchData, data, errorType, errorMsg});
 }
+
+

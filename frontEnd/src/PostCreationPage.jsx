@@ -2,7 +2,7 @@ import { useContext } from "react";
 import "./App.css";
 import Navigation from "./components/nav";
 import { Context } from "./App";
-import useCCFetch from "./utils/utils";
+import useCCFetch from "./utils/useCCFetch";
 //main page layout for the page
 function PostCreationPage() {
   const { backendUrl, user } = useContext(Context);
