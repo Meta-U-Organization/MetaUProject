@@ -3,30 +3,18 @@ import "./App.css";
 import Navigation from "./components/nav";
 import { Context } from "./App";
 import useCCFetch from "./utils/useCCFetch";
+import usePostCreation from "./utils/usePostCreation";
 //main page layout for the page
 function PostCreationPage() {
-  const { backendUrl, user } = useContext(Context);
-  const { loading, fetchData } = useCCFetch();
+  const { user } = useContext(Context);
+  const { loading, fetchPostCreation } = usePostCreation();
   const makePost = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("newPostForm"));
-    let readableData = Object.fromEntries(formData);
+    const type = Object.fromEntries(formData).type;
     formData.delete("type");
-    if (readableData.type === "donation") {
-      readableData = Object.fromEntries(formData);
-      fetchData(
-        `${backendUrl}/users/${user.id}/donations`,
-        "POST",
-        JSON.stringify(readableData)
-      );
-    } else {
-      readableData = Object.fromEntries(formData);
-      fetchData(
-        `${backendUrl}/users/${user.id}/requests`,
-        "POST",
-        JSON.stringify(readableData)
-      );
-    }
+    const readableData = Object.fromEntries(formData);
+    fetchPostCreation(user.id, JSON.stringify(readableData), type);
   };
 
   return (
@@ -42,8 +30,8 @@ function PostCreationPage() {
         >
           <label htmlFor="type">Post Type</label>
           <select name="type" id="type">
-            <option value="donation">Donation</option>
-            <option value="request">Request</option>
+            <option value="donations">Donation</option>
+            <option value="requests">Request</option>
           </select>
           <label htmlFor="title">Title</label>
           <input type="text" name="title" id="title"></input>
