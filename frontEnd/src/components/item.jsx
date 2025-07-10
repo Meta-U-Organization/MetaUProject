@@ -85,6 +85,33 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
             <h2>{item.title}</h2>
             <p>{item.description}</p>
             <p>Use State: {item.itemState}</p>
+            {postType === "donations" && (
+              <form>
+                <label htmlFor="meetLocation">Meet up: </label>
+                <select name="meetLocation">
+                  <option value="home">Donors Home</option>
+                  <option value="meetUp">Mutual Location</option>
+                </select>
+                <label style={{ marginLeft: "10px" }} htmlFor="wantScore">
+                  Want Score:{" "}
+                </label>
+                <select name="wantScore">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <button style={{ marginTop: "10px", marginBottom: "10px" }}>
+                  Request Item
+                </button>
+              </form>
+            )}
           </div>
         )}
       </div>
