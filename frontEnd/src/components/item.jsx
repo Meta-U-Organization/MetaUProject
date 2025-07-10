@@ -1,14 +1,12 @@
 //Item framework
-import React, { useContext, useRef } from "react";
-import { Context } from "../App";
-import useCCFetch from "../utils/useCCFetch";
+import { useRef } from "react";
 import useDeleteItem from "../utils/useDeleteItem";
+import useEditItem from "../utils/useEditItem";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
-  const { backendUrl } = useContext(Context);
-  const { fetchData } = useCCFetch();
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
+  const { fetchEdit } = useEditItem(userId, postType, item.id);
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
@@ -26,9 +24,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     const itemState = parentItem.querySelector("#useStates").value;
 
     if (title !== "" && description !== "") {
-      fetchData(
-        `${backendUrl}/users/${userId}/${postType}/${item.id}`,
-        "PUT",
+      fetchEdit(
         JSON.stringify({
           id: item.id,
           title: title,
@@ -45,7 +41,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
         parentItem.querySelector("#description").value;
       parentItem.querySelector("#description").value = "";
     } else {
-      alert("Missing title or Desciption");
+      alert("Missing Title or Desciption");
     }
   };
 
