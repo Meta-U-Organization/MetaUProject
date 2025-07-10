@@ -37,7 +37,7 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
 
 //add in a post
 router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
-  userId = parseInt(req.params.userId);
+  const userId = parseInt(req.params.userId);
   if(req.session.userId !== userId){
      return res.status(401).json({ message: "Invalid User" });
   }

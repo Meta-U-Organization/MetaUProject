@@ -7,7 +7,8 @@ import useAllPosts from "./utils/useAllPosts";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
-  const { fetchAllPosts, users, loading } = useAllPosts();
+  const { fetchAllPosts, donations, requests, loading, errorMsg } =
+    useAllPosts();
 
   const changeItemType = () => {
     if (isDonationItem) {
@@ -32,33 +33,31 @@ function DonationAndRequestPage() {
         </button>
       </header>
       <main>
-        {loading ? (
+        {errorMsg ? (
+          <h3>{errorMsg}</h3>
+        ) : loading ? (
           <h1>Loading...</h1>
+        ) : isDonationItem ? (
+          donations.map((item) => {
+            return (
+              <Item
+                isMyPost={false}
+                postType={"donations"}
+                item={item}
+                key={item.id}
+              />
+            );
+          })
         ) : (
-          users?.map((user) => {
-            if (isDonationItem) {
-              return user.donationPosts.map((item) => {
-                return (
-                  <Item
-                    isMyPost={false}
-                    postType={"donations"}
-                    item={item}
-                    key={item.id}
-                  />
-                );
-              });
-            } else {
-              return user.requestPosts.map((item) => {
-                return (
-                  <Item
-                    isMyPost={false}
-                    postType={"requests"}
-                    item={item}
-                    key={item.id}
-                  />
-                );
-              });
-            }
+          requests.map((item) => {
+            return (
+              <Item
+                isMyPost={false}
+                postType={"requests"}
+                item={item}
+                key={item.id}
+              />
+            );
           })
         )}
       </main>

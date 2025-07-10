@@ -45,7 +45,7 @@ function PostCreationPage() {
             <option value="New">New</option>
           </select>
           {loading ? (
-            <button type="submit">Loading...</button>
+            <h3>Loading...</h3>
           ) : (
             <button onClick={makePost} type="submit">
               Submit
