@@ -60,6 +60,9 @@ router.post('/distance', async (req, res) => {
   const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${api_key}`;
   const response = await fetch(url);
   const data = await response.json();
+  if(!data.origin_address || !data.destination_addresses){
+    return res.status(401).json({ message: "Error" });
+  }
   res.json(data)
 })
 
