@@ -48,7 +48,7 @@ function PostCreationPage() {
             <button type="submit">Loading...</button>
           ) : (
             <button onClick={makePost} type="submit">
-              "Submit"
+              Submit
             </button>
           )}
         </form>

@@ -11,7 +11,7 @@ export default function useCCFetch () {
             credentials: "include",
             method: method,
             headers: { "Content-Type": "application/json" },
-            ...(body!==null ? {body: body}: {})
+            ...(body!==null ? {body}: {})
         });
         
         const newData = await backendCall.json();
