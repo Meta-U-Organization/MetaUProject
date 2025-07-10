@@ -1,25 +1,20 @@
-import { useContext } from "react";
 import "./App.css";
-import { Context } from "./App";
-//main page layout for the page
+import useSignup from "./utils/useSignup";
+import { useNavigate } from "react-router-dom";
+
 function SignUpPage() {
-  const { backendUrl } = useContext(Context);
+  const { fetchSignup, errorType, errorMsg, confirmMessage } = useSignup();
+  const navigate = useNavigate();
   const signUpFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
-    const response = await fetch(`${backendUrl}/signUp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(readableData),
-    });
+    await fetchSignup(JSON.stringify(readableData));
+  };
 
-    const result = await response.json();
-    if (response.status !== 200) {
-      alert(result.message);
-    } else {
-      alert("Registration Complete, proceed to login page");
-    }
+  const goToSignIn = (event) => {
+    event.preventDefault();
+    navigate("/login");
   };
 
   return (
@@ -32,6 +27,13 @@ function SignUpPage() {
           id="signUpForm"
           style={{ display: "flex", flexDirection: "column" }}
         >
+          {errorMsg !== null && <h3>{errorMsg}</h3>}
+          {confirmMessage != null && (
+            <div>
+              <h3>{confirmMessage}</h3>
+              <button onClick={goToSignIn}>Please Proceed to Login</button>
+            </div>
+          )}
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
           <label htmlFor="password">Password</label>

@@ -2,40 +2,18 @@ import { useContext } from "react";
 import "./App.css";
 import Navigation from "./components/nav";
 import { Context } from "./App";
+import usePostCreation from "./utils/usePostCreation";
 //main page layout for the page
 function PostCreationPage() {
-  const { backendUrl } = useContext(Context);
-  const user = useContext(Context).user;
-
+  const { user } = useContext(Context);
+  const { loading, fetchPostCreation } = usePostCreation();
   const makePost = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("newPostForm"));
-    let readableData = Object.fromEntries(formData);
+    const type = Object.fromEntries(formData).type;
     formData.delete("type");
-
-    const logIn = await fetch(`${backendUrl}/me`, {
-      credentials: "include",
-    });
-
-    const logInReadable = await logIn.json();
-
-    if (readableData.type === "donation") {
-      readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}/users/${user.id}/donations`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readableData),
-      });
-    } else {
-      readableData = Object.fromEntries(formData);
-      const response = await fetch(`${backendUrl}/users/${user.id}/requests`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(readableData),
-      });
-    }
+    const readableData = Object.fromEntries(formData);
+    fetchPostCreation(user.id, JSON.stringify(readableData), type);
   };
 
   return (
@@ -51,8 +29,8 @@ function PostCreationPage() {
         >
           <label htmlFor="type">Post Type</label>
           <select name="type" id="type">
-            <option value="donation">Donation</option>
-            <option value="request">Request</option>
+            <option value="donations">Donation</option>
+            <option value="requests">Request</option>
           </select>
           <label htmlFor="title">Title</label>
           <input type="text" name="title" id="title"></input>
@@ -66,9 +44,13 @@ function PostCreationPage() {
             <option value="Used Like New">Used Like New</option>
             <option value="New">New</option>
           </select>
-          <button onClick={makePost} type="submit">
-            Submit
-          </button>
+          {loading ? (
+            <h3>Loading...</h3>
+          ) : (
+            <button onClick={makePost} type="submit">
+              Submit
+            </button>
+          )}
         </form>
       </main>
       <footer>

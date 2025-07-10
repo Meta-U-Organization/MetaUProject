@@ -1,24 +1,20 @@
 //Item framework
-import React, { useContext, useRef } from "react";
-import { Context } from "../App";
-function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
-  //consts needed through this element
+import { useRef } from "react";
+import useDeleteItem from "../utils/useDeleteItem";
+import useEditItem from "../utils/useEditItem";
+
+function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
-  const { backendUrl } = useContext(Context);
+  const { fetchDelete } = useDeleteItem(userId, postType, item.id);
+  const { fetchEdit } = useEditItem(userId, postType, item.id);
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
-    const response = await fetch(
-      `${backendUrl}/users/${userId}/${postType}/${item.id}`,
-      {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      }
-    );
-    onPostChange(!updatePosts);
+    await fetchDelete();
+    onPostChange();
   };
+
   /*function to edit an item, will grab certain values and send a put to the server */
   const postItemEdits = async (event) => {
     event.preventDefault();
@@ -28,21 +24,15 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
     const itemState = parentItem.querySelector("#useStates").value;
 
     if (title !== "" && description !== "") {
-      const response = await fetch(
-        `${backendUrl}/users/${userId}/${postType}/${item.id}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: item.id,
-            title: title,
-            description: description,
-            photo: "",
-            itemState: itemState,
-            userId: userId,
-          }),
-        }
+      fetchEdit(
+        JSON.stringify({
+          id: item.id,
+          title: title,
+          description: description,
+          photo: "",
+          itemState: itemState,
+          userId: userId,
+        })
       );
       parentItem.querySelector("#title").placeholder =
         parentItem.querySelector("#title").value;
@@ -51,7 +41,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
         parentItem.querySelector("#description").value;
       parentItem.querySelector("#description").value = "";
     } else {
-      alert("Missing title or Desciption");
+      alert("Missing Title or Desciption");
     }
   };
 
@@ -94,7 +84,29 @@ function Item({ postType, userId, isMyPost, item, onPostChange, updatePosts }) {
           <div>
             <h2>{item.title}</h2>
             <p>{item.description}</p>
-            <p>Use State: {item.useState}</p>
+            <p>Use State: {item.itemState}</p>
+            {postType === "donations" && (
+              <form>
+                <label style={{ marginLeft: "10px" }} htmlFor="wantScore">
+                  Want Score:{" "}
+                </label>
+                <select name="wantScore">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <button style={{ marginTop: "10px", marginBottom: "10px" }}>
+                  Request Item
+                </button>
+              </form>
+            )}
           </div>
         )}
       </div>

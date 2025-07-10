@@ -2,18 +2,16 @@ import { useNavigate } from "react-router-dom";
 import "../App.css";
 import { useContext } from "react";
 import { Context } from "../App";
+import useLogout from "../utils/useLogout";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
-  const { backendUrl, setUser } = useContext(Context);
-
+  const { setUser } = useContext(Context);
+  const { fetchLogout } = useLogout();
 
   const logOut = async (event) => {
     event.preventDefault();
-    await fetch(`${backendUrl}/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
+    fetchLogout();
     sessionStorage.clear();
     setUser(null);
     navigate("/login");

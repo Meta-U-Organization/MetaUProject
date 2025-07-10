@@ -38,10 +38,10 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
 //add in a post
 router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const {title, description, photo, itemState} = req.body;
   if(req.session.userId !== userId){
      return res.status(401).json({ message: "Invalid User" });
   }
+  const {title, description, photo, itemState} = req.body;
   const newDonationPost = await prisma.donationPost.create({
     data: {
       title,
