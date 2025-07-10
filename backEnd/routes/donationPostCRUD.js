@@ -57,7 +57,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
 router.post('/distance', async (req, res) => {
   const {origin, destination} = req.body
   const api_key = process.env.GOOGLE_API;
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${api_key}`;
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&units=imperial&key=${api_key}`;
   const response = await fetch(url);
   const data = await response.json();
   if(data.rows[0].elements[0].distance?.text==undefined){
