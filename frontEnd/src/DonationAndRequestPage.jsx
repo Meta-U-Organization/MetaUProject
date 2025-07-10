@@ -46,6 +46,7 @@ function DonationAndRequestPage() {
                   isMyPost={false}
                   postType={"donations"}
                   item={item}
+                  userId={item.userId}
                   key={item.id}
                 />
               );
