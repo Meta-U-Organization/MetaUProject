@@ -56,11 +56,17 @@ function SignUpPage() {
             name="phoneNumber"
             placeholder="Enter your Phone Number"
           ></input>
-          <label htmlFor="address">Address</label>
+          <label htmlFor="address">Home Address</label>
           <input
             type="text"
             name="address"
             placeholder="Enter your Address"
+          ></input>
+          <label htmlFor="preferredMeetLocation">Preferred Meet Location</label>
+          <input
+            type="text"
+            name="preferredMeetLocation"
+            placeholder="Enter your preferred meet location"
           ></input>
           <button type="submit" onClick={signUpFunc}>
             Submit

@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 
 
 router.post("/signup", async (req, res) => {
-  const { username, password, email, name, phoneNumber, address} = req.body;
+  const { username, password, email, name, phoneNumber, address, preferredMeetLocation} = req.body;
 
   if (!username || !password) {
     return res.status(401).json({ message: "Username and password are required." });
@@ -37,7 +37,8 @@ router.post("/signup", async (req, res) => {
       email,
       name,
       phoneNumber,
-      address
+      address,
+      preferredMeetLocation
     }
   });
   res.json({message:  "Sign Up Succesful!"});
