@@ -4,12 +4,13 @@ import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
 import useAllPosts from "./utils/useAllPosts";
+import { Context } from "./App";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
+  const signedInUser = useContext(Context).user.id;
   const { fetchAllPosts, donations, requests, loading, errorMsg } =
     useAllPosts();
-
   const changeItemType = () => {
     if (isDonationItem) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
@@ -39,25 +40,29 @@ function DonationAndRequestPage() {
           <h1>Loading...</h1>
         ) : isDonationItem ? (
           donations.map((item) => {
-            return (
-              <Item
-                isMyPost={false}
-                postType={"donations"}
-                item={item}
-                key={item.id}
-              />
-            );
+            if (item.userId !== signedInUser) {
+              return (
+                <Item
+                  isMyPost={false}
+                  postType={"donations"}
+                  item={item}
+                  key={item.id}
+                />
+              );
+            }
           })
         ) : (
           requests.map((item) => {
-            return (
-              <Item
-                isMyPost={false}
-                postType={"requests"}
-                item={item}
-                key={item.id}
-              />
-            );
+            if (item.userId !== signedInUser) {
+              return (
+                <Item
+                  isMyPost={false}
+                  postType={"requests"}
+                  item={item}
+                  key={item.id}
+                />
+              );
+            }
           })
         )}
       </main>

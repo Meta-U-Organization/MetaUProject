@@ -87,11 +87,6 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
             <p>Use State: {item.itemState}</p>
             {postType === "donations" && (
               <form>
-                <label htmlFor="meetLocation">Meet up: </label>
-                <select name="meetLocation">
-                  <option value="home">Donors Home</option>
-                  <option value="meetUp">Mutual Location</option>
-                </select>
                 <label style={{ marginLeft: "10px" }} htmlFor="wantScore">
                   Want Score:{" "}
                 </label>
