@@ -10,15 +10,16 @@ generator client {
 }
 
 model user {
-  id            Int            @id @default(autoincrement())
-  username      String         @unique
-  passwordHash  String
-  email         String         @unique
-  name          String
-  phoneNumber   String
-  address       String
-  donationPosts donationPost[]
-  requestPosts  requestPost[]
+  id                    Int            @id @default(autoincrement())
+  username              String         @unique
+  passwordHash          String
+  email                 String         @unique
+  name                  String
+  phoneNumber           String
+  address               String
+  preferredMeetLocation String
+  donationPosts         donationPost[]
+  requestPosts          requestPost[]
 }
 
 model donationPost {
