@@ -4,7 +4,7 @@ import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useDistance from "../utils/useDistance";
 import { Context } from "../App";
-import usePrefferedMeetLocation from "../utils/usePrefferedMeetLocation";
+import usePreferredMeetLocation from "../utils/usePreferredMeetLocation";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
@@ -13,8 +13,8 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const { fetchEdit } = useEditItem(userId, postType, item.id);
   const { fetchDistance, distance, errorMsg } = useDistance();
 
-  const { fetchPrefferedMeetLocation, meetLocation } =
-    usePrefferedMeetLocation(userId);
+  const { fetchPreferredMeetLocation, meetLocation } =
+    usePreferredMeetLocation(userId);
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
@@ -35,7 +35,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
   }, [meetLocation]);
 
   useEffect(() => {
-    fetchPrefferedMeetLocation();
+    fetchPreferredMeetLocation();
   }, []);
   /*function to edit an item, will grab certain values and send a put to the server */
   const postItemEdits = async (event) => {

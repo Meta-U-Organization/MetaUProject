@@ -2,12 +2,12 @@ import { useContext} from "react";
 import useCCFetch from "./useCCFetch";
 import { Context } from "../App";
 
-export default function usePrefferedMeetLocation (userId) {
+export default function usePreferredMeetLocation (userId) {
     const { fetchData, data, loading } = useCCFetch();
     const { backendUrl } = useContext(Context);
-    const fetchPrefferedMeetLocation = () => {
+    const fetchPreferredMeetLocation = () => {
         fetchData(`${backendUrl}/users/${userId}`, "GET");
     }
     const meetLocation = data?.preferredMeetLocation;
-    return {fetchPrefferedMeetLocation, meetLocation, loading}
+    return {fetchPreferredMeetLocation, meetLocation, loading}
 }
