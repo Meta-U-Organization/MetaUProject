@@ -44,9 +44,13 @@ function PostCreationPage() {
             <option value="Used Like New">Used Like New</option>
             <option value="New">New</option>
           </select>
-          <button onClick={makePost} type="submit">
-            {loading ? "Loading" : "Submit"}
-          </button>
+          {loading ? (
+            <button type="submit">Loading...</button>
+          ) : (
+            <button onClick={makePost} type="submit">
+              "Submit"
+            </button>
+          )}
         </form>
       </main>
       <footer>
