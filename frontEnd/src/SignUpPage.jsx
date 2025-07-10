@@ -1,9 +1,7 @@
-import { useContext, useEffect, useState } from "react";
 import "./App.css";
-import { Context } from "./App";
 import useSignup from "./utils/useSignup";
 import { useNavigate } from "react-router-dom";
-//main page layout for the page
+
 function SignUpPage() {
   const { fetchSignup, errorType, errorMsg, confirmMessage } = useSignup();
   const navigate = useNavigate();
@@ -12,7 +10,6 @@ function SignUpPage() {
     const formData = new FormData(document.getElementById("signUpForm"));
     let readableData = Object.fromEntries(formData);
     await fetchSignup(JSON.stringify(readableData));
-    console.log(errorType);
   };
 
   const goToSignIn = (event) => {

@@ -2,7 +2,6 @@ import { useState } from "react";
 
 export default function useCCFetch () {
     const [loading, setLoading] = useState(false);
-    const [update, setUpdate] = useState(false);
     const [data, setData] = useState(null);
     const[errorType, setErrorType] = useState(null);
     const[errorMsg, setErrorMsg] = useState(null);
@@ -25,10 +24,9 @@ export default function useCCFetch () {
             setErrorMsg(null)
             setData(newData)
         }
-        setUpdate(!update);
         setLoading(false);
     }
-    return({loading, update, fetchData, data, errorType, errorMsg});
+    return({loading, fetchData, data, errorType, errorMsg});
 }
 
 

@@ -12,7 +12,6 @@ function MyPosts() {
   const { user } = useContext(Context);
   const { fetchMyPosts, donations, requests, loading } = useMyPosts(user.id);
   const [isDonationList, setIsDonationList] = useState(true);
-  const [updatePosts, setUpdatePosts] = useState(true);
 
   const changeItemType = () => {
     if (isDonationList) {
@@ -44,7 +43,6 @@ function MyPosts() {
             return (
               <Item
                 onPostChange={() => {
-                  console.log("triggered");
                   fetchMyPosts();
                 }}
                 userId={user.id}

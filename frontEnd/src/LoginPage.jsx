@@ -3,30 +3,24 @@ import "./App.css";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "./App";
 import useCCFetch from "./utils/useCCFetch";
+import useLogin from "./utils/useLogin";
 //main page layout for the page
 function LoginPage() {
   const navigate = useNavigate();
-  const { setUser, backendUrl } = useContext(Context);
-  const [loaded, setLoaded] = useState(false);
-  const { fetchData, data, update, errorMsg } = useCCFetch();
-  useEffect(() => {
-    if (!loaded || (data == null && errorMsg == null)) {
-      setLoaded(true);
-      return;
-    } else if (data?.message === "Login successful!") {
-      setUser(data.user);
-      navigate("/");
-    } else if (errorMsg) {
-      alert("Username and password are required.");
-    }
-  }),
-    [update];
+  const { setUser } = useContext(Context);
+  const { fetchLogin, confirmMessage, user, errorMsg } = useLogin();
 
+  useEffect(() => {
+    if (confirmMessage === "Login successful!") {
+      setUser(user);
+      navigate("/");
+    }
+  }, [confirmMessage]);
   const loginFunc = async (event) => {
     event.preventDefault();
     const formData = new FormData(document.getElementById("login"));
     const readableData = Object.fromEntries(formData);
-    fetchData(`${backendUrl}/login`, "POST", JSON.stringify(readableData));
+    await fetchLogin(JSON.stringify(readableData));
   };
 
   return (
@@ -35,6 +29,7 @@ function LoginPage() {
         <h1>Login</h1>
       </header>
       <main>
+        {errorMsg !== null && <h3>{errorMsg}</h3>}
         <form id="login" style={{ display: "flex", flexDirection: "column" }}>
           <label htmlFor="username">Username</label>
           <input type="text" name="username" placeholder="Username"></input>
