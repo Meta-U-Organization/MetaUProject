@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import "./App.css";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "./App";
-import useCCFetch from "./utils/useCCFetch";
 import useLogin from "./utils/useLogin";
 //main page layout for the page
 function LoginPage() {

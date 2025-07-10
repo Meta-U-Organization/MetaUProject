@@ -3,8 +3,6 @@ import "./App.css";
 import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
-import { Context } from "./App";
-import useCCFetch from "./utils/useCCFetch";
 import useAllPosts from "./utils/useAllPosts";
 //main page layout for the page
 function DonationAndRequestPage() {
