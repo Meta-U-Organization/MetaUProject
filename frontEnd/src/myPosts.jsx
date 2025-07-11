@@ -6,6 +6,7 @@ import { Context } from "./App";
 import { useContext } from "react";
 import { useEffect } from "react";
 import useMyPosts from "./utils/useMyPosts.js";
+import MyItem from "./components/myItem.jsx";
 
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
@@ -41,7 +42,7 @@ function MyPosts() {
         ) : isDonationList ? (
           donations?.map((item) => {
             return (
-              <Item
+              <MyItem
                 onPostChange={() => {
                   fetchMyPosts();
                 }}
@@ -56,7 +57,7 @@ function MyPosts() {
         ) : (
           requests?.map((item) => {
             return (
-              <Item
+              <MyItem
                 onPostChange={() => {
                   fetchMyPosts();
                 }}
