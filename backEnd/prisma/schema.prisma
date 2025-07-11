@@ -18,6 +18,9 @@ model user {
   phoneNumber           String
   address               String
   preferredMeetLocation String
+  donationsReceived     Int            @default(0)
+  lastDonationReceived  DateTime       @default(now())
+  numTimesDonated       Int            @default(0)
   donationPosts         donationPost[]
   requestPosts          requestPost[]
 }
