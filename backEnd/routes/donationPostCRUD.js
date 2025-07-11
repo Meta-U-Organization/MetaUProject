@@ -17,6 +17,9 @@ router.get('/users/:userId/donations', async (req, res) => {
     where:{
       userId:parseInt(userId)
     },
+    include: {
+       possibleRecipients:true,
+    }
   });
   res.json(allDonations);
 })

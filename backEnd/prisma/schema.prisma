@@ -23,16 +23,18 @@ model user {
   numTimesDonated       Int            @default(0)
   donationPosts         donationPost[]
   requestPosts          requestPost[]
+  wantedDonations       donationPost[] @relation(name: "possibleRecipients")
 }
 
 model donationPost {
-  id          Int    @id @default(autoincrement())
-  title       String
-  description String
-  photo       String
-  itemState   String
-  userId      Int
-  user        user   @relation(fields: [userId], references: [id])
+  id                 Int    @id @default(autoincrement())
+  title              String
+  description        String
+  photo              String
+  itemState          String
+  userId             Int
+  possibleRecipients user[] @relation(name: "possibleRecipients")
+  user               user   @relation(fields: [userId], references: [id])
 }
 
 model requestPost {

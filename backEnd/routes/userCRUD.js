@@ -115,6 +115,7 @@ router.get('/users/:userId', async (req, res) => {
     include: {
         donationPosts:true,
         requestPosts:true,
+        wantedDonations:true,
     }
   });
   res.json(individualUser);
