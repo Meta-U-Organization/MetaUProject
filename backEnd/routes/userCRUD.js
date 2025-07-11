@@ -147,4 +147,24 @@ router.put('/users/:userId', async (req, res) => {
   res.json(updatedUser);
 })
 
+router.patch('/users/:userId', async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const { username, passwordHash, email, name, phoneNumber, address, donationsReceived, lastDonationReceived, numTimesDonated } = req.body;
+  const updatedUser = await prisma.user.update({
+    where: { id: parseInt(userId) },
+    data: {
+      username,
+      passwordHash,
+      email,
+      name,
+      phoneNumber,
+      address,
+      donationsReceived, 
+      lastDonationReceived, 
+      numTimesDonated
+    }
+  });
+  res.json(updatedUser);
+})
+
 module.exports = router

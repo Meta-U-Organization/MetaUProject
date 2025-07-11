@@ -14,8 +14,6 @@ function MyItem({ postType, userId, isMyPost, item, onPostChange }) {
     await fetchDelete();
     onPostChange();
   };
-
-  const fulfill = () => {};
   /*function to edit an item, will grab certain values and send a put to the server */
   const postItemEdits = async (event) => {
     event.preventDefault();
@@ -76,7 +74,6 @@ function MyItem({ postType, userId, isMyPost, item, onPostChange }) {
             <option value="New">New</option>
           </select>
           <div>
-            <button onClick={fulfill}>Fulfill</button>
             <button onClick={postItemEdits}>Submit Edits</button>
             <button onClick={deleteItem}>Delete</button>
           </div>
