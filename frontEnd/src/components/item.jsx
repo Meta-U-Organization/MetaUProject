@@ -1,20 +1,12 @@
 //Item framework
-import { useContext, useEffect, useRef } from "react";
+import { useRef } from "react";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
-import useDistance from "../utils/useDistance";
-import { Context } from "../App";
-import usePreferredMeetLocation from "../utils/usePreferredMeetLocation";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
-  const signedInUserAddress = useContext(Context).user.address;
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
-  const { fetchDistance, distance, errorMsg } = useDistance();
-
-  const { fetchPreferredMeetLocation, meetLocation } =
-    usePreferredMeetLocation(userId);
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
@@ -23,20 +15,6 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     onPostChange();
   };
 
-  useEffect(() => {
-    if (signedInUserAddress && meetLocation) {
-      fetchDistance(
-        JSON.stringify({
-          origin: signedInUserAddress,
-          destination: meetLocation,
-        })
-      );
-    }
-  }, [meetLocation]);
-
-  useEffect(() => {
-    fetchPreferredMeetLocation();
-  }, []);
   /*function to edit an item, will grab certain values and send a put to the server */
   const postItemEdits = async (event) => {
     event.preventDefault();
@@ -107,7 +85,8 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
             <h2>{item.title}</h2>
             <p>{item.description}</p>
             <p>Use State: {item.itemState}</p>
-            <p>Distance: {distance ? distance : errorMsg}</p>
+            {postType == "donations" && <p>Distance: {item.distance}</p>}
+
             {postType === "donations" && (
               <form>
                 <label style={{ marginLeft: "10px" }} htmlFor="wantScore">

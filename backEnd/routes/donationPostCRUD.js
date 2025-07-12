@@ -35,6 +35,37 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
   res.json(individualPost);
 })
 
+
+//get all users
+router.get('/allDonations/:userId', async (req, res) => {
+  const donations = await prisma.donationPost.findMany({})
+  const userId = parseInt(req.params.userId);
+  let donor;
+  const signedInUser = await prisma.user.findUnique({
+    where:{id:parseInt(userId)}
+  });
+  const origin = signedInUser.address;
+
+  for(let i  = 0; i < donations.length; i++){
+    donor = await prisma.user.findUnique({
+      where:{id:parseInt(donations[i].userId)}
+    })
+    const api_key = process.env.GOOGLE_API;
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${donor.preferredMeetLocation}&units=imperial&key=${api_key}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    if(data.rows[0].elements[0].distance?.text==undefined){
+      donations[i].distance = "ERROR";
+    }else {
+      donations[i].distance = data.rows[0].elements[0].distance?.text;
+    }
+  }
+
+
+  res.json(donations)
+})
+
+
 //add in a post
 router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   const userId = parseInt(req.params.userId);
@@ -55,7 +86,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
 })
 
 router.post('/distance', async (req, res) => {
-  const {origin, destination} = req.body
+  const {origin, destination} = req.body;
   const api_key = process.env.GOOGLE_API;
   const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&units=imperial&key=${api_key}`;
   const response = await fetch(url);

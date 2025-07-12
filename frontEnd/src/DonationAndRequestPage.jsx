@@ -3,14 +3,15 @@ import "./App.css";
 import Item from "./components/item";
 import Navigation from "./components/nav";
 import { useEffect } from "react";
-import useAllPosts from "./utils/useAllPosts";
+import useAllDonations from "./utils/useAllDonations";
 import { Context } from "./App";
+import useAllRequests from "./utils/useAllRequests";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
   const signedInUser = useContext(Context).user.id;
-  const { fetchAllPosts, donations, requests, loading, errorMsg } =
-    useAllPosts();
+  const { fetchAllDonations, donations, loading, errorMsg } = useAllDonations();
+  const { fetchAllRequests, requests, loadingRequests } = useAllRequests();
   const changeItemType = () => {
     if (isDonationItem) {
       document.getElementById("changeItemButton").innerHTML = "Go to Donations";
@@ -21,7 +22,8 @@ function DonationAndRequestPage() {
   };
 
   useEffect(() => {
-    fetchAllPosts();
+    fetchAllDonations(signedInUser);
+    fetchAllRequests();
   }, []);
 
   return (
@@ -39,7 +41,7 @@ function DonationAndRequestPage() {
         ) : loading ? (
           <h1>Loading...</h1>
         ) : isDonationItem ? (
-          donations.map((item) => {
+          donations?.map((item) => {
             if (item.userId !== signedInUser) {
               return (
                 <Item
@@ -52,8 +54,10 @@ function DonationAndRequestPage() {
               );
             }
           })
+        ) : loadingRequests ? (
+          <h3>Loading...</h3>
         ) : (
-          requests.map((item) => {
+          requests?.map((item) => {
             if (item.userId !== signedInUser) {
               return (
                 <Item
