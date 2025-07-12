@@ -85,6 +85,8 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
             <h2>{item.title}</h2>
             <p>{item.description}</p>
             <p>Use State: {item.itemState}</p>
+            {postType == "donations" && <p>Distance: {item.distance}</p>}
+
             {postType === "donations" && (
               <form>
                 <label style={{ marginLeft: "10px" }} htmlFor="wantScore">

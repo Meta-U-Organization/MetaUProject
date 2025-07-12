@@ -22,6 +22,12 @@ router.get('/users/:userId/requests', async (req, res) => {
   res.json(allRequests);
 })
 
+router.get('/allRequests', async (req, res) => {
+  const allRequests = await prisma.requestPost.findMany({
+  });
+  res.json(allRequests);
+})
+
 //get individual post
 router.get('/users/:userId/requests/:postId', async (req, res) => {
   const postId = parseInt(req.params.postId);
