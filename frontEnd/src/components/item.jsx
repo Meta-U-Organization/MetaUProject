@@ -1,15 +1,33 @@
 //Item framework
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
+import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
-  const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient();
+  const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient(
+    item.userId,
+    item.id
+  );
+  const { fetchAllPossibleRecipients, possibleRecipients } =
+    useAllPossibleRecipients(userId, item.id);
+
+  useEffect(() => {
+    for (let i = 0; i < possibleRecipients?.length; i++) {
+      if (possibleRecipients[i].userId === userId) {
+        setRequestSubmitted(true);
+      }
+    }
+  }, [possibleRecipients]);
+
+  useEffect(() => {
+    fetchAllPossibleRecipients();
+  }, []);
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
@@ -52,14 +70,12 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     event.preventDefault();
     const parentItem = itemRef.current;
     const wantScore = parentItem.querySelector(".wantScore").value;
-    const distanceRaw = parentItem.querySelector(".distance").innerHTML;
-    const grabDistance = distanceRaw.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
-    const finalDistance = grabDistance[0].replace(",", "");
+    const distance = item.distance.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
+    const finalDistance = distance[0].replace(",", "");
+    console.log(finalDistance);
     fetchCreatePossibleRecipient(
-      userId,
-      item.id,
       JSON.stringify({
-        Distance: parseFloat(finalDistance),
+        Distance: parseInt(finalDistance),
         wantScore: parseInt(wantScore),
       })
     );
