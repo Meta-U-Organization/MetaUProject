@@ -1,10 +1,11 @@
 //Item framework
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
+  const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
 
@@ -43,6 +44,16 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     } else {
       alert("Missing Title or Desciption");
     }
+  };
+
+  const requestItem = (event) => {
+    event.preventDefault();
+    const parentItem = itemRef.current;
+    const wantScore = parentItem.querySelector(".wantScore").value;
+    const distanceRaw = parentItem.querySelector(".distance").innerHTML;
+    const grabDistance = distanceRaw.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
+    const finalDistance = grabDistance[0].replace(",", "");
+    setRequestSubmitted(true);
   };
 
   return (
@@ -85,23 +96,32 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
             <h2>{item.title}</h2>
             <p>{item.description}</p>
             <p>Use State: {item.itemState}</p>
-            {postType == "donations" && <p>Distance: {item.distance}</p>}
+            {postType == "donations" && (
+              <p className="distance">Distance: {item.distance}</p>
+            )}
 
             {postType === "donations" && (
-              <form>
+              <form className="requestItemForm">
                 <label style={{ marginLeft: "10px" }} htmlFor="wantScore">
                   Want Score:{" "}
                 </label>
-                <select name="wantScore">
+                <select className="wantScore" name="wantScore">
                   <option value="1">1 - Would be cool to have</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
                   <option value="4">4</option>
                   <option value="5">5 - I NEED IT!!!!</option>
                 </select>
-                <button style={{ marginTop: "10px", marginBottom: "10px" }}>
-                  Request Item
-                </button>
+                {requestSubmitted ? (
+                  <h3>Request has been submitted</h3>
+                ) : (
+                  <button
+                    onClick={requestItem}
+                    style={{ marginTop: "10px", marginBottom: "10px" }}
+                  >
+                    Request Item
+                  </button>
+                )}
               </form>
             )}
           </div>
