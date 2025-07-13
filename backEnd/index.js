@@ -14,6 +14,7 @@ app.use(
 const userRoutes = require ('./routes/userCRUD');
 const requestPostRoutes = require ('./routes/requestPostCRUD');
 const donationPostRoutes = require ('./routes/donationPostCRUD');
+const possibleRecipientRoutes = require ('./routes/possibleRecipientCRUD');
 
 app.use (session({
   name: 'sessionId',
@@ -31,6 +32,7 @@ app.use (session({
 app.use(userRoutes);
 app.use(requestPostRoutes);
 app.use(donationPostRoutes);
+app.use(possibleRecipientRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)

@@ -2,12 +2,14 @@
 import { useRef, useState } from "react";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
+import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
+  const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient();
 
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
@@ -53,6 +55,14 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     const distanceRaw = parentItem.querySelector(".distance").innerHTML;
     const grabDistance = distanceRaw.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
     const finalDistance = grabDistance[0].replace(",", "");
+    fetchCreatePossibleRecipient(
+      userId,
+      item.id,
+      JSON.stringify({
+        Distance: parseFloat(finalDistance),
+        wantScore: parseInt(wantScore),
+      })
+    );
     setRequestSubmitted(true);
   };
 

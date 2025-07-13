@@ -31,6 +31,9 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
       id:parseInt(postId),
       userId:parseInt(userId)
     },
+    include: {
+      possibleRecipients: true
+    }
   });
   res.json(individualPost);
 })
