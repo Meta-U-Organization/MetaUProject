@@ -6,7 +6,9 @@ const prisma = new PrismaClient;
 router.get('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
   const postId = parseInt(req.params.postId);
   const allpossibleRecipients = await prisma.possibleRecipients.findMany({
-    
+    where: {
+      donationPostId: postId
+    }
   });
   res.json(allpossibleRecipients);
 })
