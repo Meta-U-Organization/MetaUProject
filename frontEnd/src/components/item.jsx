@@ -1,13 +1,15 @@
 //Item framework
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
 import useOrderedPossibleRecipients from "../utils/useOrderedPossibleRecipients";
+import { Context } from "../App";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
+  const signedInUser = useContext(Context).user.id;
   const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
@@ -20,13 +22,15 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     useAllPossibleRecipients(userId, item.id);
   const { fetchOrderedPossibleRecipients, orderedRecipients } =
     useOrderedPossibleRecipients(userId, item.id);
+
   useEffect(() => {
     for (let i = 0; i < possibleRecipients?.length; i++) {
-      if (possibleRecipients[i].userId === userId) {
+      if (possibleRecipients[i].userId === signedInUser) {
         setRequestSubmitted(true);
       }
     }
   }, [possibleRecipients]);
+
   useEffect(() => {
     fetchAllPossibleRecipients();
     fetchOrderedPossibleRecipients();
