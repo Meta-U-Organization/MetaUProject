@@ -4,6 +4,7 @@ import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
+import useOrderedPossibleRecipients from "../utils/useOrderedPossibleRecipients";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const itemRef = useRef(null);
@@ -14,9 +15,11 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     item.userId,
     item.id
   );
+
   const { fetchAllPossibleRecipients, possibleRecipients } =
     useAllPossibleRecipients(userId, item.id);
-
+  const { fetchOrderedPossibleRecipients, orderedRecipients } =
+    useOrderedPossibleRecipients(userId, item.id);
   useEffect(() => {
     for (let i = 0; i < possibleRecipients?.length; i++) {
       if (possibleRecipients[i].userId === userId) {
@@ -24,11 +27,10 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
       }
     }
   }, [possibleRecipients]);
-
   useEffect(() => {
     fetchAllPossibleRecipients();
+    fetchOrderedPossibleRecipients();
   }, []);
-
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
@@ -72,7 +74,6 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     const wantScore = parentItem.querySelector(".wantScore").value;
     const distance = item.distance.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
     const finalDistance = distance[0].replace(",", "");
-    console.log(finalDistance);
     fetchCreatePossibleRecipient(
       JSON.stringify({
         Distance: parseInt(finalDistance),
