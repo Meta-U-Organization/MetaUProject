@@ -96,6 +96,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
     await fetchUpdateSelected(
       JSON.stringify({
         selectedId: selectedRecipient,
+        donorId: item.userId,
       })
     );
 

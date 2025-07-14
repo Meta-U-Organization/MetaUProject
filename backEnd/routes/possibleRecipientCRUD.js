@@ -107,21 +107,32 @@ router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, r
 
 router.post('/selectRecipient', async (req, res) => {
   //will set users donations received + 1 and last donation received
-  const { selectedId} = req.body;
+  const { selectedId, donorId} = req.body;
 
   const selectedUser = await prisma.user.findUnique({
     where:{id:parseInt(selectedId)},
   });
 
-  const updatedUser = await prisma.user.update({
+  const donor = await prisma.user.findUnique({
+    where:{id:parseInt(donorId)},
+  });
+
+
+  const updatedDonor = await prisma.user.update({
+    where: { id: parseInt(donorId) },
+    data: {
+      numTimesDonated: donor.numTimesDonated+1,
+    }
+  })
+
+  const updatedRecipient = await prisma.user.update({
     where: { id: parseInt(selectedId) },
     data: {
       donationsReceived: selectedUser.donationsReceived+1,
       lastDonationReceived: new Date(Date.now())
     }
   });
-  res.json(updatedUser)
-  //will delete the post
+  res.json(updatedRecipient)
 })
 
 
