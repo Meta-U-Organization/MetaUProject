@@ -82,9 +82,9 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     }
   })
 
+  const orderedRecipients = allpossibleRecipients
 
-  console.log(allpossibleRecipients);
-  res.json(allpossibleRecipients);
+  res.json(orderedRecipients);
 })
 
 router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
