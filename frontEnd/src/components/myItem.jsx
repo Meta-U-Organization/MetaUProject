@@ -4,6 +4,7 @@ import "./myItem.css";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useOrderedPossibleRecipients from "../utils/useOrderedPossibleRecipients";
+import useUpdateSelected from "../utils/useUpdateSelected";
 
 function MyItem({ postType, userId, item, onPostChange }) {
   const itemRef = useRef(null);
@@ -12,6 +13,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
+  const { fetchUpdateSelected, updateSelectedError } = useUpdateSelected();
 
   const {
     fetchOrderedPossibleRecipients,
@@ -82,6 +84,21 @@ function MyItem({ postType, userId, item, onPostChange }) {
     setSelectedRecipient(clickedId);
   };
 
+  const selectRecipient = async (event) => {
+    event.preventDefault();
+    await fetchUpdateSelected(
+      JSON.stringify({
+        selectedId: selectedRecipient,
+      })
+    );
+
+    if (!updateSelectedError) {
+      setShowModal(false);
+      await fetchDelete();
+      onPostChange();
+    }
+  };
+
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
@@ -142,14 +159,15 @@ function MyItem({ postType, userId, item, onPostChange }) {
                     <p>Name: {rec.name}</p>
                     <p>email: {rec.email}</p>
                     <p>Phone Number: {rec.phoneNumber}</p>
+                    <p>Distance: {rec.Distance} Miles</p>
                   </div>
                   <label htmlFor="selectedRecipient">Select</label>
                   <input
                     type="checkbox"
-                    id={rec.id}
+                    id={rec.userId}
                     name="selectedRecipient"
                     onChange={() => {
-                      onlyOneSelected(rec.id);
+                      onlyOneSelected(rec.userId);
                     }}
                   ></input>
                 </div>
@@ -165,14 +183,15 @@ function MyItem({ postType, userId, item, onPostChange }) {
                         <p>Name: {rec.name}</p>
                         <p>email: {rec.email}</p>
                         <p>Phone Number: {rec.phoneNumber}</p>
+                        <p>Distance: {rec.Distance} Miles</p>
                       </div>
                       <label htmlFor="selectedRecipient">Select</label>
                       <input
                         type="checkbox"
-                        id={rec.id}
+                        id={rec.userId}
                         name="selectedRecipient"
                         onChange={() => {
-                          onlyOneSelected(rec.id);
+                          onlyOneSelected(rec.userId);
                         }}
                       ></input>
                     </div>
@@ -181,7 +200,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
               </div>
             )}
             <button onClick={loadMore}>Load Remaining</button>
-            <button>Select Recipient</button>
+            <button onClick={selectRecipient}>Select Recipient</button>
           </div>
         </div>
       )}
