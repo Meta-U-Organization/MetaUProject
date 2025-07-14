@@ -9,5 +9,9 @@ export default function useOrderedPossibleRecipients(userId, postId) {
         fetchData(`${backendUrl}/users/${userId}/donations/${postId}/orderedRecipients`, "GET");
     }
     const orderedRecipients = data;
-    return { fetchOrderedPossibleRecipients, orderedRecipients }
+
+    const topThreeRecipients = orderedRecipients?.slice(0,3);
+    const remainingRecipients = orderedRecipients?.slice(3);
+
+    return { fetchOrderedPossibleRecipients, topThreeRecipients, remainingRecipients}
 }

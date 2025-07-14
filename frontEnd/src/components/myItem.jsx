@@ -1,17 +1,23 @@
 //Item framework
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import "./myItem.css";
 import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useOrderedPossibleRecipients from "../utils/useOrderedPossibleRecipients";
-import { Context } from "../App";
 
-function MyItem({ postType, userId, isMyPost, item, onPostChange }) {
+function MyItem({ postType, userId, item, onPostChange }) {
   const itemRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loadRemaining, setLoadRemaining] = useState(false);
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
 
-  const { fetchOrderedPossibleRecipients, orderedRecipients } =
-    useOrderedPossibleRecipients(userId, item.id);
+  const {
+    fetchOrderedPossibleRecipients,
+    topThreeRecipients,
+    remainingRecipients,
+  } = useOrderedPossibleRecipients(userId, item.id);
 
   useEffect(() => {
     fetchOrderedPossibleRecipients();
@@ -53,6 +59,29 @@ function MyItem({ postType, userId, isMyPost, item, onPostChange }) {
     }
   };
 
+  const fulfill = (event) => {
+    event.preventDefault();
+    setShowModal(true);
+  };
+
+  const turnModalOff = () => {
+    setShowModal(false);
+  };
+
+  const loadMore = () => {
+    setLoadRemaining(true);
+  };
+
+  const onlyOneSelected = (clickedId) => {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((checkbox) => {
+      if (parseInt(checkbox.id) !== clickedId) {
+        checkbox.checked = false;
+      }
+    });
+    setSelectedRecipient(clickedId);
+  };
+
   return (
     <div
       style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
@@ -86,6 +115,9 @@ function MyItem({ postType, userId, isMyPost, item, onPostChange }) {
             <button onClick={postItemEdits}>Submit Edits</button>
             <button onClick={deleteItem}>Delete</button>
           </div>
+          <form>
+            <button onClick={fulfill}>Choose a Recipient</button>
+          </form>
         </div>
       </div>
       <div style={{ width: "44%" }}>
@@ -94,6 +126,65 @@ function MyItem({ postType, userId, isMyPost, item, onPostChange }) {
           src="https://thumbs.dreamstime.com/b/temporary-rubber-stamp-over-white-background-86664158.jpg"
         ></img>
       </div>
+      {showModal && (
+        //modal that hosts functionality to make a card
+        <div id="selectRecipientModal" className="modal">
+          <div
+            className="modal-content"
+            style={{ display: "flex", flexDirection: "column" }}
+          >
+            <button onClick={turnModalOff}>X</button>
+            {topThreeRecipients?.map((rec) => {
+              return (
+                <div key={rec.id} className="recipientOption">
+                  <div>
+                    <p>User Name: {rec.username}</p>
+                    <p>Name: {rec.name}</p>
+                    <p>email: {rec.email}</p>
+                    <p>Phone Number: {rec.phoneNumber}</p>
+                  </div>
+                  <label htmlFor="selectedRecipient">Select</label>
+                  <input
+                    type="checkbox"
+                    id={rec.id}
+                    name="selectedRecipient"
+                    onChange={() => {
+                      onlyOneSelected(rec.id);
+                    }}
+                  ></input>
+                </div>
+              );
+            })}
+            {loadRemaining && (
+              <div>
+                {remainingRecipients?.map((rec) => {
+                  return (
+                    <div key={rec.id} className="recipientOption">
+                      <div>
+                        <p>User Name: {rec.username}</p>
+                        <p>Name: {rec.name}</p>
+                        <p>email: {rec.email}</p>
+                        <p>Phone Number: {rec.phoneNumber}</p>
+                      </div>
+                      <label htmlFor="selectedRecipient">Select</label>
+                      <input
+                        type="checkbox"
+                        id={rec.id}
+                        name="selectedRecipient"
+                        onChange={() => {
+                          onlyOneSelected(rec.id);
+                        }}
+                      ></input>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <button onClick={loadMore}>Load Remaining</button>
+            <button>Select Recipient</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

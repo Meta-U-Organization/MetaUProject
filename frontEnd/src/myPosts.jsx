@@ -46,8 +46,7 @@ function MyPosts() {
                   fetchMyPosts();
                 }}
                 userId={user.id}
-                postType={isDonationList ? "donations" : "requests"}
-                isMyPost={true}
+                postType="donations"
                 item={item}
                 key={item.id}
               />
@@ -61,8 +60,7 @@ function MyPosts() {
                   fetchMyPosts();
                 }}
                 userId={user.id}
-                postType={isDonationList ? "donations" : "requests"}
-                isMyPost={true}
+                postType="requests"
                 item={item}
                 key={item.id}
               />

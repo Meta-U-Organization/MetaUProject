@@ -1,0 +1,32 @@
+.modal {
+   display: flex; /*will be flex when shown*/
+   position: fixed; /* Stay in place */
+   color:black;
+   z-index: 1; /* Sit on top */
+   left: 0;
+   top: 0;
+   width: 100%; /* Full width */
+   height: 100%; /* Full height */
+   overflow: auto; /* Enable scroll if needed */
+   background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+/*styling for the actual modal that will hold songs */
+.modal-content {
+   background-color: #fefefe;
+   box-shadow: 3px 3px 3px;
+   margin: auto; /* 15% from the top and centered */
+   padding: 20px;
+   border: 1px solid #888;
+   max-width: 400px;
+   width: 100%; /* Could be more or less, depending on screen size */
+}
+
+.recipientOption {
+    width: 80%;
+    margin-left: 10%;
+    border: 2px solid black;
+    margin-bottom: 10px;
+    padding: 5px;
+    text-align: left;
+}
