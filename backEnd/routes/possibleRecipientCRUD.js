@@ -59,15 +59,28 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
 
   }
 
-  for (let i = 0; i < allpossibleRecipients.length; i++) {
-    allpossibleRecipients[i].wantScore = allpossibleRecipients[i].wantScore / 10;
-    allpossibleRecipients[i].Distance = (allpossibleRecipients[i].Distance - minDistance) / (maxDistance - minDistance);
-    allpossibleRecipients[i].donationsReceived = (allpossibleRecipients[i].donationsReceived - minDonationsReceived) / (maxDonationsReceived - minDonationsReceived);
-    allpossibleRecipients[i].numTimesDonated = (allpossibleRecipients[i].numTimesDonated - minTimesDonated) / (maxTimesDonated - minTimesDonated);
-    allpossibleRecipients[i].lastDonationReceived = (allpossibleRecipients[i].lastDonationReceived - youngestDonationReceived) / (oldestDonationReceived - youngestDonationReceived);
+  const numTimesDonatedWeight = 10;
+  const distanceWeight = 30;
+  const donationsReceivedWeight = 10;
+  const lastDonationReceivedWeight = 20;
+  const wantScoreWeight = 30;
 
-    //need to do NAN checks at the end
+  for (let i = 0; i < allpossibleRecipients.length; i++) {
+    allpossibleRecipients[i].wantScorePoints = (allpossibleRecipients[i].wantScore / 5) * wantScoreWeight;
+    allpossibleRecipients[i].DistancePoints = (1 - ((allpossibleRecipients[i].Distance - minDistance) / (maxDistance - minDistance))) * distanceWeight;
+    allpossibleRecipients[i].donationsReceivedPoints = (1 - ((allpossibleRecipients[i].donationsReceived - minDonationsReceived) / (maxDonationsReceived - minDonationsReceived))) * donationsReceivedWeight;
+    allpossibleRecipients[i].numTimesDonatedPoints = (allpossibleRecipients[i].numTimesDonated - minTimesDonated) / (maxTimesDonated - minTimesDonated) * numTimesDonatedWeight;
+    allpossibleRecipients[i].lastDonationReceivedPoints = (1 - ((allpossibleRecipients[i].lastDonationReceived - youngestDonationReceived) / (oldestDonationReceived - youngestDonationReceived))) * lastDonationReceivedWeight;
+    allpossibleRecipients[i].score = allpossibleRecipients[i].lastDonationReceivedPoints + allpossibleRecipients[i].numTimesDonatedPoints + allpossibleRecipients[i].donationsReceivedPoints + allpossibleRecipients[i].DistancePoints + allpossibleRecipients[i].wantScorePoints;
   }
+
+  allpossibleRecipients.sort((rec1, rec2) => {
+    if (rec1.score > rec2.score) {
+      return -1;
+    } else {
+      return 1;
+    }
+  })
 
 
   console.log(allpossibleRecipients);
