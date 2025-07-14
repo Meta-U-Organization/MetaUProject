@@ -14,7 +14,7 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
   const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient(
-    item.userId,
+    signedInUser,
     item.id
   );
 

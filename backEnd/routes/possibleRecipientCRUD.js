@@ -22,11 +22,6 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
   });
 
 
-  if (allpossibleRecipients.length > 1) {
-    res.json(newPossibleRecipient);
-    return;
-  }
-
   //to get all values
   let minDistance, maxDistance, minDonationsReceived, maxDonationsReceived,
     minTimesDonated, maxTimesDonated, oldestDonationReceived, youngestDonationReceived;
@@ -35,40 +30,47 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     const requester = await prisma.user.findUnique({
       where: { id: parseInt(allpossibleRecipients[i].userId) },
     });
-
     allpossibleRecipients[i].donationsReceived = requester.donationsReceived;
     allpossibleRecipients[i].lastDonationReceived = requester.lastDonationReceived;
     allpossibleRecipients[i].numTimesDonated = requester.numTimesDonated;
-
-    minDistance = !minDistance || minDistance > allpossibleRecipients[i].Distance ?
+    minDistance = minDistance === undefined || minDistance > allpossibleRecipients[i].Distance ?
       allpossibleRecipients[i].Distance : minDistance;
 
-    maxDistance = !maxDistance || maxDistance < allpossibleRecipients[i].Distance ?
+    maxDistance = maxDistance === undefined || maxDistance < allpossibleRecipients[i].Distance ?
       allpossibleRecipients[i].Distance : maxDistance;
 
-    minDonationsReceived = !minDonationsReceived || minDonationsReceived > allpossibleRecipients[i].donationsReceived ?
+    minDonationsReceived = minDonationsReceived === undefined || minDonationsReceived > allpossibleRecipients[i].donationsReceived ?
       allpossibleRecipients[i].donationsReceived : minDonationsReceived;
 
-    maxDonationsReceived = !maxDonationsReceived || maxDonationsReceived < allpossibleRecipients[i].donationsReceived ?
+    maxDonationsReceived = maxDonationsReceived === undefined || maxDonationsReceived < allpossibleRecipients[i].donationsReceived ?
       allpossibleRecipients[i].donationsReceived : maxDonationsReceived;
 
-    minTimesDonated = !minTimesDonated || minTimesDonated > allpossibleRecipients[i].numTimesDonated ?
+    minTimesDonated = minTimesDonated === undefined || minTimesDonated > allpossibleRecipients[i].numTimesDonated ?
       allpossibleRecipients[i].numTimesDonated : minTimesDonated;
 
-    maxTimesDonated = !maxTimesDonated || maxTimesDonated < allpossibleRecipients[i].numTimesDonated ?
+    maxTimesDonated = maxTimesDonated === undefined || maxTimesDonated < allpossibleRecipients[i].numTimesDonated ?
       allpossibleRecipients[i].numTimesDonated : maxTimesDonated;
 
-    oldestDonationReceived = !oldestDonationReceived || oldestDonationReceived < allpossibleRecipients[i].lastDonationReceived ?
+    oldestDonationReceived = oldestDonationReceived === undefined || oldestDonationReceived < allpossibleRecipients[i].lastDonationReceived ?
       allpossibleRecipients[i].lastDonationReceived : oldestDonationReceived;
 
-    youngestDonationReceived = !youngestDonationReceived || youngestDonationReceived > allpossibleRecipients[i].lastDonationReceived ?
+    youngestDonationReceived = youngestDonationReceived === undefined || youngestDonationReceived > allpossibleRecipients[i].lastDonationReceived ?
       allpossibleRecipients[i].lastDonationReceived : youngestDonationReceived;
-
 
   }
 
-  //define mins and maxes
+  for (let i = 0; i < allpossibleRecipients.length; i++) {
+    allpossibleRecipients[i].wantScore = allpossibleRecipients[i].wantScore / 10;
+    allpossibleRecipients[i].Distance = (allpossibleRecipients[i].Distance - minDistance) / (maxDistance - minDistance);
+    allpossibleRecipients[i].donationsReceived = (allpossibleRecipients[i].donationsReceived - minDonationsReceived) / (maxDonationsReceived - minDonationsReceived);
+    allpossibleRecipients[i].numTimesDonated = (allpossibleRecipients[i].numTimesDonated - minTimesDonated) / (maxTimesDonated - minTimesDonated);
+    allpossibleRecipients[i].lastDonationReceived = (allpossibleRecipients[i].lastDonationReceived - youngestDonationReceived) / (oldestDonationReceived - youngestDonationReceived);
 
+    //need to do NAN checks at the end
+  }
+
+
+  console.log(allpossibleRecipients);
   res.json(allpossibleRecipients);
 })
 
