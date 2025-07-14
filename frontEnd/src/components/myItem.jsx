@@ -10,6 +10,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
   const itemRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const [loadRemaining, setLoadRemaining] = useState(false);
+  const [noUserSelected, setNoUserSelected] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const { fetchDelete } = useDeleteItem(userId, postType, item.id);
   const { fetchEdit } = useEditItem(userId, postType, item.id);
@@ -67,6 +68,8 @@ function MyItem({ postType, userId, item, onPostChange }) {
   };
 
   const turnModalOff = () => {
+    setNoUserSelected(false);
+    setLoadRemaining(false);
     setShowModal(false);
   };
 
@@ -86,6 +89,10 @@ function MyItem({ postType, userId, item, onPostChange }) {
 
   const selectRecipient = async (event) => {
     event.preventDefault();
+    if (selectedRecipient === null) {
+      setNoUserSelected(true);
+      return;
+    }
     await fetchUpdateSelected(
       JSON.stringify({
         selectedId: selectedRecipient,
@@ -132,9 +139,9 @@ function MyItem({ postType, userId, item, onPostChange }) {
             <button onClick={postItemEdits}>Submit Edits</button>
             <button onClick={deleteItem}>Delete</button>
           </div>
-          <form>
+          {topThreeRecipients?.length !== 0 && (
             <button onClick={fulfill}>Choose a Recipient</button>
-          </form>
+          )}
         </div>
       </div>
       <div style={{ width: "44%" }}>
@@ -148,9 +155,15 @@ function MyItem({ postType, userId, item, onPostChange }) {
         <div id="selectRecipientModal" className="modal">
           <div
             className="modal-content"
-            style={{ display: "flex", flexDirection: "column" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              maxHeight: "80%",
+              overflowY: "scroll",
+            }}
           >
             <button onClick={turnModalOff}>X</button>
+            <h2>Top Three Possible Recipients</h2>
             {topThreeRecipients?.map((rec) => {
               return (
                 <div key={rec.id} className="recipientOption">
@@ -175,6 +188,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
             })}
             {loadRemaining && (
               <div>
+                <h2>Other Possible Recipients</h2>
                 {remainingRecipients?.map((rec) => {
                   return (
                     <div key={rec.id} className="recipientOption">
@@ -199,7 +213,10 @@ function MyItem({ postType, userId, item, onPostChange }) {
                 })}
               </div>
             )}
-            <button onClick={loadMore}>Load Remaining</button>
+            {remainingRecipients?.length > 0 && (
+              <button onClick={loadMore}>Load Remaining</button>
+            )}
+            {noUserSelected && <h3 id="notSelected">No user Selected</h3>}
             <button onClick={selectRecipient}>Select Recipient</button>
           </div>
         </div>
