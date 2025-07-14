@@ -64,7 +64,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
   }
 
   const numTimesDonatedWeight = 10;
-  const distanceWeight = 30;
+  const distanceWeight = 40;
   const donationsReceivedWeight = 10;
   const lastDonationReceivedWeight = 20;
   const wantScoreWeight = 30;
@@ -103,6 +103,25 @@ router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, r
     }
   })
   res.json(newPossibleRecipient);
+})
+
+router.post('/selectRecipient', async (req, res) => {
+  //will set users donations received + 1 and last donation received
+  const { selectedId} = req.body;
+
+  const selectedUser = await prisma.user.findUnique({
+    where:{id:parseInt(selectedId)},
+  });
+
+  const updatedUser = await prisma.user.update({
+    where: { id: parseInt(selectedId) },
+    data: {
+      donationsReceived: selectedUser.donationsReceived+1,
+      lastDonationReceived: new Date(Date.now())
+    }
+  });
+  res.json(updatedUser)
+  //will delete the post
 })
 
 
