@@ -30,6 +30,10 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     const requester = await prisma.user.findUnique({
       where: { id: parseInt(allpossibleRecipients[i].userId) },
     });
+    allpossibleRecipients[i].username = requester.username;
+    allpossibleRecipients[i].name = requester.name;
+    allpossibleRecipients[i].email = requester.email;
+    allpossibleRecipients[i].phoneNumber = requester.phoneNumber;
     allpossibleRecipients[i].donationsReceived = requester.donationsReceived;
     allpossibleRecipients[i].lastDonationReceived = requester.lastDonationReceived;
     allpossibleRecipients[i].numTimesDonated = requester.numTimesDonated;
@@ -82,8 +86,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     }
   })
 
-  const orderedRecipients = allpossibleRecipients
-
+  const orderedRecipients = allpossibleRecipients;
   res.json(orderedRecipients);
 })
 
