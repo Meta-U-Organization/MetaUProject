@@ -20,7 +20,6 @@ class orderedRecipients {
             this.recipients[i].lastDonationReceived = requester.lastDonationReceived;
             this.recipients[i].numTimesDonated = requester.numTimesDonated;
         }
-        console.log(this.recipients);
     }
 
 }
