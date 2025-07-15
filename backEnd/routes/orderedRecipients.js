@@ -72,6 +72,34 @@ class orderedRecipients {
         }
     }
 
+    async score() {
+        const numTimesDonatedWeight = 10;
+        const distanceWeight = 40;
+        const donationsReceivedWeight = 10;
+        const lastDonationReceivedWeight = 20;
+        const wantScoreWeight = 30;
+        for (let i = 0; i < this.recipients.length; i++) {
+            this.recipients[i].wantScorePoints = this.recipients[i].wantScoreNormalize * wantScoreWeight;
+            this.recipients[i].DistancePoints = this.recipients[i].DistanceNormalize * distanceWeight;
+            this.recipients[i].donationsReceivedPoints = this.recipients[i].donationsReceivedNormalize * donationsReceivedWeight;
+            this.recipients[i].numTimesDonatedPoints = this.recipients[i].numTimesDonatedNormalize * numTimesDonatedWeight;
+            this.recipients[i].lastDonationReceivedPoints = this.recipients[i].lastDonationReceivedNormalize * lastDonationReceivedWeight;
+            this.recipients[i].score = this.recipients[i].wantScorePoints + this.recipients[i].DistancePoints + this.recipients[i].donationsReceivedPoints + this.recipients[i].numTimesDonatedPoints + this.recipients[i].lastDonationReceivedPoints
+        }
+
+        console.log(this.recipients);
+    }
+
+    async sort() {
+        this.recipients.sort((rec1, rec2) => {
+            if (rec1.score > rec2.score) {
+                return -1;
+            } else {
+                return 1;
+            }
+        })
+        console.log(this.recipients);
+    }
 
 }
 module.exports = orderedRecipients
