@@ -10,7 +10,7 @@ class RecipientRecommender {
         this.wantScoreWeight = 30;
     }
 
-    async minMax() {
+    minMax() {
         this.minDistance = this.recipients[0].Distance;
         this.maxDistance = this.recipients[0].Distance;
         this.minDonationsReceived = this.recipients[0].donationsReceived;
@@ -50,7 +50,7 @@ class RecipientRecommender {
         }
     }
 
-    async normalize() {
+    normalize() {
         for (let i = 0; i < this.recipients.length; i++) {
             this.recipients[i].wantScoreNormalize = (this.recipients[i].wantScore / 5);
             this.recipients[i].DistanceNormalize = (1 - ((this.recipients[i].Distance - this.minDistance) / (this.maxDistance - this.minDistance)));
@@ -60,18 +60,38 @@ class RecipientRecommender {
         }
     }
 
-    async score() {
+    score() {
         for (let i = 0; i < this.recipients.length; i++) {
-            this.recipients[i].wantScorePoints = this.recipients[i].wantScoreNormalize * this.wantScoreWeight;
-            this.recipients[i].DistancePoints = this.recipients[i].DistanceNormalize * this.distanceWeight;
-            this.recipients[i].donationsReceivedPoints = this.recipients[i].donationsReceivedNormalize * this.donationsReceivedWeight;
-            this.recipients[i].numTimesDonatedPoints = this.recipients[i].numTimesDonatedNormalize * this.numTimesDonatedWeight;
-            this.recipients[i].lastDonationReceivedPoints = this.recipients[i].lastDonationReceivedNormalize * this.lastDonationReceivedWeight;
+            this.recipients[i].wantScorePoints = this.weightWantScore(i);
+            this.recipients[i].DistancePoints = this.weightDistance(i);
+            this.recipients[i].donationsReceivedPoints = this.weightDonationsReceived(i);
+            this.recipients[i].numTimesDonatedPoints = this.weightNumTimesDonated(i);
+            this.recipients[i].lastDonationReceivedPoints = this.weightLastDonationReceived(i);
             this.recipients[i].score = this.recipients[i].wantScorePoints + this.recipients[i].DistancePoints + this.recipients[i].donationsReceivedPoints + this.recipients[i].numTimesDonatedPoints + this.recipients[i].lastDonationReceivedPoints
         }
     }
 
-    async sort() {
+    weightWantScore(index) {
+        return this.recipients[index].wantScoreNormalize * this.wantScoreWeight;
+    }
+
+    weightDistance(index) {
+        return this.recipients[index].DistanceNormalize * this.distanceWeight;
+    }
+
+    weightDonationsReceived(index) {
+        return this.recipients[index].donationsReceivedNormalize * this.donationsReceivedWeight;
+    }
+
+    weightNumTimesDonated(index) {
+        return this.recipients[index].numTimesDonatedNormalize * this.numTimesDonatedWeight;
+    }
+
+    weightLastDonationReceived(index) {
+        return this.recipients[index].lastDonationReceivedNormalize * this.lastDonationReceivedWeight;
+    }
+
+    sort() {
         this.recipients.sort((rec1, rec2) => {
             if (rec1.score > rec2.score) {
                 return -1;
