@@ -22,5 +22,46 @@ class orderedRecipients {
         }
     }
 
+    async minMax() {
+        this.minDistance = this.recipients[0].Distance;
+        this.maxDistance = this.recipients[0].Distance;
+        this.minDonationsReceived = this.recipients[0].donationsReceived;
+        this.maxDonationsReceived = this.recipients[0].donationsReceived;
+        this.minTimesDonated = this.recipients[0].numTimesDonated;
+        this.maxTimesDonated = this.recipients[0].numTimesDonated;
+        this.oldestDonationReceived = this.recipients[0].lastDonationReceived;
+        this.youngestDonationReceived = this.recipients[0].lastDonationReceived;
+
+        for (let i = 0; i < this.recipients.length; i++) {
+
+            this.minDistance = this.minDistance === undefined || this.minDistance > this.recipients[i].Distance ?
+                this.recipients[i].Distance : this.minDistance;
+
+
+            this.maxDistance = this.maxDistance === undefined || this.maxDistance < this.recipients[i].Distance ?
+                this.recipients[i].Distance : this.maxDistance;
+
+            this.minDonationsReceived = this.minDonationsReceived === undefined || this.minDonationsReceived > this.recipients[i].donationsReceived ?
+                this.recipients[i].donationsReceived : this.minDonationsReceived;
+
+            this.maxDonationsReceived = this.maxDonationsReceived === undefined || this.maxDonationsReceived < this.recipients[i].donationsReceived ?
+                this.recipients[i].donationsReceived : this.maxDonationsReceived;
+
+            this.minTimesDonated = this.minTimesDonated === undefined || this.minTimesDonated > this.recipients[i].numTimesDonated ?
+                this.recipients[i].numTimesDonated : this.minTimesDonated;
+
+            this.maxTimesDonated = this.maxTimesDonated === undefined || this.maxTimesDonated < this.recipients[i].numTimesDonated ?
+                this.recipients[i].numTimesDonated : this.maxTimesDonated;
+
+            this.oldestDonationReceived = this.oldestDonationReceived === undefined || this.oldestDonationReceived < this.recipients[i].lastDonationReceived ?
+                this.recipients[i].lastDonationReceived : this.oldestDonationReceived;
+
+            this.youngestDonationReceived = this.youngestDonationReceived === undefined || this.youngestDonationReceived > this.recipients[i].lastDonationReceived ?
+                this.recipients[i].lastDonationReceived : this.youngestDonationReceived;
+
+        }
+    }
+
+
 }
 module.exports = orderedRecipients
