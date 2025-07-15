@@ -86,8 +86,6 @@ class orderedRecipients {
             this.recipients[i].lastDonationReceivedPoints = this.recipients[i].lastDonationReceivedNormalize * lastDonationReceivedWeight;
             this.recipients[i].score = this.recipients[i].wantScorePoints + this.recipients[i].DistancePoints + this.recipients[i].donationsReceivedPoints + this.recipients[i].numTimesDonatedPoints + this.recipients[i].lastDonationReceivedPoints
         }
-
-        console.log(this.recipients);
     }
 
     async sort() {
@@ -98,7 +96,6 @@ class orderedRecipients {
                 return 1;
             }
         })
-        console.log(this.recipients);
     }
 
 }
