@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
-const orderedRecipientsClass = require('./orderedRecipients')
+const RecipientRecommender = require('./RecipientRecommender')
 
 router.get('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
   const postId = parseInt(req.params.postId);
@@ -22,15 +22,29 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     }
   });
 
-  const findRecipients = new orderedRecipientsClass(allpossibleRecipients);
-  await findRecipients.fetchRelativeInfo();
-  await findRecipients.minMax();
-  await findRecipients.normalize();
-  await findRecipients.score();
-  await findRecipients.sort();
+  for (let i = 0; i < allpossibleRecipients.length; i++) {
+    const requester = await prisma.user.findUnique({
+      where: { id: parseInt(allpossibleRecipients[i].userId) },
+    });
+    allpossibleRecipients[i].username = requester.username;
+    allpossibleRecipients[i].name = requester.name;
+    allpossibleRecipients[i].email = requester.email;
+    allpossibleRecipients[i].phoneNumber = requester.phoneNumber;
+    allpossibleRecipients[i].donationsReceived = requester.donationsReceived;
+    allpossibleRecipients[i].lastDonationReceived = requester.lastDonationReceived;
+    allpossibleRecipients[i].numTimesDonated = requester.numTimesDonated;
+  }
 
-  const retRecipients = findRecipients.recipients;
-  res.json(retRecipients);
+  if (allpossibleRecipients.length > 1) {
+    const findRecipients = new RecipientRecommender(allpossibleRecipients);
+    findRecipients.minMax();
+    findRecipients.normalize();
+    findRecipients.score();
+    findRecipients.sort();
+    res.json(findRecipients.recipients);
+  } else {
+    res.json(allpossibleRecipients);
+  }
 })
 
 router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
