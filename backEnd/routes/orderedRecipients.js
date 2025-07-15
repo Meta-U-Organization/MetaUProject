@@ -62,6 +62,16 @@ class orderedRecipients {
         }
     }
 
+    async normalize() {
+        for (let i = 0; i < this.recipients.length; i++) {
+            this.recipients[i].wantScoreNormalize = (this.recipients[i].wantScore / 5);
+            this.recipients[i].DistanceNormalize = (1 - ((this.recipients[i].Distance - this.minDistance) / (this.maxDistance - this.minDistance)));
+            this.recipients[i].donationsReceivedNormalize = (1 - ((this.recipients[i].donationsReceived - this.minDonationsReceived) / (this.maxDonationsReceived - this.minDonationsReceived)));
+            this.recipients[i].numTimesDonatedNormalize = (this.recipients[i].numTimesDonated - this.minTimesDonated) / (this.maxTimesDonated - this.minTimesDonated);
+            this.recipients[i].lastDonationReceivedNormalize = (1 - ((this.recipients[i].lastDonationReceived - this.youngestDonationReceived) / (this.oldestDonationReceived - this.youngestDonationReceived)));
+        }
+    }
+
 
 }
 module.exports = orderedRecipients
