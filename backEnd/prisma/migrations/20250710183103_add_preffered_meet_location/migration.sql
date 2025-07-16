@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "user" ADD COLUMN     "prefferedMeetLocation" TEXT NOT NULL;
+ALTER TABLE "user" ADD COLUMN     "preferredMeetLocation" TEXT NOT NULL;
