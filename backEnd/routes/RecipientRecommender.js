@@ -11,7 +11,7 @@ class RecipientRecommender {
     }
 
     sanitize() {
-        for (let i = 1; i < this.recipients.length; i++) {
+        for (let i = 0; i < this.recipients.length; i++) {
             const distance = this.recipients[i].Distance.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
             this.recipients[i].Distance = distance[0].replace(",", "");
         }
