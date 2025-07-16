@@ -18,18 +18,31 @@ model user {
   phoneNumber           String
   address               String
   preferredMeetLocation String
+  donationsReceived     Int            @default(0)
+  lastDonationReceived  DateTime       @default(now())
+  numTimesDonated       Int            @default(0)
   donationPosts         donationPost[]
   requestPosts          requestPost[]
 }
 
 model donationPost {
-  id          Int    @id @default(autoincrement())
-  title       String
-  description String
-  photo       String
-  itemState   String
-  userId      Int
-  user        user   @relation(fields: [userId], references: [id])
+  id                 Int                  @id @default(autoincrement())
+  title              String
+  description        String
+  photo              String
+  itemState          String
+  userId             Int
+  possibleRecipients possibleRecipients[]
+  user               user                 @relation(fields: [userId], references: [id])
+}
+
+model possibleRecipients {
+  id             Int           @id @default(autoincrement())
+  userId         Int
+  Distance       Int
+  wantScore      Int
+  donationPost   donationPost? @relation(fields: [donationPostId], references: [id])
+  donationPostId Int?
 }
 
 model requestPost {
