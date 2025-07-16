@@ -99,8 +99,20 @@ router.delete('/users/:userId/donations/:postId', isAuthenticated, async (req, r
     where: {
       id: parseInt(postId),
       userId: parseInt(userId),
+    },
+    include: {
+      possibleRecipients: true
     }
   });
+
+  for (let i = 0; i < deletedpost.possibleRecipients.length; i++) {
+    const recId = deletedpost.possibleRecipients[i].id;
+    const deletedRecipient = await prisma.possibleRecipients.delete({
+      where: {
+        id: recId
+      }
+    })
+  }
   res.json(deletedpost);
 })
 
