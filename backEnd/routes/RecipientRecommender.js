@@ -19,46 +19,17 @@ class RecipientRecommender {
 
 
     minMax() {
-        this.minDistance = this.recipients[0].Distance;
-        this.maxDistance = this.recipients[0].Distance > 50 ? 50 : this.recipients[0].Distance;
-        this.minDonationsReceived = this.recipients[0].donationsReceived;
-        this.maxDonationsReceived = this.recipients[0].donationsReceived;
-        this.minTimesDonated = this.recipients[0].numTimesDonated;
-        this.maxTimesDonated = this.recipients[0].numTimesDonated;
-        this.oldestDonationReceived = this.recipients[0].lastDonationReceived;
-        this.youngestDonationReceived = this.recipients[0].lastDonationReceived;
-
-        for (let i = 1; i < this.recipients.length; i++) {
-            //if distance is more than 30 miles away we will want to set max distance as 30
-            this.minDistance = this.minDistance > this.recipients[i].Distance ?
-                this.recipients[i].Distance : this.minDistance;
-
-            if (this.maxDistance < this.recipients[i].Distance) {
-                this.maxDistance = this.recipients[i].Distance;
-            }
-
-            this.minDonationsReceived = this.minDonationsReceived > this.recipients[i].donationsReceived ?
-                this.recipients[i].donationsReceived : this.minDonationsReceived;
-
-            this.maxDonationsReceived = this.maxDonationsReceived < this.recipients[i].donationsReceived ?
-                this.recipients[i].donationsReceived : this.maxDonationsReceived;
-
-            this.minTimesDonated = this.minTimesDonated > this.recipients[i].numTimesDonated ?
-                this.recipients[i].numTimesDonated : this.minTimesDonated;
-
-            this.maxTimesDonated = this.maxTimesDonated < this.recipients[i].numTimesDonated ?
-                this.recipients[i].numTimesDonated : this.maxTimesDonated;
-
-            this.oldestDonationReceived = this.oldestDonationReceived < this.recipients[i].lastDonationReceived ?
-                this.recipients[i].lastDonationReceived : this.oldestDonationReceived;
-
-            this.youngestDonationReceived = this.youngestDonationReceived > this.recipients[i].lastDonationReceived ?
-                this.recipients[i].lastDonationReceived : this.youngestDonationReceived;
-        }
-
+        this.minDistance = Math.min(...this.recipients.map((recipient) => recipient.Distance));
+        this.maxDistance = Math.max(...this.recipients.map((recipient) => recipient.Distance));
         if (this.maxDistance > 50 && this.minDistance < 50) {
             this.maxDistance = 50;
         }
+        this.minDonationsReceived = Math.min(...this.recipients.map((recipient) => recipient.donationsReceived));
+        this.maxDonationsReceived = Math.max(...this.recipients.map((recipient) => recipient.donationsReceived));
+        this.minTimesDonated = Math.min(...this.recipients.map((recipient) => recipient.numTimesDonated));
+        this.maxTimesDonated = Math.max(...this.recipients.map((recipient) => recipient.numTimesDonated));
+        this.oldestDonationReceived = Math.min(...this.recipients.map((recipient) => recipient.lastDonationReceived));
+        this.youngestDonationReceived = Math.max(...this.recipients.map((recipient) => recipient.lastDonationReceived));
     }
 
     normalize() {
