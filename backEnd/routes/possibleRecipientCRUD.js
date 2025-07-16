@@ -30,6 +30,10 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     const requester = await prisma.user.findUnique({
       where: { id: parseInt(allpossibleRecipients[i].userId) },
     });
+    allpossibleRecipients[i].username = requester.username;
+    allpossibleRecipients[i].name = requester.name;
+    allpossibleRecipients[i].email = requester.email;
+    allpossibleRecipients[i].phoneNumber = requester.phoneNumber;
     allpossibleRecipients[i].donationsReceived = requester.donationsReceived;
     allpossibleRecipients[i].lastDonationReceived = requester.lastDonationReceived;
     allpossibleRecipients[i].numTimesDonated = requester.numTimesDonated;
@@ -60,7 +64,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
   }
 
   const numTimesDonatedWeight = 10;
-  const distanceWeight = 30;
+  const distanceWeight = 40;
   const donationsReceivedWeight = 10;
   const lastDonationReceivedWeight = 20;
   const wantScoreWeight = 30;
@@ -82,8 +86,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     }
   })
 
-  const orderedRecipients = allpossibleRecipients
-
+  const orderedRecipients = allpossibleRecipients;
   res.json(orderedRecipients);
 })
 
@@ -100,6 +103,36 @@ router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, r
     }
   })
   res.json(newPossibleRecipient);
+})
+
+router.post('/selectRecipient', async (req, res) => {
+  //will set users donations received + 1 and last donation received
+  const { selectedId, donorId} = req.body;
+
+  const selectedUser = await prisma.user.findUnique({
+    where:{id:parseInt(selectedId)},
+  });
+
+  const donor = await prisma.user.findUnique({
+    where:{id:parseInt(donorId)},
+  });
+
+
+  const updatedDonor = await prisma.user.update({
+    where: { id: parseInt(donorId) },
+    data: {
+      numTimesDonated: donor.numTimesDonated+1,
+    }
+  })
+
+  const updatedRecipient = await prisma.user.update({
+    where: { id: parseInt(selectedId) },
+    data: {
+      donationsReceived: selectedUser.donationsReceived+1,
+      lastDonationReceived: new Date(Date.now())
+    }
+  });
+  res.json(updatedRecipient)
 })
 
 

@@ -45,7 +45,6 @@ function DonationAndRequestPage() {
             if (item.userId !== signedInUser) {
               return (
                 <Item
-                  isMyPost={false}
                   postType={"donations"}
                   item={item}
                   userId={item.userId}
@@ -61,9 +60,9 @@ function DonationAndRequestPage() {
             if (item.userId !== signedInUser) {
               return (
                 <Item
-                  isMyPost={false}
                   postType={"requests"}
                   item={item}
+                  userId={item.userId}
                   key={item.id}
                 />
               );

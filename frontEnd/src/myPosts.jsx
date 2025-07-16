@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import Item from "./components/item";
+import MyItem from "./components/myItem.jsx";
 import Navigation from "./components/nav";
 import { Context } from "./App";
 import { useContext } from "react";
@@ -41,13 +41,12 @@ function MyPosts() {
         ) : isDonationList ? (
           donations?.map((item) => {
             return (
-              <Item
+              <MyItem
                 onPostChange={() => {
                   fetchMyPosts();
                 }}
                 userId={user.id}
-                postType={isDonationList ? "donations" : "requests"}
-                isMyPost={true}
+                postType="donations"
                 item={item}
                 key={item.id}
               />
@@ -56,13 +55,12 @@ function MyPosts() {
         ) : (
           requests?.map((item) => {
             return (
-              <Item
+              <MyItem
                 onPostChange={() => {
                   fetchMyPosts();
                 }}
                 userId={user.id}
-                postType={isDonationList ? "donations" : "requests"}
-                isMyPost={true}
+                postType="requests"
                 item={item}
                 key={item.id}
               />
