@@ -4,6 +4,7 @@ import useDeleteItem from "../utils/useDeleteItem";
 import useEditItem from "../utils/useEditItem";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
+import useOrderedPossibleRecipients from "../utils/useOrderedPossibleRecipients";
 import { Context } from "../App";
 
 function Item({ postType, userId, isMyPost, item, onPostChange }) {
@@ -16,8 +17,11 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
     signedInUser,
     item.id
   );
+
   const { fetchAllPossibleRecipients, possibleRecipients } =
     useAllPossibleRecipients(userId, item.id);
+  const { fetchOrderedPossibleRecipients, orderedRecipients } =
+    useOrderedPossibleRecipients(userId, item.id);
 
   useEffect(() => {
     for (let i = 0; i < possibleRecipients?.length; i++) {
@@ -26,11 +30,14 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
       }
     }
   }, [possibleRecipients]);
-
   useEffect(() => {
     fetchAllPossibleRecipients();
   }, []);
 
+  useEffect(() => {
+    fetchAllPossibleRecipients();
+    fetchOrderedPossibleRecipients();
+  }, []);
   /*This function is called when we want to delete an item from the list*/
   const deleteItem = async (event) => {
     event.preventDefault();
