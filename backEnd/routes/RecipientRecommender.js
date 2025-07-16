@@ -34,11 +34,7 @@ class RecipientRecommender {
                 this.recipients[i].Distance : this.minDistance;
 
             if (this.maxDistance < this.recipients[i].Distance) {
-                if (this.recipients[i].Distance > 50) {
-                    this.maxDistance = 50;
-                } else {
-                    this.maxDistance = this.recipients[i].Distance;
-                }
+                this.maxDistance = this.recipients[i].Distance;
             }
 
             this.minDonationsReceived = this.minDonationsReceived > this.recipients[i].donationsReceived ?
@@ -58,6 +54,10 @@ class RecipientRecommender {
 
             this.youngestDonationReceived = this.youngestDonationReceived > this.recipients[i].lastDonationReceived ?
                 this.recipients[i].lastDonationReceived : this.youngestDonationReceived;
+        }
+
+        if (this.maxDistance > 50 && this.minDistance < 50) {
+            this.maxDistance = 50;
         }
     }
 
