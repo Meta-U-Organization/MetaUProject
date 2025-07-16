@@ -10,6 +10,13 @@ class RecipientRecommender {
         this.wantScoreWeight = 30;
     }
 
+    sanitize() {
+        for (let i = 1; i < this.recipients.length; i++) {
+            const distance = this.recipients[i].Distance.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
+            this.recipients[i].Distance = distance[0].replace(",", "");
+        }
+    }
+
 
     minMax() {
         this.minDistance = this.recipients[0].Distance;

@@ -20,11 +20,9 @@ function Item({ postType, userId, item }) {
     event.preventDefault();
     const parentItem = itemRef.current;
     const wantScore = parentItem.querySelector(".wantScore").value;
-    const distance = item.distance.match(/\d{1,3}(?:,\d{3})*(?:\.\d+)?/g);
-    const finalDistance = distance[0].replace(",", "");
     fetchCreatePossibleRecipient(
       JSON.stringify({
-        Distance: parseInt(finalDistance),
+        Distance: item.distance,
         wantScore: parseInt(wantScore),
       })
     );

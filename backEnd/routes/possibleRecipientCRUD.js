@@ -37,6 +37,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
 
   if (allpossibleRecipients.length > 1) {
     const findRecipients = new RecipientRecommender(allpossibleRecipients);
+    findRecipients.sanitize()
     findRecipients.minMax();
     findRecipients.normalize();
     findRecipients.score();
