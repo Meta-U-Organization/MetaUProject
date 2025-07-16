@@ -16,6 +16,14 @@ function Item({ postType, userId, item }) {
   const { fetchAllPossibleRecipients, possibleRecipients } =
     useAllPossibleRecipients(userId, item.id);
 
+  useEffect(() => {
+    for (let i = 0; i < possibleRecipients?.length; i++) {
+      if (possibleRecipients[i].userId === signedInUser) {
+        setRequestSubmitted(true);
+      }
+    }
+  }, [possibleRecipients]);
+
   const requestItem = (event) => {
     event.preventDefault();
     const parentItem = itemRef.current;

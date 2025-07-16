@@ -39,18 +39,17 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
 })
 
 
-//get all users
+//gets all donations and calculates the distance between the user and the post
 router.get('/allDonations/:userId', async (req, res) => {
   const donations = await prisma.donationPost.findMany({})
   const userId = parseInt(req.params.userId);
-  let donor;
   const signedInUser = await prisma.user.findUnique({
     where: { id: parseInt(userId) }
   });
   const origin = signedInUser.address;
 
   for (let i = 0; i < donations.length; i++) {
-    donor = await prisma.user.findUnique({
+    const donor = await prisma.user.findUnique({
       where: { id: parseInt(donations[i].userId) }
     })
     const api_key = process.env.GOOGLE_API;
@@ -88,17 +87,6 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   res.json(newDonationPost);
 })
 
-router.post('/distance', async (req, res) => {
-  const { origin, destination } = req.body;
-  const api_key = process.env.GOOGLE_API;
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&units=imperial&key=${api_key}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  if (data.rows[0].elements[0].distance?.text == undefined) {
-    return res.status(401).json({ message: "Error" });
-  }
-  res.json(data)
-})
 
 //deletes post
 router.delete('/users/:userId/donations/:postId', isAuthenticated, async (req, res) => {
@@ -125,7 +113,6 @@ router.delete('/users/:userId/donations/:postId', isAuthenticated, async (req, r
       }
     })
   }
-
   res.json(deletedpost);
 })
 
