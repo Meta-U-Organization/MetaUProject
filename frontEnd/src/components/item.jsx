@@ -30,6 +30,9 @@ function Item({ postType, userId, isMyPost, item, onPostChange }) {
       }
     }
   }, [possibleRecipients]);
+  useEffect(() => {
+    fetchAllPossibleRecipients();
+  }, []);
 
   useEffect(() => {
     fetchAllPossibleRecipients();
