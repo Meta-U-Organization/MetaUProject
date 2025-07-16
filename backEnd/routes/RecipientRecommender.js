@@ -10,6 +10,7 @@ class RecipientRecommender {
         this.wantScoreWeight = 30;
     }
 
+
     minMax() {
         this.minDistance = this.recipients[0].Distance;
         this.maxDistance = this.recipients[0].Distance > 50 ? 50 : this.recipients[0].Distance;
@@ -69,12 +70,12 @@ class RecipientRecommender {
 
     score() {
         for (let i = 0; i < this.recipients.length; i++) {
-            this.recipients[i].wantScorePoints = this.weightWantScore(i);
-            this.recipients[i].DistancePoints = this.weightDistance(i);
-            this.recipients[i].donationsReceivedPoints = this.weightDonationsReceived(i);
-            this.recipients[i].numTimesDonatedPoints = this.weightNumTimesDonated(i);
-            this.recipients[i].lastDonationReceivedPoints = this.weightLastDonationReceived(i);
-            this.recipients[i].score = this.recipients[i].wantScorePoints + this.recipients[i].DistancePoints + this.recipients[i].donationsReceivedPoints + this.recipients[i].numTimesDonatedPoints + this.recipients[i].lastDonationReceivedPoints
+            this.recipients[i].score = 0;
+            this.recipients[i].score += this.weightWantScore(i);
+            this.recipients[i].score += this.weightDistance(i);
+            this.recipients[i].score += this.weightDonationsReceived(i);
+            this.recipients[i].score += this.weightNumTimesDonated(i);
+            this.recipients[i].score += this.weightLastDonationReceived(i);
         }
     }
 
