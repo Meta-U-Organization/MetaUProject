@@ -22,6 +22,10 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     }
   });
 
+  if (req.session.userId == null) {
+    return res.status(401).json({ message: "Not Signed In" });
+  }
+
   const signedInUserPreferredMeetTime = await prisma.user.findUnique({
     where: { id: req.session.userId },
     select: { preferredMeetTime: true }

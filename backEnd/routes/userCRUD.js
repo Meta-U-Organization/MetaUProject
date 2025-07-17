@@ -9,7 +9,7 @@ router.post("/signup", async (req, res) => {
   const { username, password, email, name, phoneNumber, address, preferredMeetTime, preferredMeetLocation } = req.body;
 
   if (!username || !password) {
-    return res.status(401).json({ message: "Username and password are required." });
+    return res.status(400).json({ message: "Username and password are required." });
   }
 
   const existingUser = await prisma.user.findUnique({
@@ -17,7 +17,7 @@ router.post("/signup", async (req, res) => {
   });
 
   if (existingUser) {
-    return res.status(401).json({ message: "Username already taken." });
+    return res.status(400).json({ message: "Username already taken." });
   }
 
   const existingEmail = await prisma.user.findUnique({
@@ -25,7 +25,7 @@ router.post("/signup", async (req, res) => {
   });
 
   if (existingEmail) {
-    return res.status(401).json({ message: "Email already in use." });
+    return res.status(400).json({ message: "Email already in use." });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -61,19 +61,17 @@ router.get('/me', async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Not logged in" });
   }
-
   const user = await prisma.user.findUnique({
     where: { id: req.session.userId },
-    select: { username: true } // Only return necessary data
   });
 
-  res.json({ id: req.session.userId, username: user.username });
+  res.json(user);
 })
 
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    return res.status(401).json({ message: "Username and password are required." });
+    return res.status(400).json({ message: "Username and password are required." });
   }
 
   const user = await prisma.user.findUnique({
@@ -85,13 +83,13 @@ router.post("/login", async (req, res) => {
   });
 
   if (!user) {
-    return res.status(401).json({ message: "Invalid Username" });
+    return res.status(400).json({ message: "Invalid Username" });
   }
 
   const isValidPassword = await bcrypt.compare(password, user.passwordHash);
 
   if (!isValidPassword) {
-    return res.status(401).json({ message: "Invalid username or password." });
+    return res.status(400).json({ message: "Invalid username or password." });
   }
   req.session.userId = user.id;
   res.json({ message: "Login successful!", user });
@@ -112,6 +110,9 @@ router.get('/users', async (req, res) => {
 //get individual users
 router.get('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
+  if (req.session.userId == null) {
+    return res.status(401).json({ message: "Not Signed In" });
+  }
   const individualUser = await prisma.user.findUnique({
     where: { id: parseInt(userId) },
     include: {

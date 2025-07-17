@@ -35,10 +35,8 @@ function App() {
       });
       const logInValues = await logIn.json();
       if (logIn.status === 200) {
-        const user = await fetch(`${backendUrl}/users/${logInValues.id}`);
-        const userRead = await user.json();
-        sessionStorage.setItem("user", JSON.stringify(userRead));
-        setUser(userRead);
+        sessionStorage.setItem("user", JSON.stringify(logInValues));
+        setUser(logInValues);
       }
     };
     if (user == null) {
