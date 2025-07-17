@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 
 
 router.post("/signup", async (req, res) => {
-  const { username, password, email, name, phoneNumber, address, preferredMeetLocation} = req.body;
+  const { username, password, email, name, phoneNumber, address, preferredMeetTime, preferredMeetLocation } = req.body;
 
   if (!username || !password) {
     return res.status(401).json({ message: "Username and password are required." });
@@ -17,7 +17,7 @@ router.post("/signup", async (req, res) => {
   });
 
   if (existingUser) {
-      return res.status(401).json({ message:  "Username already taken."});
+    return res.status(401).json({ message: "Username already taken." });
   }
 
   const existingEmail = await prisma.user.findUnique({
@@ -25,9 +25,9 @@ router.post("/signup", async (req, res) => {
   });
 
   if (existingEmail) {
-      return res.status(401).json({ message:  "Email already in use."});
+    return res.status(401).json({ message: "Email already in use." });
   }
-  
+
   const passwordHash = await bcrypt.hash(password, 10);
 
   const newUser = await prisma.user.create({
@@ -38,21 +38,22 @@ router.post("/signup", async (req, res) => {
       name,
       phoneNumber,
       address,
+      preferredMeetTime,
       preferredMeetLocation
     }
   });
-  res.json({message:  "Sign Up Succesful!"});
+  res.json({ message: "Sign Up Succesful!" });
 })
 
 router.post("/logout", (req, res) => {
 
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ error: "Failed to log out" });
-        }
-        res.clearCookie("connect.sid"); // Clear session cookie
-        res.json({ message: "Logged out successfully" });
-    });
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to log out" });
+    }
+    res.clearCookie("connect.sid"); // Clear session cookie
+    res.json({ message: "Logged out successfully" });
+  });
 
 });
 
@@ -60,7 +61,7 @@ router.get('/me', async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: "Not logged in" });
   }
-  
+
   const user = await prisma.user.findUnique({
     where: { id: req.session.userId },
     select: { username: true } // Only return necessary data
@@ -78,8 +79,8 @@ router.post("/login", async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { username },
     include: {
-        donationPosts:true,
-        requestPosts:true,
+      donationPosts: true,
+      requestPosts: true,
     }
   });
 
@@ -101,9 +102,10 @@ router.post("/login", async (req, res) => {
 router.get('/users', async (req, res) => {
   const users = await prisma.user.findMany({
     include: {
-        donationPosts:true,
-        requestPosts:true,
-    }})
+      donationPosts: true,
+      requestPosts: true,
+    }
+  })
   res.json(users)
 })
 
@@ -111,10 +113,10 @@ router.get('/users', async (req, res) => {
 router.get('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
   const individualUser = await prisma.user.findUnique({
-    where:{id:parseInt(userId)},
+    where: { id: parseInt(userId) },
     include: {
-        donationPosts:true,
-        requestPosts:true,
+      donationPosts: true,
+      requestPosts: true,
     }
   });
   res.json(individualUser);
@@ -125,14 +127,14 @@ router.delete('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
   const deletedUser = await prisma.user.delete({
     where: { id: parseInt(userId) }
-  }); 
+  });
   res.json(deletedUser);
 })
 
 //updates User
 router.put('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const { userName, passwordHash, email, name, phoneNumber, address} = req.body;
+  const { userName, passwordHash, email, name, phoneNumber, address } = req.body;
   const updatedUser = await prisma.user.update({
     where: { id: parseInt(userId) },
     data: {
