@@ -14,7 +14,11 @@ class DonationsReceivedHeuristic extends Heuristic {
         this.max = Math.max(...this.donations);
     }
     normalize() {
-        this.normalizedDonations = this.donations.map((dist) => (1 - ((dist - this.min) / (this.max - this.min))))
+        if (this.min === 0 && this.max === 0) {
+            this.normalizedDonations = this.donations.map((dist) => 0)
+        } else {
+            this.normalizedDonations = this.donations.map((dist) => (1 - ((dist - this.min) / (this.max - this.min))))
+        }
     }
     score() {
         this.weightedDonations = this.weight()
