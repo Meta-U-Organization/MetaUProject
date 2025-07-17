@@ -9,7 +9,6 @@ class WantScoreHeurisitic extends Heuristic {
     }
 
     sanitize() {
-
         this.wantScoresSanitized = this.wantScores.map((score) => parseInt(score));
     }
 
@@ -19,7 +18,7 @@ class WantScoreHeurisitic extends Heuristic {
     }
 
     normalize() {
-        this.normalizedWantScores = this.wantScores.map((score) => (score - this.min) / this.max)
+        this.normalizedWantScores = this.wantScoresSanitized.map((score) => (score - this.min) / this.max)
     }
     //due to the lack of variance I chose to have the score be only linearlly weighted
     weight() {
