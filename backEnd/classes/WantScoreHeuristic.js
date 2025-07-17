@@ -9,7 +9,8 @@ class WantScoreHeurisitic extends Heuristic {
     }
 
     sanitize() {
-        this.wantScores = this.wantScores;
+
+        this.wantScoresSanitized = this.wantScores.map((score) => parseInt(score));
     }
 
     minMax() {
