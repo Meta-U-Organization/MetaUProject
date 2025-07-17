@@ -22,11 +22,17 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     }
   });
 
+  const signedInUserPreferredMeetTime = await prisma.user.findUnique({
+    where: { id: req.session.userId },
+    select: { preferredMeetTime: true }
+  });
+
   for (let i = 0; i < allpossibleRecipients.length; i++) {
     const requester = await prisma.user.findUnique({
       where: { id: parseInt(allpossibleRecipients[i].userId) },
     });
     allpossibleRecipients[i].username = requester.username;
+    allpossibleRecipients[i].preferredMeetTime = requester.preferredMeetTime;
     allpossibleRecipients[i].name = requester.name;
     allpossibleRecipients[i].email = requester.email;
     allpossibleRecipients[i].phoneNumber = requester.phoneNumber;
@@ -36,7 +42,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
   }
 
   if (allpossibleRecipients.length > 1) {
-    const findRecipients = new RecipientRecommender(allpossibleRecipients);
+    const findRecipients = new RecipientRecommender(allpossibleRecipients, signedInUserPreferredMeetTime);
     findRecipients.sanitize()
     findRecipients.minMax();
     findRecipients.normalize();
