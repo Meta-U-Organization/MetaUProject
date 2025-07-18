@@ -40,7 +40,7 @@ model possibleRecipients {
   id             Int           @id @default(autoincrement())
   userId         Int
   Distance       String
-  wantScore      Int
+  wantScore      String
   donationPost   donationPost? @relation(fields: [donationPostId], references: [id])
   donationPostId Int?
 }

@@ -173,7 +173,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
                     <p>Name: {rec.name}</p>
                     <p>email: {rec.email}</p>
                     <p>Phone Number: {rec.phoneNumber}</p>
-                    <p>Distance: {rec.Distance} Miles</p>
+                    <p>Distance: {rec.Distance}</p>
                   </div>
                   <label htmlFor="selectedRecipient">Select</label>
                   <input
@@ -198,7 +198,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
                         <p>Name: {rec.name}</p>
                         <p>email: {rec.email}</p>
                         <p>Phone Number: {rec.phoneNumber}</p>
-                        <p>Distance: {rec.Distance} Miles</p>
+                        <p>Distance: {rec.Distance}</p>
                       </div>
                       <label htmlFor="selectedRecipient">Select</label>
                       <input

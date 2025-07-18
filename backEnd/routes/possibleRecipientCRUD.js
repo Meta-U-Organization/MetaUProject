@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
-const RecipientRecommender = require('./RecipientRecommender')
+const RecipientRecommender = require('../classes/RecipientRecommender')
 
 router.get('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
   const postId = parseInt(req.params.postId);
@@ -41,6 +41,7 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
     findRecipients.minMax();
     findRecipients.normalize();
     findRecipients.score();
+    findRecipients.aggregateScores();
     findRecipients.sort();
     res.json(findRecipients.recipients);
   } else {

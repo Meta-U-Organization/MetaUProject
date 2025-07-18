@@ -31,7 +31,7 @@ function Item({ postType, userId, item }) {
     fetchCreatePossibleRecipient(
       JSON.stringify({
         Distance: item.distance,
-        wantScore: parseInt(wantScore),
+        wantScore: wantScore,
       })
     );
     setRequestSubmitted(true);
@@ -69,11 +69,11 @@ function Item({ postType, userId, item }) {
                 Want Score:{" "}
               </label>
               <select className="wantScore" name="wantScore">
-                <option value="1">1 - Would be cool to have</option>
+                <option value="1 - Would be cool to have">1 - Would be cool to have</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                <option value="5">5 - I NEED IT!!!!</option>
+                <option value="5 - I NEED IT!!!!">5 - I NEED IT!!!!</option>
               </select>
               {requestSubmitted ? (
                 <h3>Request has been submitted</h3>
