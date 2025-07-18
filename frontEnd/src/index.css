@@ -25,8 +25,14 @@ input[type="text"] {
   padding: 7.5px;
 }
 
+select {
+  border-radius: 5px;
+  padding: 7.5px;
+  border: 1px solid black;
+}
+
 a:hover {
-  color: black;
+  text-decoration: underline;
 }
 
 body {
