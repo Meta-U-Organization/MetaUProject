@@ -51,10 +51,10 @@ function Item({ postType, userId, item }) {
 
   return (
     <div
-      style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
+      style={{ border: "1px solid black", display: "flex", justifyContent:"center", marginTop: "20px" }}
       ref={itemRef}
     >
-      <div style={{ width: "44%", marginLeft: "6%" }}>
+      <div>
         <div>
           <h2>{item.title}</h2>
           <p>{item.description}</p>
@@ -89,12 +89,7 @@ function Item({ postType, userId, item }) {
           )}
         </div>
       </div>
-      <div style={{ width: "44%" }}>
-        <img
-          style={{ width: "100%", maxWidth: "300px" }}
-          src="https://thumbs.dreamstime.com/b/temporary-rubber-stamp-over-white-background-86664158.jpg"
-        ></img>
-      </div>
+
     </div>
   );
 }

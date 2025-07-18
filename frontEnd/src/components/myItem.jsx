@@ -109,10 +109,10 @@ function MyItem({ postType, userId, item, onPostChange }) {
 
   return (
     <div
-      style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
+      style={{ border: "1px solid black", display: "flex", justifyContent:"center", marginTop: "20px" }}
       ref={itemRef}
     >
-      <div style={{ width: "44%", marginLeft: "6%" }}>
+      <div>
         <div>
           <div>
             <label htmlFor="title">Title: </label>
@@ -144,12 +144,6 @@ function MyItem({ postType, userId, item, onPostChange }) {
             <button onClick={fulfill}>Choose a Recipient</button>
           )}
         </div>
-      </div>
-      <div style={{ width: "44%" }}>
-        <img
-          style={{ width: "100%", maxWidth: "300px" }}
-          src="https://thumbs.dreamstime.com/b/temporary-rubber-stamp-over-white-background-86664158.jpg"
-        ></img>
       </div>
       {showModal && (
         //modal that hosts functionality to make a card
