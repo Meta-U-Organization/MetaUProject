@@ -18,6 +18,7 @@ model user {
   phoneNumber           String
   address               String
   preferredMeetLocation String
+  preferredMeetTime     String
   donationsReceived     Int            @default(0)
   lastDonationReceived  DateTime       @default(now())
   numTimesDonated       Int            @default(0)

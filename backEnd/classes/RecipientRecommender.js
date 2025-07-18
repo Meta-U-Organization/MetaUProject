@@ -2,12 +2,14 @@ const DistancesHeuristic = require("./DistancesHeuristic");
 const DonationsReceivedHeuristic = require("./DonationsReceivedHeuristic");
 const LastDonationReceivedHeuristic = require("./LastDonationReceivedHeuristic");
 const NumTimesDonatedHeurisitic = require("./NumTimesDonatedHeuristic");
+const PreferredMeetTimeHeuristic = require("./PreferredMeetTimeHeuristic");
 const WantScoreHeurisitic = require("./WantScoreHeuristic");
 
 class RecipientRecommender {
 
-    constructor(recipients) {
+    constructor(recipients, signedInUserPreferredMeetTime) {
         this.recipients = recipients;
+        this.preferredMeetTimeObject = new PreferredMeetTimeHeuristic(this.recipients.map((recipient) => recipient.preferredMeetTime), signedInUserPreferredMeetTime.preferredMeetTime);
         this.wantScoresObject = new WantScoreHeurisitic(this.recipients.map((recipient) => recipient.wantScore));
         this.numTimesDonatedObject = new NumTimesDonatedHeurisitic(this.recipients.map((recipient) => recipient.numTimesDonated));
         this.lastDonationReceivedObject = new LastDonationReceivedHeuristic(this.recipients.map((recipient) => recipient.lastDonationReceived));
@@ -16,6 +18,7 @@ class RecipientRecommender {
     }
 
     sanitize() {
+        this.preferredMeetTimeObject.sanitize();
         this.wantScoresObject.sanitize();
         this.numTimesDonatedObject.sanitize();
         this.lastDonationReceivedObject.sanitize();
@@ -25,6 +28,7 @@ class RecipientRecommender {
 
 
     minMax() {
+        this.preferredMeetTimeObject.minMax();
         this.wantScoresObject.minMax();
         this.numTimesDonatedObject.minMax();
         this.lastDonationReceivedObject.minMax();
@@ -33,6 +37,7 @@ class RecipientRecommender {
     }
 
     normalize() {
+        this.preferredMeetTimeObject.normalize();
         this.wantScoresObject.normalize();
         this.numTimesDonatedObject.normalize();
         this.lastDonationReceivedObject.normalize();
@@ -41,6 +46,7 @@ class RecipientRecommender {
     }
 
     score() {
+        this.preferredMeetTimeObject.score();
         this.wantScoresObject.score();
         this.numTimesDonatedObject.score();
         this.lastDonationReceivedObject.score();
@@ -49,6 +55,7 @@ class RecipientRecommender {
     }
 
     aggregateScores() {
+        this.timeScores = this.preferredMeetTimeObject.getScore()
         this.wantScores = this.wantScoresObject.getScore();
         this.timesDonatedScores = this.numTimesDonatedObject.getScore();
         this.lastDonationScores = this.lastDonationReceivedObject.getScore();
@@ -56,6 +63,7 @@ class RecipientRecommender {
         this.donationsReceivedScores = this.donationsReceivedObject.getScore();
         for (let i = 0; i < this.recipients.length; i++) {
             this.recipients[i].score = 0;
+            this.recipients[i].score += this.timeScores[i];
             this.recipients[i].score += this.wantScores[i]
             this.recipients[i].score += this.timesDonatedScores[i]
             this.recipients[i].score += this.lastDonationScores[i]

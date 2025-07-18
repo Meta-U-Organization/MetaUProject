@@ -68,6 +68,12 @@ function SignUpPage() {
             name="preferredMeetLocation"
             placeholder="Enter your preferred meet location"
           ></input>
+          <label htmlFor="preferredMeetTime">Preferred Meet Time</label>
+          <select name="preferredMeetTime">
+            <option value={"Morning"}>Morning</option>
+            <option value={"Afternoon"}>Afternoon</option>
+            <option value={"Evening"}>Evening</option>
+          </select>
           <button type="submit" onClick={signUpFunc}>
             Submit
           </button>

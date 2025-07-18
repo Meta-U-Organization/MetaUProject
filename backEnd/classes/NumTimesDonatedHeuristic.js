@@ -17,7 +17,13 @@ class NumTimesDonatedHeurisitic extends Heuristic {
     }
 
     normalize() {
-        this.normalizedTimesDonated = this.numTimesDonated.map((num) => (num - this.min) / (this.max - this.min))
+        this.normalizedTimesDonated = this.numTimesDonated.map((num) => {
+            if (this.min === 0 && this.max === 0) {
+                return 0;
+            } else {
+                return (num - this.min) / (this.max - this.min);
+            }
+        })
     }
 
     score() {
