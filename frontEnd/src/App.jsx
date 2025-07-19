@@ -8,7 +8,6 @@ import {
   Routes,
 } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
-import MainPage from "./mainPage.jsx";
 import LoginPage from "./LoginPage.jsx";
 import DonationAndRequestPage from "./DonationAndRequestPage.jsx";
 import SettingsPage from "./SettingsPage.jsx";
@@ -56,7 +55,6 @@ function App() {
     <Context.Provider value={{ user, setUser, backendUrl }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainPage />}></Route>
           <Route element={<PrivateRoutes currentUser={user} />}>
             <Route path="/settings" element={<SettingsPage />}></Route>
             <Route path="/makeAPost" element={<PostCreationPage />}></Route>
