@@ -38,7 +38,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
     const parentItem = itemRef.current;
     const description = parentItem.querySelector("#description").value;
     const title = parentItem.querySelector("#title").value;
-    const itemState = parentItem.querySelector("#useStates").value;
+    const itemState = parentItem.querySelector("#itemStates").value;
 
     if (title !== "" && description !== "") {
       fetchEdit(
@@ -109,12 +109,12 @@ function MyItem({ postType, userId, item, onPostChange }) {
 
   return (
     <div
-      style={{ border: "1px solid black", display: "flex", justifyContent:"center", marginTop: "20px" }}
+      style={{ border: "2px solid white", borderRadius:"15px", display: "flex", justifyContent:"center", marginTop: "20px" }}
       ref={itemRef}
     >
       <div>
         <div>
-          <div>
+          <div style={{display:"flex", flexDirection:"column"}}>
             <label htmlFor="title">Title: </label>
             <input
               id="title"
@@ -122,20 +122,20 @@ function MyItem({ postType, userId, item, onPostChange }) {
               type="text"
               placeholder={item.title}
             ></input>
+            <label htmlFor="description">Description: </label>
+            <input
+              name="description"
+              id="description"
+              type="text"
+              placeholder={item.description}
+            ></input>
+            <br></br>
+            <select name="itemState" id="itemStates" defaultValue={item.useState}>
+              <option value="Used Like New">Used Like New</option>
+              <option value="Used">Used</option>
+              <option value="New">New</option>
+            </select>
           </div>
-          <label htmlFor="description">Description: </label>
-          <input
-            name="description"
-            id="description"
-            type="text"
-            placeholder={item.description}
-          ></input>
-          <br></br>
-          <select name="useState" id="useStates" defaultValue={item.useState}>
-            <option value="Used Like New">Used Like New</option>
-            <option value="Used">Used</option>
-            <option value="New">New</option>
-          </select>
           <div>
             <button onClick={postItemEdits}>Submit Edits</button>
             <button onClick={deleteItem}>Delete</button>
