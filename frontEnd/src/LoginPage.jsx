@@ -12,7 +12,7 @@ function LoginPage() {
   useEffect(() => {
     if (confirmMessage === "Login successful!") {
       setUser(user);
-      navigate("/");
+      navigate("/items");
     }
   }, [confirmMessage]);
   const loginFunc = async (event) => {

@@ -78,6 +78,7 @@ function SignUpPage() {
             Submit
           </button>
         </form>
+        <a href="/login">Already have An Account?</a>
       </main>
       <footer>
         Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
