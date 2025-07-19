@@ -51,7 +51,8 @@ function Item({ postType, userId, item }) {
 
   return (
     <div
-      style={{ border: "1px solid black", display: "flex", justifyContent:"center", marginTop: "20px" }}
+      style={{ border: "2px solid white", borderRadius:"15px",
+         display: "flex", justifyContent:"center", marginTop: "20px" }}
       ref={itemRef}
     >
       <div>
@@ -75,6 +76,7 @@ function Item({ postType, userId, item }) {
                 <option value="4">4</option>
                 <option value="5 - I NEED IT!!!!">5 - I NEED IT!!!!</option>
               </select>
+              <br></br>
               {requestSubmitted ? (
                 <h3>Request has been submitted</h3>
               ) : (

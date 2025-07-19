@@ -20,9 +20,10 @@
 
 /*styling for the actual modal that will hold songs */
 .modal-content {
+   color: white;
    position: relative;
-   background-color: #fefefe;
-   box-shadow: 10px 10px 3px;
+   background-color: #4681af;
+   box-shadow: 10px 10px 3px black;
    border-radius: 10px;
    margin: auto;
    /* 15% from the top and centered */
@@ -30,8 +31,16 @@
    border: 1px solid #888;
    max-width: 400px;
    width: 100%;
-   animation: dropFromTop 1s;
+   animation: dropFromTop 0.7s ease-in-out;
    /* Could be more or less, depending on screen size */
+}
+
+.modal-content button {
+   transition: all 0.3s ease-in-out;
+}
+
+.modal-content button:hover {
+   transform: scale(1.1);
 }
 
 @keyframes dropFromTop {
@@ -48,7 +57,7 @@
    }
 
    50% {
-      height: 100%;
+      height: 50%;
    }
 
    75% {
@@ -56,6 +65,7 @@
    }
 
    100% {
+      height: calc-size(auto);
       transform: scale(1);
    }
 }
@@ -63,7 +73,8 @@
 .recipientOption {
    width: 80%;
    margin-left: 10%;
-   border: 2px solid black;
+   border-radius: 15px;
+   border: 2px solid white;
    margin-bottom: 10px;
    padding: 5px;
    text-align: left;

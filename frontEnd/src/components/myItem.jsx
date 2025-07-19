@@ -89,7 +89,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
 
   const selectRecipient = async (event) => {
     event.preventDefault();
-    if (selectedRecipient === null) {
+    if (selectedRecipient == null) {
       setNoUserSelected(true);
       return;
     }
