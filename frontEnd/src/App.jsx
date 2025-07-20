@@ -47,7 +47,7 @@ function App() {
     if (currentUser?.id) {
       return <Outlet />;
     } else {
-      return <Navigate to="/login" />;
+      return <Navigate to="/" />;
     }
   };
   return (
@@ -63,7 +63,7 @@ function App() {
             <Route path="/items" element={<DonationAndRequestPage />}></Route>
           </Route>
           <Route path="/signUp" element={<SignUpPage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/" element={<LoginPage />}></Route>
         </Routes>
       </BrowserRouter>
     </Context.Provider>
