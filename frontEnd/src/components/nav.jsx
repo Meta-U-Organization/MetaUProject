@@ -57,6 +57,13 @@ function Navigation() {
       >
         Settings
       </button>
+      <button
+        onClick={() => {
+          navigate("/notifications");
+        }}
+      >
+        Notificaitons
+      </button>
       <button onClick={logOut}>Log Out</button>
     </nav>
   );

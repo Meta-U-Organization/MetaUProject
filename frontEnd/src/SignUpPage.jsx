@@ -14,7 +14,7 @@ function SignUpPage() {
 
   const goToSignIn = (event) => {
     event.preventDefault();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -78,7 +78,7 @@ function SignUpPage() {
             Submit
           </button>
         </form>
-        <a href="/login">Already have An Account?</a>
+        <a href="/">Already have An Account?</a>
       </main>
       <footer>
         Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
