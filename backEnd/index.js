@@ -38,10 +38,23 @@ const addNewUser = (userId, socketId) => {
   }
 }
 
+const deleteUser = (userId) => {
+  const index = onlineUsers.findIndex(entry => entry.userId === userId);
+
+  if (index !== -1) {
+    onlineUsers.splice(index, 1);
+  }
+
+}
+
 io.on('connection', (socket) => {
   socket.on("newUser", (userId) => {
     const socketId = socket.id;
     addNewUser(userId, socketId);
+  })
+
+  socket.on("logout", (userId) => {
+    deleteUser(userId);
   })
   socket.on("disconnect", () => {
 
