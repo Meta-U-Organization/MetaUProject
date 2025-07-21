@@ -15,6 +15,7 @@ import PostCreationPage from "./PostCreationPage.jsx";
 import SavedPage from "./SavedPage.jsx";
 import MyPosts from "./myPosts.jsx";
 import SignUpPage from "./SignUpPage.jsx";
+import { socket } from "./socket.js";
 
 export const Context = createContext();
 
@@ -26,6 +27,9 @@ function App() {
   });
 
   const backendUrl = import.meta.env.VITE_BACKEND;
+
+  socket.on('connect', () => {
+  })
 
   useEffect(() => {
     const fetchLogIn = async () => {
