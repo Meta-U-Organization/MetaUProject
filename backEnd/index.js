@@ -5,6 +5,8 @@ const http = require("http");
 const cors = require('cors')
 const PORT = 3000;
 const app = express()
+const WebSocketManager = require('./classes/WebSocketManger');
+const manager = new WebSocketManager();
 
 const server = http.createServer(app)
 const io = require("socket.io")(server, {
@@ -22,42 +24,13 @@ app.use(
   })
 );
 
-let onlineUsers = [];
-
-const addNewUser = (userId, socketId) => {
-  let i = 0;
-  while (i < onlineUsers.length) {
-    if (onlineUsers[i].userId === userId) {
-      onlineUsers[i].socketId = socketId;
-      break;
-    }
-    i++;
-  }
-  if (i === onlineUsers.length) {
-    onlineUsers.push({ userId, socketId });
-  }
-}
-
-const deleteUser = (userId) => {
-  const index = onlineUsers.findIndex(entry => entry.userId === userId);
-
-  if (index !== -1) {
-    onlineUsers.splice(index, 1);
-  }
-
-}
-
 io.on('connection', (socket) => {
   socket.on("newUser", (userId) => {
     const socketId = socket.id;
-    addNewUser(userId, socketId);
+    manager.addNewUser(userId, socketId);
   })
-
   socket.on("logout", (userId) => {
-    deleteUser(userId);
-  })
-  socket.on("disconnect", () => {
-
+    manager.deleteUser(userId);
   })
 });
 
