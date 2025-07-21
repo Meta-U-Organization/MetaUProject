@@ -22,8 +22,30 @@ app.use(
   })
 );
 
+let onlineUsers = [];
+
+const addNewUser = (userId, socketId) => {
+  let i = 0;
+  while (i < onlineUsers.length) {
+    if (onlineUsers[i].userId === userId) {
+      onlineUsers[i].socketId = socketId;
+      break;
+    }
+    i++;
+  }
+  if (i === onlineUsers.length) {
+    onlineUsers.push({ userId, socketId });
+  }
+}
+
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  socket.on("newUser", (userId) => {
+    const socketId = socket.id;
+    addNewUser(userId, socketId);
+  })
+  socket.on("disconnect", () => {
+
+  })
 });
 
 server.listen(3000)
