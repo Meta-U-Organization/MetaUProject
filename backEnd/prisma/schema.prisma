@@ -22,6 +22,7 @@ model user {
   donationsReceived     Int            @default(0)
   lastDonationReceived  DateTime       @default(now())
   numTimesDonated       Int            @default(0)
+  notifications         String[]
   donationPosts         donationPost[]
   requestPosts          requestPost[]
 }
