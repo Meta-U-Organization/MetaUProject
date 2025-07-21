@@ -21,7 +21,7 @@ function NotificationsPage() {
         </header>
         <main>
             {loading ? <h1>Loading...</h1> : notifications?.map((notification) => {
-                return <Notification key={notification} text={notification}/>
+                return <Notification key={notification.id} title={notification.type} description={notification.description}/>
             })}
         </main>
         <footer>

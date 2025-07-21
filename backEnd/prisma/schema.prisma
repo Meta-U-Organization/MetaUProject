@@ -22,9 +22,17 @@ model user {
   donationsReceived     Int            @default(0)
   lastDonationReceived  DateTime       @default(now())
   numTimesDonated       Int            @default(0)
-  notifications         String[]
+  notifications         notification[]
   donationPosts         donationPost[]
   requestPosts          requestPost[]
+}
+
+model notification {
+  id          Int    @id @default(autoincrement())
+  type        String
+  description String
+  user        user?  @relation(fields: [userId], references: [id])
+  userId      Int?
 }
 
 model donationPost {

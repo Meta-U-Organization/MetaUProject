@@ -125,11 +125,14 @@ router.get('/users/:userId', async (req, res) => {
 
 router.get('/users/:userId/notifications', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  if (req.session.userId !== userId) {
-    return res.status(401).json({ message: "Not Authorized" });
-  }
+  // if (req.session.userId !== userId) {
+  //   return res.status(401).json({ message: "Not Authorized" });
+  // }
   const individualUser = await prisma.user.findUnique({
-    where: { id: parseInt(userId) }
+    where: { id: parseInt(userId) },
+    include: {
+      notifications: true,
+    }
   });
   res.json(individualUser.notifications);
 })
