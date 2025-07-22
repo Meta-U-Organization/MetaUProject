@@ -6,17 +6,32 @@ import useUserNotifications from "./utils/useUserNotifications";
 import { useContext } from "react";
 import { Context } from "./App";
 import { socket } from "./utils/socket";
+import React from "react";
 //main page layout for the page
 function NotificationsPage() {
     const {user} = useContext(Context);
     const { fetchUserNotifications, notifications, loading} = useUserNotifications(user.id);
     useEffect(() => {
-        fetchUserNotifications()
+        fetchUserNotifications();
+        
+        return  () => {
+            socket.off("getNotification")
+        }
     }, [])
 
     useEffect(()=> {
         socket.on("getNotification", (data) => {
-            fetchUserNotifications();
+            const newNotif = document.createElement('div')
+            newNotif.style.border = "2px solid white"
+            newNotif.style.borderRadius = "15px";
+            newNotif.style.marginTop = "20px";
+            const type = document.createElement('h2');
+            type.innerHTML = data.type;
+            const description = document.createElement('h3');
+            description.innerHTML = data.description;
+            newNotif.appendChild(type);
+            newNotif.appendChild(description);
+            document.getElementById("main").prepend(newNotif);
         })
     }, [socket]);
     return (
@@ -25,7 +40,7 @@ function NotificationsPage() {
             <Navigation />
             <h1>Notifications</h1>
         </header>
-        <main>
+        <main id="main">
             {loading ? <h1>Loading...</h1> : notifications?.map((notification) => {
                 return <Notification key={notification.id} title={notification.type} description={notification.description}/>
             })}

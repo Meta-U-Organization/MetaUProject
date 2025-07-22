@@ -32,8 +32,8 @@ io.on('connection', (socket) => {
   socket.on("logout", (userId) => {
     manager.deleteUser(userId);
   })
-  socket.on("requestSubmitted", (item) => {
-    manager.requestNotification(item.userId, io, item.title);
+  socket.on("requestSubmitted", (data) => {
+    manager.requestNotification(data.userId, io, data.type, data.description);
   })
 });
 

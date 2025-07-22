@@ -15,9 +15,9 @@ class WebSocketManager {
         }
     }
 
-    requestNotification(userId, io) {
+    requestNotification(userId, io, type, description) {
         if (userId in this.onlineUsers) {
-            io.to(this.onlineUsers[userId]).emit("getNotification")
+            io.to(this.onlineUsers[userId]).emit("getNotification", { type, description })
         }
     }
 }
