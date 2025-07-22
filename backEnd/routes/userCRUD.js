@@ -144,19 +144,6 @@ router.get('/users/:userId/notifications', async (req, res) => {
   res.json(individualUser.notifications);
 })
 
-router.post('/users/:userId/notifications', async (req, res) => {
-  const userId = parseInt(req.params.userId);
-  const { type, description } = req.body;
-  const newNotification = await prisma.notification.create({
-    data: {
-      type,
-      description,
-      userId
-    }
-  })
-  res.json(newNotification);
-})
-
 //deletes user
 router.delete('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
