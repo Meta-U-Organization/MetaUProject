@@ -2,24 +2,25 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
+import useCreateNotification from "../utils/useCreateNotification";
 import { Context } from "../App";
 import { socket } from "../utils/socket";
 
 function Item({ postType, userId, item }) {
   const itemRef = useRef(null);
-  const signedInUser = useContext(Context).user.id;
+  const signedInUser = useContext(Context).user;
   const [requestSubmitted, setRequestSubmitted] = useState(false);
+  const {fetchNotificationCreation, loading} = useCreateNotification(item.userId);
   const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient(
-    signedInUser,
+    signedInUser.id,
     item.id
   );
-
   const { fetchAllPossibleRecipients, possibleRecipients } =
     useAllPossibleRecipients(userId, item.id);
 
   useEffect(() => {
     for (let i = 0; i < possibleRecipients?.length; i++) {
-      if (possibleRecipients[i].userId === signedInUser) {
+      if (possibleRecipients[i].userId === signedInUser.id) {
         setRequestSubmitted(true);
       }
     }
@@ -33,6 +34,13 @@ function Item({ postType, userId, item }) {
       JSON.stringify({
         Distance: item.distance,
         wantScore: wantScore,
+      })
+    );
+
+    fetchNotificationCreation(
+      JSON.stringify({
+        type:"New Request for Donation Item",
+        description: `${signedInUser.username} requests your item titled: ${item.title}`
       })
     );
 
