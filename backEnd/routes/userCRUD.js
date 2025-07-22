@@ -29,7 +29,7 @@ router.post("/signup", async (req, res) => {
   }
 
   const partsOfAddress = address.split(/,/);
-  const city = partsOfAddress[1].trim();
+  const city = partsOfAddress[1].trim().toLowerCase();
 
   let area = await prisma.area.findUnique({
     where: { city: city },
@@ -42,7 +42,6 @@ router.post("/signup", async (req, res) => {
       }
     });
   }
-
   const passwordHash = await bcrypt.hash(password, 10);
 
   const newUser = await prisma.user.create({
