@@ -62,7 +62,7 @@ function Navigation() {
           navigate("/notifications");
         }}
       >
-        Notificaitons
+        Notifications
       </button>
       <button onClick={logOut}>Log Out</button>
     </nav>
