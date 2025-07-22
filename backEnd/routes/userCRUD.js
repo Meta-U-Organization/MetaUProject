@@ -28,6 +28,21 @@ router.post("/signup", async (req, res) => {
     return res.status(400).json({ message: "Email already in use." });
   }
 
+  const partsOfAddress = address.split(/,/);
+  const city = partsOfAddress[1].trim();
+
+  let area = await prisma.area.findUnique({
+    where: { city: city },
+  });
+
+  if (area == null) {
+    area = await prisma.area.create({
+      data: {
+        city
+      }
+    });
+  }
+
   const passwordHash = await bcrypt.hash(password, 10);
 
   const newUser = await prisma.user.create({
@@ -39,9 +54,11 @@ router.post("/signup", async (req, res) => {
       phoneNumber,
       address,
       preferredMeetTime,
-      preferredMeetLocation
+      preferredMeetLocation,
+      areaId: area.id
     }
   });
+
   res.json({ message: "Sign Up Succesful!" });
 })
 
