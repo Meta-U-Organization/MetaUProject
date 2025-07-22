@@ -134,7 +134,27 @@ router.get('/users/:userId/notifications', async (req, res) => {
       notifications: true,
     }
   });
+  individualUser.notifications.sort((a, b) => {
+    if (a.id < b.id) {
+      return 1;
+    } else if (a.id > b.id) {
+      return -1;
+    }
+  })
   res.json(individualUser.notifications);
+})
+
+router.post('/users/:userId/notifications', async (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const { type, description } = req.body;
+  const newNotification = await prisma.notification.create({
+    data: {
+      type,
+      description,
+      userId
+    }
+  })
+  res.json(newNotification);
 })
 
 //deletes user
