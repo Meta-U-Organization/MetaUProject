@@ -30,7 +30,9 @@ class WebSocketManager {
 
     requestNotification(userId, io, title) {
         const entry = this.onlineUsers.filter(entry => entry.userId === userId);
-        io.to(entry[0].socketId).emit("getNotification", `New Recipient for Item Titled ${title}`)
+        if (entry[0].socketId !== null) {
+            io.to(entry[0].socketId).emit("getNotification")
+        }
     }
 }
 module.exports = WebSocketManager;
