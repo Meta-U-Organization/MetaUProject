@@ -38,7 +38,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
     const parentItem = itemRef.current;
     const description = parentItem.querySelector("#description").value;
     const title = parentItem.querySelector("#title").value;
-    const itemState = parentItem.querySelector("#useStates").value;
+    const itemState = parentItem.querySelector("#itemStates").value;
 
     if (title !== "" && description !== "") {
       fetchEdit(
@@ -89,7 +89,7 @@ function MyItem({ postType, userId, item, onPostChange }) {
 
   const selectRecipient = async (event) => {
     event.preventDefault();
-    if (selectedRecipient === null) {
+    if (selectedRecipient == null) {
       setNoUserSelected(true);
       return;
     }
@@ -109,12 +109,12 @@ function MyItem({ postType, userId, item, onPostChange }) {
 
   return (
     <div
-      style={{ border: "1px solid black", display: "flex", marginTop: "20px" }}
+      style={{ border: "2px solid white", borderRadius:"15px", display: "flex", justifyContent:"center", marginTop: "20px" }}
       ref={itemRef}
     >
-      <div style={{ width: "44%", marginLeft: "6%" }}>
+      <div>
         <div>
-          <div>
+          <div style={{display:"flex", flexDirection:"column"}}>
             <label htmlFor="title">Title: </label>
             <input
               id="title"
@@ -122,20 +122,20 @@ function MyItem({ postType, userId, item, onPostChange }) {
               type="text"
               placeholder={item.title}
             ></input>
+            <label htmlFor="description">Description: </label>
+            <input
+              name="description"
+              id="description"
+              type="text"
+              placeholder={item.description}
+            ></input>
+            <br></br>
+            <select name="itemState" id="itemStates" defaultValue={item.useState}>
+              <option value="Used Like New">Used Like New</option>
+              <option value="Used">Used</option>
+              <option value="New">New</option>
+            </select>
           </div>
-          <label htmlFor="description">Description: </label>
-          <input
-            name="description"
-            id="description"
-            type="text"
-            placeholder={item.description}
-          ></input>
-          <br></br>
-          <select name="useState" id="useStates" defaultValue={item.useState}>
-            <option value="Used Like New">Used Like New</option>
-            <option value="Used">Used</option>
-            <option value="New">New</option>
-          </select>
           <div>
             <button onClick={postItemEdits}>Submit Edits</button>
             <button onClick={deleteItem}>Delete</button>
@@ -144,12 +144,6 @@ function MyItem({ postType, userId, item, onPostChange }) {
             <button onClick={fulfill}>Choose a Recipient</button>
           )}
         </div>
-      </div>
-      <div style={{ width: "44%" }}>
-        <img
-          style={{ width: "100%", maxWidth: "300px" }}
-          src="https://thumbs.dreamstime.com/b/temporary-rubber-stamp-over-white-background-86664158.jpg"
-        ></img>
       </div>
       {showModal && (
         //modal that hosts functionality to make a card
