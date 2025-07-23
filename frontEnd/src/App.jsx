@@ -16,6 +16,8 @@ import SavedPage from "./SavedPage.jsx";
 import MyPosts from "./myPosts.jsx";
 import SignUpPage from "./SignUpPage.jsx";
 import { socket } from "./utils/socket.js";
+import NotificationsPage from "./NotificationsPage.jsx";
+import PageFooter from "./components/PageFooter.jsx";
 
 export const Context = createContext();
 
@@ -67,10 +69,12 @@ function App() {
             <Route path="/saved" element={<SavedPage />}></Route>
             <Route path="/myPosts" element={<MyPosts />}></Route>
             <Route path="/items" element={<DonationAndRequestPage />}></Route>
+            <Route path="/notifications" element={<NotificationsPage />}></Route>
           </Route>
           <Route path="/signUp" element={<SignUpPage />}></Route>
           <Route path="/" element={<LoginPage />}></Route>
         </Routes>
+        <PageFooter />
       </BrowserRouter>
     </Context.Provider>
   );

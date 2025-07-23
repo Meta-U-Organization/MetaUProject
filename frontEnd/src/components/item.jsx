@@ -3,22 +3,22 @@ import { useContext, useEffect, useRef, useState } from "react";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
 import { Context } from "../App";
+import { socket } from "../utils/socket";
 
 function Item({ postType, userId, item }) {
   const itemRef = useRef(null);
-  const signedInUser = useContext(Context).user.id;
+  const signedInUser = useContext(Context).user;
   const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient(
-    signedInUser,
+    item.userId,
     item.id
   );
-
   const { fetchAllPossibleRecipients, possibleRecipients } =
     useAllPossibleRecipients(userId, item.id);
 
   useEffect(() => {
     for (let i = 0; i < possibleRecipients?.length; i++) {
-      if (possibleRecipients[i].userId === signedInUser) {
+      if (possibleRecipients[i].userId === signedInUser.id) {
         setRequestSubmitted(true);
       }
     }
@@ -32,8 +32,14 @@ function Item({ postType, userId, item }) {
       JSON.stringify({
         Distance: item.distance,
         wantScore: wantScore,
+        type:"New Request for Donation Item",
+        description: `${signedInUser.username} requests your item titled: ${item.title}`,
+        possibleRecipientId: signedInUser.id,
       })
     );
+
+    socket.emit("requestSubmitted", {userId: item.userId, type : "New Request for Donation Item", description: `${signedInUser.username} requests your item titled: ${item.title}`})
+
     setRequestSubmitted(true);
   };
 

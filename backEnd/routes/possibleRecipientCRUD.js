@@ -62,13 +62,20 @@ router.get('/users/:userId/donations/:postId/orderedRecipients', async (req, res
 router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
   const donationPostId = parseInt(req.params.postId);
   const userId = parseInt(req.params.userId);
-  const { Distance, wantScore } = req.body;
+  const { Distance, wantScore, type, description, possibleRecipientId } = req.body;
   const newPossibleRecipient = await prisma.possibleRecipients.create({
     data: {
-      userId,
+      userId: possibleRecipientId,
       Distance,
       wantScore,
       donationPostId,
+    }
+  })
+  const newNotification = await prisma.notification.create({
+    data: {
+      type,
+      description,
+      userId: userId
     }
   })
   res.json(newPossibleRecipient);
