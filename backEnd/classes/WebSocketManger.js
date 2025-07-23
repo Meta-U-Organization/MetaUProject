@@ -7,7 +7,7 @@ class WebSocketManager {
     constructor(io) {
         this.onlineUsers = {};
         this.io = io
-        const timer = 5000;
+        const timer = 24 * 60 * 60 * 1000;
         this.intervalId = setInterval(() => this.timedFunc(), timer)
     }
 
@@ -20,8 +20,23 @@ class WebSocketManager {
             }
         })
         const filteredDonations = allDonations.filter(donation =>
-            donation.possibleRecipients.length > 3 &&
-            now - donation.timeCreated.getTime() > (3 * 24 * 60 * 60 * 1000))
+            donation.possibleRecipients.length > 2 &&
+            now - donation.timeCreated.getTime() > (3 * 24 * 60 * 60 * 1000));
+        for (let i = 0; i < filteredDonations.length; i++) {
+            if (filteredDonations[i].userId in this.onlineUsers) {
+                this.io.to(this.onlineUsers[filteredDonations[i].userId]).emit("getNotification", {
+                    type: `Multiple Users are Waiting To Be Chosen`,
+                    description: `Your post titled "${filteredDonations[i].title}" has multiple users waiting to be chosen`
+                })
+            }
+            await prisma.notification.create({
+                data: {
+                    type: `Multiple Users are Waiting To Be Chosen`,
+                    description: `Your post titled "${filteredDonations[i].title}" has multiple users waiting to be chosen`,
+                    userId: filteredDonations[i].userId
+                }
+            })
+        }
     }
 
     addNewUser(userId, socketId) {
