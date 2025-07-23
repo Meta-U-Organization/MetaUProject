@@ -11,15 +11,9 @@ import React from "react";
 function NotificationsPage() {
     const {user} = useContext(Context);
     const { fetchUserNotifications, notifications, loading} = useUserNotifications(user.id);
-    useEffect(() => {
-        fetchUserNotifications();
-        
-        return  () => {
-            socket.off("getNotification")
-        }
-    }, [])
 
     useEffect(()=> {
+        fetchUserNotifications();
         socket.on("getNotification", (data) => {
             const newNotif = document.createElement('div')
             newNotif.style.border = "2px solid white"
@@ -33,6 +27,9 @@ function NotificationsPage() {
             newNotif.appendChild(description);
             document.getElementById("main").prepend(newNotif);
         })
+        return  () => {
+            socket.off("getNotification")
+        }
     }, [socket]);
     return (
         <div>
