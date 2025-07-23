@@ -36,18 +36,15 @@ function NotificationsPage() {
     }, [socket]);
     return (
         <div>
-        <header>
-            <Navigation />
-            <h1>Notifications</h1>
-        </header>
-        <main id="main">
-            {loading ? <h1>Loading...</h1> : notifications?.map((notification) => {
-                return <Notification key={notification.id} title={notification.type} description={notification.description}/>
-            })}
-        </main>
-        <footer>
-            Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
-        </footer>
+            <header>
+                <Navigation />
+                <h1>Notifications</h1>
+            </header>
+            <main id="main">
+                {loading ? <h1>Loading...</h1> : notifications?.map((notification) => {
+                    return <Notification key={notification.id} title={notification.type} description={notification.description}/>
+                })}
+            </main>
         </div>
     );
 }

@@ -17,6 +17,7 @@ import MyPosts from "./myPosts.jsx";
 import SignUpPage from "./SignUpPage.jsx";
 import { socket } from "./utils/socket.js";
 import NotificationsPage from "./NotificationsPage.jsx";
+import PageFooter from "./components/PageFooter.jsx";
 
 export const Context = createContext();
 
@@ -73,6 +74,7 @@ function App() {
           <Route path="/signUp" element={<SignUpPage />}></Route>
           <Route path="/" element={<LoginPage />}></Route>
         </Routes>
+        <PageFooter />
       </BrowserRouter>
     </Context.Provider>
   );
