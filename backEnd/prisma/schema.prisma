@@ -16,23 +16,24 @@ model area {
 }
 
 model user {
-  id                    Int            @id @default(autoincrement())
-  username              String         @unique
-  passwordHash          String
-  email                 String         @unique
-  name                  String
-  phoneNumber           String
-  address               String
-  preferredMeetLocation String
-  preferredMeetTime     String
-  donationsReceived     Int            @default(0)
-  lastDonationReceived  DateTime       @default(now())
-  numTimesDonated       Int            @default(0)
-  notifications         notification[]
-  donationPosts         donationPost[]
-  requestPosts          requestPost[]
-  area                  area?          @relation(fields: [areaId], references: [id])
-  areaId                Int?
+  id                       Int            @id @default(autoincrement())
+  username                 String         @unique
+  passwordHash             String
+  email                    String         @unique
+  name                     String
+  phoneNumber              String
+  address                  String
+  preferredMeetLocation    String
+  preferredMeetTime        String
+  donationsReceived        Int            @default(0)
+  lastDonationReceived     DateTime       @default(now())
+  lastNotificationReceived DateTime       @default(now())
+  numTimesDonated          Int            @default(0)
+  notifications            notification[]
+  donationPosts            donationPost[]
+  requestPosts             requestPost[]
+  area                     area?          @relation(fields: [areaId], references: [id])
+  areaId                   Int?
 }
 
 model notification {
