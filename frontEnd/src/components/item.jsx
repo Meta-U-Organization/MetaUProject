@@ -37,9 +37,6 @@ function Item({ postType, userId, item }) {
         possibleRecipientId: signedInUser.id,
       })
     );
-
-    socket.emit("requestSubmitted", {userId: item.userId, type : "New Request for Donation Item", description: `${signedInUser.username} requests your item titled: ${item.title}`})
-
     setRequestSubmitted(true);
   };
 

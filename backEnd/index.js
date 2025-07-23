@@ -1,5 +1,5 @@
 
-const express = require('express')
+const express = require('express');
 const session = require('express-session');
 const http = require("http");
 const cors = require('cors')
@@ -14,6 +14,7 @@ const io = require("socket.io")(server, {
   }
 });
 const manager = new WebSocketManager(io);
+module.exports = manager;
 
 app.use(express.json());
 app.use(
@@ -30,9 +31,6 @@ io.on('connection', (socket) => {
   })
   socket.on("logout", (userId) => {
     manager.deleteUser(userId);
-  })
-  socket.on("requestSubmitted", (data) => {
-    manager.requestNotification(data.userId, data.type, data.description);
   })
   socket.on("postCreated", ({ userId, areaId, type, description }) => {
     manager.areaPost(userId, areaId, type, description);
@@ -59,6 +57,7 @@ app.use(session({
 }));
 
 
+
 app.use(userRoutes);
 app.use(requestPostRoutes);
 app.use(donationPostRoutes);
@@ -67,3 +66,4 @@ app.use(possibleRecipientRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)
 })
+

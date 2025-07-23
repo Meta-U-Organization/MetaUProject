@@ -3,6 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 const RecipientRecommender = require('../classes/RecipientRecommender')
+const manager = require('../index')
 
 router.get('/users/:userId/donations/:postId/possibleRecipients', async (req, res) => {
   const postId = parseInt(req.params.postId);
@@ -78,6 +79,7 @@ router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, r
       userId: userId
     }
   })
+  manager.requestNotification(userId, type, description);
   const updatedNote = await prisma.user.update({
     where: { id: parseInt(possibleRecipientId) },
     data: {
