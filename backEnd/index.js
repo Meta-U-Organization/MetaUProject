@@ -35,6 +35,9 @@ io.on('connection', (socket) => {
   socket.on("requestSubmitted", (data) => {
     manager.requestNotification(data.userId, io, data.type, data.description);
   })
+  socket.on("postCreated", ({ areaId, type, description }) => {
+    manager.areaPost(areaId, type, description);
+  })
 });
 
 server.listen(3000)
