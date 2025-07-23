@@ -32,8 +32,10 @@ class WebSocketManager {
                 users: true
             }
         })
+        const oneDay = 24 * 60 * 60 * 1000;
+        const now = new Date(Date.now()).getTime();
         for (let i = 0; i < area.users.length; i++) {
-            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId) {
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (now - area.users[i].lastNotificationReceived.getTime() > oneDay)) {
                 this.io.to(this.onlineUsers[area.users[i].id]).emit("getNotification", { type, description })
             }
         }
