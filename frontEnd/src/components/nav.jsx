@@ -7,15 +7,15 @@ import { socket } from "../utils/socket";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
-  const { user, setUser } = useContext(Context);
+  const { signedInUser, setSignedInUser } = useContext(Context);
   const { fetchLogout } = useLogout();
 
   const logOut = async (event) => {
     event.preventDefault();
     fetchLogout();
     sessionStorage.clear();
-    socket.emit("logout", user.id);
-    setUser(null);
+    socket.emit("logout", signedInUser.id);
+    setSignedInUser(null);
     navigate("/login");
   };
 

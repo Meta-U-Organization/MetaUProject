@@ -6,7 +6,7 @@ import usePostCreation from "./utils/usePostCreation";
 import { socket } from "./utils/socket";
 //main page layout for the page
 function PostCreationPage() {
-  const { user } = useContext(Context);
+  const { signedInUser } = useContext(Context);
   const { loading, fetchPostCreation } = usePostCreation();
   const makePost = async (event) => {
     event.preventDefault();
@@ -15,10 +15,10 @@ function PostCreationPage() {
     formData.delete("type");
     const readableData = Object.fromEntries(formData);
     readableData.type = "New Donation In Your Area";
-    readableData.notificationDescription = `${user.username} in your area posted a new item titled: ${readableData.title}`
-    readableData.areaId = user.areaId;
-    fetchPostCreation(user.id, JSON.stringify(readableData), type);
-    socket.emit("postCreated", {userId: user.id, areaId: user.areaId, type : "New Donation In Your Area", description: `${user.username} in your area posted a new item titled: ${readableData.title}`})
+    readableData.notificationDescription = `${signedInUser.username} in your area posted a new item titled: ${readableData.title}`
+    readableData.areaId = signedInUser.areaId;
+    fetchPostCreation(signedInUser.id, JSON.stringify(readableData), type);
+    socket.emit("postCreated", {userId: signedInUser.id, areaId: signedInUser.areaId, type : "New Donation In Your Area", description: `${signedInUser.username} in your area posted a new item titled: ${readableData.title}`})
   };
 
   return (

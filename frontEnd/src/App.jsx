@@ -23,7 +23,7 @@ export const Context = createContext();
 
 function App() {
   const SESSION_STORAGE_USER_KEY = "user";
-  const [user, setUser] = useState(() => {
+  const [signedInUser, setSignedInUser] = useState(() => {
     const user = sessionStorage.getItem(SESSION_STORAGE_USER_KEY);
     return user ? JSON.parse(user) : null;
   });
@@ -37,13 +37,13 @@ function App() {
       const logInValues = await logIn.json();
       if (logIn.status === 200) {
         sessionStorage.setItem("user", JSON.stringify(logInValues));
-        setUser(logInValues);
+        setSignedInUser(logInValues);
       }
     };
-    if (user == null) {
+    if (signedInUser == null) {
       fetchLogIn();
     }
-  }, [user]);
+  }, [signedInUser]);
 
   const PrivateRoutes = ({ currentUser }) => {
     if (currentUser?.id) {
@@ -54,16 +54,16 @@ function App() {
   };
 
   window.addEventListener('load', () => {
-    if(user!==null){
-      socket.emit("newUser", user.id)
+    if(signedInUser!==null){
+      socket.emit("newUser", signedInUser.id)
     }
   })
   return (
     //router functionality for when we navigate to pages
-    <Context.Provider value={{ user, setUser, backendUrl }}>
+    <Context.Provider value={{ signedInUser, setSignedInUser, backendUrl }}>
       <BrowserRouter>
         <Routes>
-          <Route element={<PrivateRoutes currentUser={user} />}>
+          <Route element={<PrivateRoutes currentUser={signedInUser} />}>
             <Route path="/settings" element={<SettingsPage />}></Route>
             <Route path="/makeAPost" element={<PostCreationPage />}></Route>
             <Route path="/saved" element={<SavedPage />}></Route>

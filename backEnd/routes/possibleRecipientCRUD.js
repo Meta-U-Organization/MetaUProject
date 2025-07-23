@@ -78,6 +78,12 @@ router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, r
       userId: userId
     }
   })
+  const updatedNote = await prisma.user.update({
+    where: { id: parseInt(possibleRecipientId) },
+    data: {
+      lastNotificationReceived: new Date(Date.now()),
+    }
+  })
   res.json(newPossibleRecipient);
 })
 

@@ -9,8 +9,15 @@ import { socket } from "./utils/socket";
 import React from "react";
 //main page layout for the page
 function NotificationsPage() {
-    const {user} = useContext(Context);
-    const { fetchUserNotifications, notifications, loading} = useUserNotifications(user.id);
+    const {signedInUser} = useContext(Context);
+    const { fetchUserNotifications, notifications, loading} = useUserNotifications(signedInUser.id);
+    useEffect(() => {
+        fetchUserNotifications();
+        
+        return  () => {
+            socket.off("getNotification")
+        }
+    }, [])
 
     useEffect(()=> {
         fetchUserNotifications();
