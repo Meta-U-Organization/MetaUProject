@@ -3,6 +3,7 @@ import "./App.css";
 import Navigation from "./components/nav";
 import { Context } from "./App";
 import usePostCreation from "./utils/usePostCreation";
+import { socket } from "./utils/socket";
 //main page layout for the page
 function PostCreationPage() {
   const { user } = useContext(Context);
@@ -13,7 +14,11 @@ function PostCreationPage() {
     const type = Object.fromEntries(formData).type;
     formData.delete("type");
     const readableData = Object.fromEntries(formData);
+    readableData.type = "New Donation In Your Area";
+    readableData.notificationDescription = `${user.username} in your area posted a new item titled: ${readableData.title}`
+    readableData.areaId = user.areaId;
     fetchPostCreation(user.id, JSON.stringify(readableData), type);
+    socket.emit("postCreated", {userId: user.id, areaId: user.areaId, type : "New Donation In Your Area", description: `${user.username} in your area posted a new item titled: ${readableData.title}`})
   };
 
   return (

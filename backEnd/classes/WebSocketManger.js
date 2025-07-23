@@ -1,8 +1,12 @@
 
+const { PrismaClient } = require("../generated/prisma");
+const prisma = new PrismaClient;
+
 class WebSocketManager {
 
-    constructor() {
+    constructor(io) {
         this.onlineUsers = {};
+        this.io = io
     }
 
     addNewUser(userId, socketId) {
@@ -15,9 +19,23 @@ class WebSocketManager {
         }
     }
 
-    requestNotification(userId, io, type, description) {
+    requestNotification(userId, type, description) {
         if (userId in this.onlineUsers) {
-            io.to(this.onlineUsers[userId]).emit("getNotification", { type, description })
+            this.io.to(this.onlineUsers[userId]).emit("getNotification", { type, description })
+        }
+    }
+
+    async areaPost(userId, areaId, type, description) {
+        const area = await prisma.area.findUnique({
+            where: { id: areaId },
+            include: {
+                users: true
+            }
+        })
+        for (let i = 0; i < area.users.length; i++) {
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId) {
+                this.io.to(this.onlineUsers[area.users[i].id]).emit("getNotification", { type, description })
+            }
         }
     }
 }

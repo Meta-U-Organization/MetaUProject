@@ -6,8 +6,6 @@ const cors = require('cors')
 const PORT = 3000;
 const app = express()
 const WebSocketManager = require('./classes/WebSocketManger');
-const manager = new WebSocketManager();
-
 const server = http.createServer(app)
 const io = require("socket.io")(server, {
   cors: {
@@ -15,6 +13,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"]
   }
 });
+const manager = new WebSocketManager(io);
 
 app.use(express.json());
 app.use(
@@ -33,7 +32,10 @@ io.on('connection', (socket) => {
     manager.deleteUser(userId);
   })
   socket.on("requestSubmitted", (data) => {
-    manager.requestNotification(data.userId, io, data.type, data.description);
+    manager.requestNotification(data.userId, data.type, data.description);
+  })
+  socket.on("postCreated", ({ userId, areaId, type, description }) => {
+    manager.areaPost(userId, areaId, type, description);
   })
 });
 
