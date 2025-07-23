@@ -74,7 +74,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   if (req.session.userId !== userId) {
     return res.status(401).json({ message: "Invalid User" });
   }
-  const { title, description, photo, itemState } = req.body;
+  const { title, description, photo, itemState, type, notificationDescription } = req.body;
   const newDonationPost = await prisma.donationPost.create({
     data: {
       title,
@@ -84,6 +84,14 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
       userId
     }
   });
+
+  const newNotification = await prisma.notification.create({
+    data: {
+      type,
+      description: notificationDescription,
+      userId: userId
+    }
+  })
   res.json(newDonationPost);
 })
 
