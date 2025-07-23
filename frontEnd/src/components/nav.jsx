@@ -8,13 +8,13 @@ import { socket } from "../utils/socket";
 function Navigation() {
   const navigate = useNavigate();
   const { signedInUser, setSignedInUser } = useContext(Context);
+  const signedInUserId = signedInUser.id;
   const { fetchLogout } = useLogout();
 
   const logOut = async (event) => {
     event.preventDefault();
-    fetchLogout();
+    fetchLogout(JSON.stringify({id : signedInUserId}));
     sessionStorage.clear();
-    socket.emit("logout", signedInUser.id);
     setSignedInUser(null);
     navigate("/login");
   };

@@ -3,7 +3,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
 import { Context } from "../App";
-import { socket } from "../utils/socket";
 
 function Item({ postType, userId, item }) {
   const itemRef = useRef(null);
@@ -37,9 +36,6 @@ function Item({ postType, userId, item }) {
         possibleRecipientId: signedInUser.id,
       })
     );
-
-    socket.emit("requestSubmitted", {userId: item.userId, type : "New Request for Donation Item", description: `${signedInUser.username} requests your item titled: ${item.title}`})
-
     setRequestSubmitted(true);
   };
 
