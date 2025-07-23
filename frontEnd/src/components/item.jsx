@@ -3,7 +3,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import useCreatePossibleRecipient from "../utils/useCreatePossibleRecipient";
 import useAllPossibleRecipients from "../utils/useAllPossibleRecipients";
 import { Context } from "../App";
-import { socket } from "../utils/socket";
 
 function Item({ postType, userId, item }) {
   const itemRef = useRef(null);

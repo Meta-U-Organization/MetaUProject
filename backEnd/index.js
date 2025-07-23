@@ -29,9 +29,6 @@ io.on('connection', (socket) => {
     const socketId = socket.id;
     manager.addNewUser(userId, socketId);
   })
-  socket.on("logout", (userId) => {
-    manager.deleteUser(userId);
-  })
   socket.on("postCreated", ({ userId, areaId, type, description }) => {
     manager.areaPost(userId, areaId, type, description);
   })

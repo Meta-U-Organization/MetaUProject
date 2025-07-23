@@ -3,7 +3,7 @@ const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
 const bcrypt = require('bcrypt')
-
+const manager = require('../index')
 
 router.post("/signup", async (req, res) => {
   const { username, password, email, name, phoneNumber, address, preferredMeetTime, preferredMeetLocation } = req.body;
@@ -62,7 +62,8 @@ router.post("/signup", async (req, res) => {
 })
 
 router.post("/logout", (req, res) => {
-
+  const { id } = req.body;
+  manager.deleteUser(id);
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({ error: "Failed to log out" });
