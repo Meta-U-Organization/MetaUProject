@@ -7,7 +7,7 @@ import { socket } from "../utils/socket";
 
 function Item({ postType, userId, item }) {
   const itemRef = useRef(null);
-  const signedInUser = useContext(Context).user;
+  const {signedInUser} = useContext(Context);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
   const { fetchCreatePossibleRecipient } = useCreatePossibleRecipient(
     item.userId,

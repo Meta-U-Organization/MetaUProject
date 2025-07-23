@@ -7,12 +7,12 @@ import { socket } from "./utils/socket.js";
 //main page layout for the page
 function LoginPage() {
   const navigate = useNavigate();
-  const { setUser } = useContext(Context);
+  const { setSignedInUser } = useContext(Context);
   const { fetchLogin, confirmMessage, user, errorMsg } = useLogin();
 
   useEffect(() => {
     if (confirmMessage === "Login successful!") {
-      setUser(user);
+      setSignedInUser(user);
       socket.emit("newUser", user.id);
       navigate("/items");
     }

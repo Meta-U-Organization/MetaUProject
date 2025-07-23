@@ -9,7 +9,7 @@ import useAllRequests from "./utils/useAllRequests";
 //main page layout for the page
 function DonationAndRequestPage() {
   const [isDonationItem, setIsDonationItem] = useState(true);
-  const signedInUser = useContext(Context).user.id;
+  const {signedInUser} = useContext(Context);
   const { fetchAllDonations, donations, loading, errorMsg } = useAllDonations();
   const { fetchAllRequests, requests, loadingRequests } = useAllRequests();
   const changeItemType = () => {
@@ -22,7 +22,7 @@ function DonationAndRequestPage() {
   };
 
   useEffect(() => {
-    fetchAllDonations(signedInUser);
+    fetchAllDonations(signedInUser.id);
     fetchAllRequests();
   }, []);
 
@@ -45,7 +45,7 @@ function DonationAndRequestPage() {
           <h1>Loading...</h1>
         ) : isDonationItem ? (
           donations?.map((item) => {
-            if (item.userId !== signedInUser) {
+            if (item.userId !== signedInUser.id) {
               return (
                 <Item
                   postType={"donations"}
@@ -60,7 +60,7 @@ function DonationAndRequestPage() {
           <h3>Loading...</h3>
         ) : (
           requests?.map((item) => {
-            if (item.userId !== signedInUser) {
+            if (item.userId !== signedInUser.id) {
               return (
                 <Item
                   postType={"requests"}

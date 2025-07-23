@@ -9,8 +9,8 @@ import useMyPosts from "./utils/useMyPosts.js";
 
 //This page will use a session to store user Id and will be specific to them, this is a base implimentation
 function MyPosts() {
-  const { user } = useContext(Context);
-  const { fetchMyPosts, donations, requests, loading } = useMyPosts(user.id);
+  const { signedInUser } = useContext(Context);
+  const { fetchMyPosts, donations, requests, loading } = useMyPosts(signedInUser.id);
   const [isDonationList, setIsDonationList] = useState(true);
 
   const changeItemType = () => {
@@ -45,7 +45,7 @@ function MyPosts() {
                 onPostChange={() => {
                   fetchMyPosts();
                 }}
-                userId={user.id}
+                userId={signedInUser.id}
                 postType="donations"
                 item={item}
                 key={item.id}
