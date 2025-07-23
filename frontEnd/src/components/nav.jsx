@@ -15,7 +15,6 @@ function Navigation() {
     event.preventDefault();
     fetchLogout(JSON.stringify({id : signedInUserId}));
     sessionStorage.clear();
-    socket.emit("logout", signedInUser.id);
     setSignedInUser(null);
     navigate("/login");
   };
