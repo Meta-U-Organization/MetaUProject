@@ -103,6 +103,12 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
           userId: area.users[i].id
         }
       })
+      const updatedNote = await prisma.user.update({
+        where: { id: parseInt(area.users[i].id) },
+        data: {
+          lastNotificationReceived: new Date(Date.now()),
+        }
+      })
     }
   }
   res.json(newDonationPost);
