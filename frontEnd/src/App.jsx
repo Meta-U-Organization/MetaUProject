@@ -15,6 +15,7 @@ import PostCreationPage from "./PostCreationPage.jsx";
 import SavedPage from "./SavedPage.jsx";
 import MyPosts from "./myPosts.jsx";
 import SignUpPage from "./SignUpPage.jsx";
+import { socket } from "./utils/socket.js";
 
 export const Context = createContext();
 
@@ -26,7 +27,6 @@ function App() {
   });
 
   const backendUrl = import.meta.env.VITE_BACKEND;
-
   useEffect(() => {
     const fetchLogIn = async () => {
       const logIn = await fetch(`${backendUrl}/me`, {
@@ -50,6 +50,12 @@ function App() {
       return <Navigate to="/" />;
     }
   };
+
+  window.addEventListener('load', () => {
+    if(user!==null){
+      socket.emit("newUser", user.id)
+    }
+  })
   return (
     //router functionality for when we navigate to pages
     <Context.Provider value={{ user, setUser, backendUrl }}>

@@ -3,16 +3,18 @@ import "../App.css";
 import { useContext } from "react";
 import { Context } from "../App";
 import useLogout from "../utils/useLogout";
+import { socket } from "../utils/socket";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
-  const { setUser } = useContext(Context);
+  const { user, setUser } = useContext(Context);
   const { fetchLogout } = useLogout();
 
   const logOut = async (event) => {
     event.preventDefault();
     fetchLogout();
     sessionStorage.clear();
+    socket.emit("logout", user.id);
     setUser(null);
     navigate("/login");
   };

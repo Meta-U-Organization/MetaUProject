@@ -3,6 +3,7 @@ import "./App.css";
 import { useContext, useEffect, useState } from "react";
 import { Context } from "./App";
 import useLogin from "./utils/useLogin";
+import { socket } from "./utils/socket.js";
 //main page layout for the page
 function LoginPage() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function LoginPage() {
   useEffect(() => {
     if (confirmMessage === "Login successful!") {
       setUser(user);
+      socket.emit("newUser", user.id);
       navigate("/items");
     }
   }, [confirmMessage]);

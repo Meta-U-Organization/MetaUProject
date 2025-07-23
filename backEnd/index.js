@@ -1,9 +1,21 @@
 
 const express = require('express')
-const cors = require('cors')
 const session = require('express-session');
-const app = express()
+const http = require("http");
+const cors = require('cors')
 const PORT = 3000;
+const app = express()
+const WebSocketManager = require('./classes/WebSocketManger');
+const manager = new WebSocketManager();
+
+const server = http.createServer(app)
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+  }
+});
+
 app.use(express.json());
 app.use(
   cors({
@@ -11,6 +23,19 @@ app.use(
     credentials: true,
   })
 );
+
+io.on('connection', (socket) => {
+  socket.on("newUser", (userId) => {
+    const socketId = socket.id;
+    manager.addNewUser(userId, socketId);
+  })
+  socket.on("logout", (userId) => {
+    manager.deleteUser(userId);
+  })
+});
+
+server.listen(3000)
+
 const userRoutes = require('./routes/userCRUD');
 const requestPostRoutes = require('./routes/requestPostCRUD');
 const donationPostRoutes = require('./routes/donationPostCRUD');
