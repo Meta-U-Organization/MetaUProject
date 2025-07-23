@@ -25,13 +25,7 @@ class WebSocketManager {
         }
     }
 
-    async areaPost(userId, areaId, type, description) {
-        const area = await prisma.area.findUnique({
-            where: { id: areaId },
-            include: {
-                users: true
-            }
-        })
+    async areaPost(userId, area, type, description) {
         const oneDay = 24 * 60 * 60 * 1000;
         const now = new Date(Date.now()).getTime();
         for (let i = 0; i < area.users.length; i++) {

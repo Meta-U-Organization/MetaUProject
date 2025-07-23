@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { PrismaClient } = require('../generated/prisma')
 const prisma = new PrismaClient;
+const manager = require('../index')
+
 
 const isAuthenticated = (req, res, next) => {
   if (!req.session.userId) {
@@ -95,7 +97,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
       users: true
     }
   })
-
+  manager.areaPost(userId, area, type, notificationDescription)
   for (let i = 0; i < area.users.length; i++) {
     if (area.users[i].id !== userId && now - area.users[i].lastNotificationReceived.getTime() > oneDay) {
       const newNotification = await prisma.notification.create({
