@@ -34,8 +34,8 @@ io.on('connection', (socket) => {
   socket.on("requestSubmitted", (data) => {
     manager.requestNotification(data.userId, data.type, data.description);
   })
-  socket.on("postCreated", ({ areaId, type, description }) => {
-    manager.areaPost(areaId, type, description);
+  socket.on("postCreated", ({ userId, areaId, type, description }) => {
+    manager.areaPost(userId, areaId, type, description);
   })
 });
 

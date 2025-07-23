@@ -16,8 +16,9 @@ function PostCreationPage() {
     const readableData = Object.fromEntries(formData);
     readableData.type = "New Donation In Your Area";
     readableData.notificationDescription = `${user.username} in your area posted a new item titled: ${readableData.title}`
+    readableData.areaId = user.areaId;
     fetchPostCreation(user.id, JSON.stringify(readableData), type);
-    socket.emit("postCreated", {areaId: user.areaId, type : "New Donation In Your Area", description: `${user.username} in your area posted a new item titled: ${readableData.title}`})
+    socket.emit("postCreated", {userId: user.id, areaId: user.areaId, type : "New Donation In Your Area", description: `${user.username} in your area posted a new item titled: ${readableData.title}`})
   };
 
   return (

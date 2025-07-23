@@ -25,7 +25,7 @@ class WebSocketManager {
         }
     }
 
-    async areaPost(areaId, type, description) {
+    async areaPost(userId, areaId, type, description) {
         const area = await prisma.area.findUnique({
             where: { id: areaId },
             include: {
@@ -33,7 +33,7 @@ class WebSocketManager {
             }
         })
         for (let i = 0; i < area.users.length; i++) {
-            if (area.users[i].id in this.onlineUsers) {
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId) {
                 this.io.to(this.onlineUsers[area.users[i].id]).emit("getNotification", { type, description })
             }
         }

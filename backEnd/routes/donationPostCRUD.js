@@ -74,7 +74,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   if (req.session.userId !== userId) {
     return res.status(401).json({ message: "Invalid User" });
   }
-  const { title, description, photo, itemState, type, notificationDescription } = req.body;
+  const { title, description, photo, itemState, type, notificationDescription, areaId } = req.body;
   const newDonationPost = await prisma.donationPost.create({
     data: {
       title,
@@ -85,13 +85,26 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
     }
   });
 
-  const newNotification = await prisma.notification.create({
-    data: {
-      type,
-      description: notificationDescription,
-      userId: userId
+  const area = await prisma.area.findUnique({
+    where: {
+      id: areaId
+    },
+    include: {
+      users: true
     }
   })
+
+  for (let i = 0; i < area.users.length; i++) {
+    if (area.users[i].id !== userId) {
+      const newNotification = await prisma.notification.create({
+        data: {
+          type,
+          description: notificationDescription,
+          userId: area.users[i].id
+        }
+      })
+    }
+  }
   res.json(newDonationPost);
 })
 
