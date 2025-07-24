@@ -42,10 +42,14 @@ class PriorityQueue {
     }
 
     deQueue() {
-        if (this.notifications.isEmpty()) {
+        if (this.isEmpty()) {
             return null
         }
-        return this.notifications.unshift();
+        return this.notifications.shift();
+    }
+
+    isEmpty() {
+        return this.notifications.length === 0;
     }
 
 }

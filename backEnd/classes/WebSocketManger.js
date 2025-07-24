@@ -87,5 +87,16 @@ class WebSocketManager {
             }
         }
     }
+
+    getInitialPosts(userId) {
+        if (userId in this.onlineUsers) {
+            const userQueue = this.onlineUsers[userId].userQueue;
+            const initNotifs = []
+            while (!userQueue.isEmpty()) {
+                initNotifs.push(userQueue.deQueue())
+            }
+            return initNotifs;
+        }
+    }
 }
 module.exports = WebSocketManager;
