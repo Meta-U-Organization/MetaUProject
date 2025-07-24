@@ -52,11 +52,11 @@ function App() {
     }
   };
 
-  window.addEventListener('load', () => {
+  useEffect(() => {
     if(signedInUser!==null){
       socket.emit("newUser", signedInUser.id)
     }
-  })
+  }, [])
   return (
     //router functionality for when we navigate to pages
     <Context.Provider value={{ signedInUser, setSignedInUser, backendUrl }}>

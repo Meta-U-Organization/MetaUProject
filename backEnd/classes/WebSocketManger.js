@@ -3,9 +3,9 @@ const prisma = new PrismaClient;
 const PriorityQueue = require("./PriorityQueue")
 
 class WebSocketManager {
-    static DAYS_IN_MS = 24 * 60 * 60 * 1000;
-    static REMINDER_THRESHOLD_TIME_MS = 3 * 24 * 60 * 60 * 1000;
     constructor(io) {
+        this.DAYS_IN_MS = 24 * 60 * 60 * 1000;
+        this.REMINDER_THRESHOLD_TIME_MS = 3 * 24 * 60 * 60 * 1000;
         this.onlineUsers = {};
         this.io = io
         const timer = 24 * 60 * 60 * 1000;
@@ -22,7 +22,7 @@ class WebSocketManager {
         })
         const filteredDonations = allDonations.filter(donation =>
             donation.possibleRecipients.length > 2 &&
-            now - donation.timeCreated.getTime() > REMINDER_THRESHOLD_TIME_MS);
+            now - donation.timeCreated.getTime() > this.REMINDER_THRESHOLD_TIME_MS);
         for (let i = 0; i < filteredDonations.length; i++) {
             if (filteredDonations[i].userId in this.onlineUsers) {
                 this.io.to(this.onlineUsers[filteredDonations[i].userId].socketId).emit("getNotification", {
@@ -48,7 +48,7 @@ class WebSocketManager {
             where: { userId: parseInt(userId) },
         });
         const lastWeeksNotifications = individualUserNotifications.filter(
-            notification => (now - notification.timeCreated.getTime()) < 7 * DAYS_IN_MS
+            notification => (now - notification.timeCreated.getTime()) < 7 * this.DAYS_IN_MS
         )
 
         lastWeeksNotifications.sort((a, b) => {
@@ -82,7 +82,7 @@ class WebSocketManager {
     async areaPost(userId, area, type, description) {
         const now = new Date(Date.now()).getTime();
         for (let i = 0; i < area.users.length; i++) {
-            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (now - area.users[i].lastNotificationReceived.getTime() > DAYS_IN_MS)) {
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (now - area.users[i].lastNotificationReceived.getTime() > this.DAYS_IN_MS)) {
                 this.io.to(this.onlineUsers[area.users[i].id].socketId).emit("getNotification", { type, description })
             }
         }

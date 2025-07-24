@@ -13,6 +13,7 @@ function NotificationsPage() {
 
     useEffect(()=> {
         fetchUserNotifications();
+        socket.emit("newUser", signedInUser.id)
         socket.on("getNotification", (data) => {
             const newNotif = document.createElement('div')
             newNotif.style.border = "2px solid white"
