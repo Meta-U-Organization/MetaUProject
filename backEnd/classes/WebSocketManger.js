@@ -3,7 +3,8 @@ const prisma = new PrismaClient;
 const PriorityQueue = require("./PriorityQueue")
 
 class WebSocketManager {
-
+    static DAYS_IN_MS = 24 * 60 * 60 * 1000;
+    static REMINDER_THRESHOLD_TIME_MS = 3 * 24 * 60 * 60 * 1000;
     constructor(io) {
         this.onlineUsers = {};
         this.io = io
@@ -21,10 +22,10 @@ class WebSocketManager {
         })
         const filteredDonations = allDonations.filter(donation =>
             donation.possibleRecipients.length > 2 &&
-            now - donation.timeCreated.getTime() > (3 * 24 * 60 * 60 * 1000));
+            now - donation.timeCreated.getTime() > REMINDER_THRESHOLD_TIME_MS);
         for (let i = 0; i < filteredDonations.length; i++) {
             if (filteredDonations[i].userId in this.onlineUsers) {
-                this.io.to(this.onlineUsers[filteredDonations[i].userId]).emit("getNotification", {
+                this.io.to(this.onlineUsers[filteredDonations[i].userId].socketId).emit("getNotification", {
                     type: `Multiple Users are Waiting To Be Chosen`,
                     description: `Your post titled "${filteredDonations[i].title}" has multiple users waiting to be chosen`
                 })
@@ -47,7 +48,7 @@ class WebSocketManager {
             where: { userId: parseInt(userId) },
         });
         const lastWeeksNotifications = individualUserNotifications.filter(
-            notification => (now - notification.timeCreated.getTime()) < 7 * 24 * 60 * 60 * 1000
+            notification => (now - notification.timeCreated.getTime()) < 7 * DAYS_IN_MS
         )
 
         lastWeeksNotifications.sort((a, b) => {
@@ -74,16 +75,15 @@ class WebSocketManager {
 
     requestNotification(userId, type, description) {
         if (userId in this.onlineUsers) {
-            this.io.to(this.onlineUsers[userId]).emit("getNotification", { type, description })
+            this.io.to(this.onlineUsers[userId].socketId).emit("getNotification", { type, description })
         }
     }
 
     async areaPost(userId, area, type, description) {
-        const oneDay = 24 * 60 * 60 * 1000;
         const now = new Date(Date.now()).getTime();
         for (let i = 0; i < area.users.length; i++) {
-            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (now - area.users[i].lastNotificationReceived.getTime() > oneDay)) {
-                this.io.to(this.onlineUsers[area.users[i].id]).emit("getNotification", { type, description })
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (now - area.users[i].lastNotificationReceived.getTime() > DAYS_IN_MS)) {
+                this.io.to(this.onlineUsers[area.users[i].id].socketId).emit("getNotification", { type, description })
             }
         }
     }
