@@ -51,6 +51,7 @@ model donationPost {
   photo              String
   itemState          String
   userId             Int
+  timeCreated        DateTime             @default(now())
   possibleRecipients possibleRecipients[]
   user               user                 @relation(fields: [userId], references: [id])
 }
