@@ -1,6 +1,6 @@
-
 const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient;
+const PriorityQueue = require("./PriorityQueue")
 
 class WebSocketManager {
 
@@ -39,8 +39,31 @@ class WebSocketManager {
         }
     }
 
-    addNewUser(userId, socketId) {
-        this.onlineUsers[userId] = socketId;
+    async addNewUser(userId, socketId) {
+        const userQueue = new PriorityQueue()
+        const now = new Date(Date.now()).getTime();
+
+        const individualUserNotifications = await prisma.notification.findMany({
+            where: { userId: parseInt(userId) },
+        });
+        const lastWeeksNotifications = individualUserNotifications.filter(
+            notification => (now - notification.timeCreated.getTime()) < 7 * 24 * 60 * 60 * 1000
+        )
+
+        lastWeeksNotifications.sort((a, b) => {
+            if (a.timeCreated.getTime() < b.timeCreated.getTime()) {
+                return 1;
+            } else if (a.timeCreated.getTime() > b.timeCreated.getTime()) {
+                return -1;
+            }
+        })
+
+        const length = lastWeeksNotifications.length > 10 ? 10 : lastWeeksNotifications.length;
+        for (let i = 0; i < length; i++) {
+            userQueue.enqueue(lastWeeksNotifications[i])
+        }
+
+        this.onlineUsers[userId] = { socketId, userQueue };
     }
 
     deleteUser(userId) {
