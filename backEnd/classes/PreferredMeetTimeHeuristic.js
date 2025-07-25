@@ -9,11 +9,11 @@ class PreferredMeetTimeHeuristic extends Heuristic {
     }
 
     sanitize() {
-        if (this.signedInUserPreferredTime = "Morning") {
+        if (this.signedInUserPreferredTime === "Morning") {
             this.sanitizedSignedInUserMeetTime = 1;
-        } else if (this.signedInUserPreferredTime = "Afternoon") {
+        } else if (this.signedInUserPreferredTime === "Afternoon") {
             this.sanitizedSignedInUserMeetTime = 2;
-        } else if (this.signedInUserPreferredTime = "Evening") {
+        } else if (this.signedInUserPreferredTime === "Evening") {
             this.sanitizedSignedInUserMeetTime = 3;
         }
         this.sanitizedMeetTimes = this.recipientPreferredTimes.map((meetTime) => {
