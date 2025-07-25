@@ -3,7 +3,6 @@ import "../App.css";
 import { useContext } from "react";
 import { Context } from "../App";
 import useLogout from "../utils/useLogout";
-import { socket } from "../utils/socket";
 //main page layout for the page
 function Navigation() {
   const navigate = useNavigate();
@@ -56,13 +55,6 @@ function Navigation() {
         }}
       >
         Settings
-      </button>
-      <button
-        onClick={() => {
-          navigate("/notifications");
-        }}
-      >
-        Notifications
       </button>
       <button onClick={logOut}>Log Out</button>
     </nav>

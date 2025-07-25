@@ -21,7 +21,6 @@ class WebSocketManager {
             if (newNotification) {
                 const type = newNotification.type;
                 const description = newNotification.description;
-                this.io.to(values[i].socketId).emit("getNotification", { type, description })
                 const newNotificationInBackend = await prisma.notification.create({
                     data: {
                         type,
@@ -29,6 +28,8 @@ class WebSocketManager {
                         userId: parseInt(keys[i])
                     }
                 })
+                const id = newNotificationInBackend.id;
+                this.io.to(values[i].socketId).emit("getNotification", { type, description, id })
             }
         }
     }

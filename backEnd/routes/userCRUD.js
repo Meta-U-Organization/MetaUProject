@@ -161,9 +161,8 @@ router.get('/users/:userId/notifications', async (req, res) => {
       return -1;
     }
   })
-
-
-  res.json(lastWeeksNotifications);
+  const topTenNotifs = lastWeeksNotifications.slice(0, 10);
+  res.json(topTenNotifs);
 })
 
 //deletes user
