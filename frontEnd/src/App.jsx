@@ -18,6 +18,7 @@ import SignUpPage from "./SignUpPage.jsx";
 import { socket } from "./utils/socket.js";
 import NotificationsPage from "./NotificationsPage.jsx";
 import PageFooter from "./components/PageFooter.jsx";
+import NotificationComponent from "./components/NotificationComponent.jsx";
 
 export const Context = createContext();
 
@@ -47,6 +48,7 @@ function App() {
     //router functionality for when we navigate to pages
     <Context.Provider value={{ signedInUser, setSignedInUser, backendUrl }}>
       <BrowserRouter>
+      {signedInUser != null && <NotificationComponent />}
         <Routes>
           <Route element={<PrivateRoutes currentUser={signedInUser} />}>
             <Route path="/settings" element={<SettingsPage />}></Route>
