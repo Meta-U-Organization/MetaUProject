@@ -60,9 +60,6 @@ function NotificationComponent() {
                     {allNotifications?.map((notification) => {
                     return <Notification key={notification.id} title={notification.type} description={notification.description}/>
                     })}
-                    {/* {notifications?.map((notification) => {
-                    return <Notification key={notification.id} title={notification.type} description={notification.description}/>
-                    })} */}
                 </div>
             </div>
             }
