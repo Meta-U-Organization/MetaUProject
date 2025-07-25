@@ -28,21 +28,6 @@ function App() {
   });
 
   const backendUrl = import.meta.env.VITE_BACKEND;
-  useEffect(() => {
-    const fetchLogIn = async () => {
-      const logIn = await fetch(`${backendUrl}/me`, {
-        credentials: "include",
-      });
-      const logInValues = await logIn.json();
-      if (logIn.status === 200) {
-        sessionStorage.setItem("user", JSON.stringify(logInValues));
-        setSignedInUser(logInValues);
-      }
-    };
-    if (signedInUser == null) {
-      fetchLogIn();
-    }
-  }, [signedInUser]);
 
   const PrivateRoutes = ({ currentUser }) => {
     if (currentUser?.id) {

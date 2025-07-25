@@ -12,6 +12,7 @@ function LoginPage() {
 
   useEffect(() => {
     if (confirmMessage === "Login successful!") {
+      sessionStorage.setItem("user", JSON.stringify(user));
       setSignedInUser(user);
       socket.emit("newUser", user.id);
       navigate("/items");
