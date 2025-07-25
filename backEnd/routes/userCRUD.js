@@ -142,13 +142,21 @@ router.get('/users/:userId', async (req, res) => {
 
 router.get('/users/:userId/notifications', async (req, res) => {
   const userId = parseInt(req.params.userId);
+  const now = new Date(Date.now()).getTime();
   if (req.session.userId !== userId) {
     return res.status(401).json({ message: "Not Authorized" });
   }
 
-  const notifications = manager.getInitialPosts(userId);
+  const individualUserNotifications = await prisma.notification.findMany({
+    where: { userId: parseInt(userId) },
+  });
+  console.log(individualUserNotifications);
 
-  res.json(notifications);
+  const lastWeeksNotifications = individualUserNotifications.filter(
+    notification => (now - notification.timeCreated.getTime()) < (7 * 24 * 60 * 60 * 1000)
+  )
+
+  res.json(lastWeeksNotifications);
 })
 
 //deletes user
