@@ -31,7 +31,7 @@ function App() {
   const backendUrl = import.meta.env.VITE_BACKEND;
 
   const PrivateRoutes = ({ currentUser }) => {
-    if (currentUser?.id) {
+    if (currentUser) {
       return <Outlet />;
     } else {
       return <Navigate to="/" />;

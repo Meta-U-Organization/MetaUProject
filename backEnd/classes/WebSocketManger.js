@@ -75,7 +75,7 @@ class WebSocketManager {
     async areaPost(userId, area, type, description) {
         const timeCreated = new Date(Date.now()).getTime();
         for (let i = 0; i < area.users.length; i++) {
-            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (timeCreated - area.users[i].lastNotificationReceived.getTime() > this.DAY_IN_MS)) {
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId) {
                 this.onlineUsers[area.users[i].id].userQueue.enqueue(type, description, timeCreated)
             }
         }
