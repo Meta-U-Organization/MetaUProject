@@ -5,7 +5,7 @@ const PriorityQueue = require("./PriorityQueue")
 class WebSocketManager {
     constructor(io) {
         this.DAY_IN_MS = 24 * 60 * 60 * 1000;
-        this.FIVE_MINUTES = 5 * 1000
+        this.FIVE_MINUTES = 5 * 60 * 1000
         this.REMINDER_THRESHOLD_TIME_MS = 3 * this.DAY_IN_MS;
         this.onlineUsers = {};
         this.io = io
