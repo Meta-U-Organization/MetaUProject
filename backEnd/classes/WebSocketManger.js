@@ -4,13 +4,13 @@ const PriorityQueue = require("./PriorityQueue")
 
 class WebSocketManager {
     constructor(io) {
-        this.DAY = 24 * 60 * 60 * 1000;
+        this.DAY_IN_MS = 24 * 60 * 60 * 1000;
         this.FIVE_MINUTES = 5 * 1000
-        this.REMINDER_THRESHOLD_TIME_MS = 3 * this.DAY;
+        this.REMINDER_THRESHOLD_TIME_MS = 3 * this.DAY_IN_MS;
         this.onlineUsers = {};
         this.io = io
         this.intervalPushNotifications = setInterval(() => this.setNewNotifications(), this.FIVE_MINUTES)
-        this.intervalReminder = setInterval(() => this.setRecurringReminderNotification(), this.DAY)
+        this.intervalReminder = setInterval(() => this.setRecurringReminderNotification(), this.DAY_IN_MS)
     }
 
     async setNewNotifications() {
@@ -80,10 +80,10 @@ class WebSocketManager {
     }
 
     async areaPost(userId, area, type, description) {
-        const now = new Date(Date.now()).getTime();
+        const timeCreated = new Date(Date.now()).getTime();
         for (let i = 0; i < area.users.length; i++) {
-            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (now - area.users[i].lastNotificationReceived.getTime() > this.DAYS_IN_MS)) {
-                this.io.to(this.onlineUsers[area.users[i].id].socketId).emit("getNotification", { type, description })
+            if (area.users[i].id in this.onlineUsers && area.users[i].id !== userId && (timeCreated - area.users[i].lastNotificationReceived.getTime() > this.DAY_IN_MS)) {
+                this.onlineUsers[area.users[i].id].userQueue.enqueue(type, description, timeCreated)
             }
         }
     }
