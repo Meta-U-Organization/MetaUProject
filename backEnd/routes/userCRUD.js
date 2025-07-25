@@ -102,13 +102,12 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: "Invalid Username" });
   }
-
+  req.session.userId = user.id;
   const isValidPassword = await bcrypt.compare(password, user.passwordHash);
 
   if (!isValidPassword) {
     return res.status(400).json({ message: "Invalid username or password." });
   }
-  req.session.userId = user.id;
   res.json({ message: "Login successful!", user });
 
 })
@@ -154,6 +153,15 @@ router.get('/users/:userId/notifications', async (req, res) => {
   const lastWeeksNotifications = individualUserNotifications.filter(
     notification => (now - notification.timeCreated.getTime()) < (7 * 24 * 60 * 60 * 1000)
   )
+
+  lastWeeksNotifications.sort((a, b) => {
+    if (a.timeCreated.getTime() < b.timeCreated.getTime()) {
+      return 1
+    } else {
+      return -1;
+    }
+  })
+
 
   res.json(lastWeeksNotifications);
 })
