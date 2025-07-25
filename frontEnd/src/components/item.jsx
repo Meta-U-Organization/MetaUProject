@@ -63,9 +63,12 @@ function Item({ postType, userId, item }) {
           <p>{item.description}</p>
           <p>Use State: {item.itemState}</p>
           {postType == "donations" && (
-            <p className="distance">Distance: {item.distance}</p>
+            <div>
+              Distance: <span className="distance">{item.distance}</span>
+              <span className="customToolTipDistance">Distance is based on your home address and donors meet up address.</span>
+            </div>
           )}
-
+          <br></br>
           {postType === "donations" && (
             <form className="requestItemForm">
               <label style={{ marginLeft: "10px" }} htmlFor="wantScore">
