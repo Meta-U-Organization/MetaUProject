@@ -14,30 +14,34 @@ class PriorityQueue {
         }
     }
 
-    getPriority(notificaiton) {
-        const now = new Date(Date.now()).getTime();
-        const timeNormalized = 1 - (now - notificaiton.timeCreated.getTime()) / (7 * 24 * 60 * 60 * 1000)
-        const timeScaled = Math.pow(timeNormalized, 2);
-        const timeWeighted = timeScaled * 50;
-        const priority = timeWeighted + notificaiton.typeNum * 10;
+    getPriority(timeCreated, typeNum) {
+        let oldestTime;
+        if (this.isEmpty()) {
+            oldestTime = new Date(Date.now()).getTime();
+        } else {
+            oldestTime = this.notifications[this.notifications.length - 1].timeCreated
+        }
+        const scaledTime = 1 - ((timeCreated - oldestTime) / timeCreated)
+        const weightedTime = scaledTime * 50
+        const priority = weightedTime + typeNum * 10;
         return priority;
     }
 
-    enqueue(notification) {
+    enqueue(type, description, timeCreated) {
 
         let inserted = false;
-        notification.typeNum = this.typeSanitization(notification.type);
-        notification.priority = this.getPriority(notification);
+        const typeNum = this.typeSanitization(type);
+        const priority = this.getPriority(timeCreated, typeNum);
 
         for (let i = 0; i < this.notifications.length; i++) {
-            if (notification.priority >= this.notifications[i].priority) {
-                this.notifications.splice(i, 0, notification);
+            if (priority >= this.notifications[i].priority) {
+                this.notifications.splice(i, 0, { type, description, timeCreated, typeNum, priority });
                 inserted = true;
                 break;
             }
         }
         if (!inserted) {
-            this.notifications.push(notification);
+            this.notifications.push({ type, description, timeCreated, typeNum, priority });
         }
     }
 

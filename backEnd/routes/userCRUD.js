@@ -102,13 +102,12 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: "Invalid Username" });
   }
-
+  req.session.userId = user.id;
   const isValidPassword = await bcrypt.compare(password, user.passwordHash);
 
   if (!isValidPassword) {
     return res.status(400).json({ message: "Invalid username or password." });
   }
-  req.session.userId = user.id;
   res.json({ message: "Login successful!", user });
 
 })
@@ -142,13 +141,29 @@ router.get('/users/:userId', async (req, res) => {
 
 router.get('/users/:userId/notifications', async (req, res) => {
   const userId = parseInt(req.params.userId);
+  const now = new Date(Date.now()).getTime();
   if (req.session.userId !== userId) {
     return res.status(401).json({ message: "Not Authorized" });
   }
 
-  const notifications = manager.getInitialPosts(userId);
+  const individualUserNotifications = await prisma.notification.findMany({
+    where: { userId: parseInt(userId) },
+  });
 
-  res.json(notifications);
+  const lastWeeksNotifications = individualUserNotifications.filter(
+    notification => (now - notification.timeCreated.getTime()) < (7 * 24 * 60 * 60 * 1000)
+  )
+
+  lastWeeksNotifications.sort((a, b) => {
+    if (a.timeCreated.getTime() < b.timeCreated.getTime()) {
+      return 1
+    } else {
+      return -1;
+    }
+  })
+
+
+  res.json(lastWeeksNotifications);
 })
 
 //deletes user
