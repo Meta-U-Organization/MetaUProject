@@ -57,9 +57,6 @@ function PostCreationPage() {
           )}
         </form>
       </main>
-      <footer>
-        Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
-      </footer>
     </div>
   );
 }

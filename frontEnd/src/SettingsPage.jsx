@@ -9,9 +9,6 @@ function SettingsPage() {
         <h1>Settings</h1>
       </header>
       <main></main>
-      <footer>
-        Made by <a href="https://coff.ee/maheshbachu"> Mahesh Bachu</a>
-      </footer>
     </div>
   );
 }
