@@ -150,7 +150,6 @@ router.get('/users/:userId/notifications', async (req, res) => {
   const individualUserNotifications = await prisma.notification.findMany({
     where: { userId: parseInt(userId) },
   });
-  console.log(individualUserNotifications);
 
   const lastWeeksNotifications = individualUserNotifications.filter(
     notification => (now - notification.timeCreated.getTime()) < (7 * 24 * 60 * 60 * 1000)

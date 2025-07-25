@@ -4,14 +4,36 @@ const PriorityQueue = require("./PriorityQueue")
 
 class WebSocketManager {
     constructor(io) {
-        this.REMINDER_THRESHOLD_TIME_MS = 3 * 24 * 60 * 60 * 1000;
+        this.DAY = 24 * 60 * 60 * 1000;
+        this.FIVE_MINUTES = 5 * 1000
+        this.REMINDER_THRESHOLD_TIME_MS = 3 * this.DAY;
         this.onlineUsers = {};
         this.io = io
-        const timer = 24 * 60 * 60 * 1000;
-        this.intervalId = setInterval(() => this.timedFunc(), timer)
+        this.intervalPushNotifications = setInterval(() => this.setNewNotifications(), this.FIVE_MINUTES)
+        this.intervalReminder = setInterval(() => this.setRecurringReminderNotification(), this.DAY)
     }
 
-    async timedFunc() {
+    async setNewNotifications() {
+        const values = Object.values(this.onlineUsers);
+        const keys = Object.keys(this.onlineUsers);
+        for (let i = 0; i < values.length; i++) {
+            const newNotification = values[i].userQueue.deQueue();
+            if (newNotification) {
+                const type = newNotification.type;
+                const description = newNotification.description;
+                this.io.to(values[i].socketId).emit("getNotification", { type, description })
+                const newNotificationInBackend = await prisma.notification.create({
+                    data: {
+                        type,
+                        description,
+                        userId: parseInt(keys[i])
+                    }
+                })
+            }
+        }
+    }
+
+    async setRecurringReminderNotification() {
         //will need to grab posts
         const now = new Date(Date.now()).getTime();
         const allDonations = await prisma.donationPost.findMany({
@@ -39,7 +61,7 @@ class WebSocketManager {
         }
     }
 
-    async addNewUser(userId, socketId) {
+    addNewUser(userId, socketId) {
         const userQueue = new PriorityQueue()
         this.onlineUsers[userId] = { socketId, userQueue };
     }
@@ -51,8 +73,9 @@ class WebSocketManager {
     }
 
     requestNotification(userId, type, description) {
+        const timeCreated = new Date(Date.now()).getTime();
         if (userId in this.onlineUsers) {
-            this.io.to(this.onlineUsers[userId].socketId).emit("getNotification", { type, description })
+            this.onlineUsers[userId].userQueue.enqueue(type, description, timeCreated)
         }
     }
 

@@ -72,13 +72,6 @@ router.post('/users/:userId/donations/:postId/possibleRecipients', async (req, r
       donationPostId,
     }
   })
-  const newNotification = await prisma.notification.create({
-    data: {
-      type,
-      description,
-      userId: userId
-    }
-  })
   manager.requestNotification(userId, type, description);
   const updatedNote = await prisma.user.update({
     where: { id: parseInt(possibleRecipientId) },
