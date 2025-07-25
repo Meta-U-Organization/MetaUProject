@@ -6,7 +6,7 @@ export default function useCCFetch() {
     const [data, setData] = useState(null);
     const [errorType, setErrorType] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const { setUser } = useContext(Context);
+    const { setSignedInUser } = useContext(Context);
 
     const fetchData = async (url, method, body) => {
         setLoading(true);
@@ -19,7 +19,7 @@ export default function useCCFetch() {
 
         const newData = await backendCall.json();
         if (backendCall.status === 401) {
-            setUser(null);
+            setSignedInUser(null);
         } else if (backendCall.status !== 200) {
             setErrorType(backendCall.status)
             setErrorMsg(newData.message)

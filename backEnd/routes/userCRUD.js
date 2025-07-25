@@ -145,20 +145,10 @@ router.get('/users/:userId/notifications', async (req, res) => {
   if (req.session.userId !== userId) {
     return res.status(401).json({ message: "Not Authorized" });
   }
-  const individualUser = await prisma.user.findUnique({
-    where: { id: parseInt(userId) },
-    include: {
-      notifications: true,
-    }
-  });
-  individualUser.notifications.sort((a, b) => {
-    if (a.id < b.id) {
-      return 1;
-    } else if (a.id > b.id) {
-      return -1;
-    }
-  })
-  res.json(individualUser.notifications);
+
+  const notifications = manager.getInitialPosts(userId);
+
+  res.json(notifications);
 })
 
 //deletes user

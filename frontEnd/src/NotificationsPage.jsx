@@ -6,21 +6,14 @@ import useUserNotifications from "./utils/useUserNotifications";
 import { useContext } from "react";
 import { Context } from "./App";
 import { socket } from "./utils/socket";
-import React from "react";
 //main page layout for the page
 function NotificationsPage() {
     const {signedInUser} = useContext(Context);
     const { fetchUserNotifications, notifications, loading} = useUserNotifications(signedInUser.id);
-    useEffect(() => {
-        fetchUserNotifications();
-        
-        return  () => {
-            socket.off("getNotification")
-        }
-    }, [])
 
     useEffect(()=> {
         fetchUserNotifications();
+        socket.emit("newUser", signedInUser.id)
         socket.on("getNotification", (data) => {
             const newNotif = document.createElement('div')
             newNotif.style.border = "2px solid white"
