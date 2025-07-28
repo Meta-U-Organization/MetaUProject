@@ -18,6 +18,12 @@ function PostCreationPage() {
     readableData.notificationDescription = `${signedInUser.username} in your area posted a new item titled: ${readableData.title}`
     readableData.areaId = signedInUser.areaId;
     fetchPostCreation(signedInUser.id, JSON.stringify(readableData), type);
+
+    const inputs = document.getElementsByTagName("input");
+    for(let i = 0; i < inputs.length; i++){
+      inputs[i].value = "";
+    }
+
   };
 
   return (
