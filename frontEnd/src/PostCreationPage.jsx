@@ -46,8 +46,6 @@ function PostCreationPage() {
           <input type="text" name="title" id="title"></input>
           <label htmlFor="description">Description</label>
           <input type="text" name="description" id="description"></input>
-          <label htmlFor="">Photo</label>
-          <input type="text" name="photo" id="photo"></input>
           <label htmlFor="itemState">Use State</label>
           <select name="itemState" id="itemState">
             <option value="Used">Used</option>
