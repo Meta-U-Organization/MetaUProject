@@ -57,10 +57,10 @@ router.get('/allDonations/:userId', async (req, res) => {
   const origin = signedInUser.address;
   const api_key = process.env.GOOGLE_API;
   const userDistances = {};
-
   for (let i = 0; i < donations.length; i++) {
     if (donations[i].userId in userDistances) {
       donations[i].distance = userDistances[donations[i].userId];
+      console.log(donations[i].distance);
     } else {
       const donor = await prisma.user.findUnique({
         where: { id: parseInt(donations[i].userId) }
@@ -73,6 +73,7 @@ router.get('/allDonations/:userId', async (req, res) => {
       } else {
         donations[i].distance = data.rows[0].elements[0].distance?.text;
       }
+      userDistances[donations[i].userId] = donations[i].distance;
     }
   }
 
