@@ -43,7 +43,11 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
 
 //gets all donations and calculates the distance between the user and the post
 router.get('/allDonations/:userId', async (req, res) => {
-  const donations = await prisma.donationPost.findMany({})
+  const donations = await prisma.donationPost.findMany({
+    orderBy: {
+      id: "desc"
+    }
+  })
   const userId = parseInt(req.params.userId);
   const signedInUser = await prisma.user.findUnique({
     where: { id: parseInt(userId) }
@@ -58,12 +62,13 @@ router.get('/allDonations/:userId', async (req, res) => {
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${donor.preferredMeetLocation}&units=imperial&key=${api_key}`;
     const response = await fetch(url);
     const data = await response.json();
-    if (data.rows[0].elements[0].distance?.text == undefined) {
+    if (data.error_message) {
       donations[i].distance = "ERROR";
     } else {
       donations[i].distance = data.rows[0].elements[0].distance?.text;
     }
   }
+
 
 
   res.json(donations)
