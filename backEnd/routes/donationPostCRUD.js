@@ -48,28 +48,33 @@ router.get('/allDonations/:userId', async (req, res) => {
       id: "desc"
     }
   })
+
   const userId = parseInt(req.params.userId);
   const signedInUser = await prisma.user.findUnique({
-    where: { id: parseInt(userId) }
+    where: { id: userId }
   });
+
   const origin = signedInUser.address;
+  const api_key = process.env.GOOGLE_API;
+  const userDistances = {};
 
   for (let i = 0; i < donations.length; i++) {
-    const donor = await prisma.user.findUnique({
-      where: { id: parseInt(donations[i].userId) }
-    })
-    const api_key = process.env.GOOGLE_API;
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${donor.preferredMeetLocation}&units=imperial&key=${api_key}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    if (data.error_message) {
-      donations[i].distance = "ERROR";
+    if (donations[i].userId in userDistances) {
+      donations[i].distance = userDistances[donations[i].userId];
     } else {
-      donations[i].distance = data.rows[0].elements[0].distance?.text;
+      const donor = await prisma.user.findUnique({
+        where: { id: parseInt(donations[i].userId) }
+      })
+      const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${donor.preferredMeetLocation}&units=imperial&key=${api_key}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.error_message) {
+        donations[i].distance = "ERROR";
+      } else {
+        donations[i].distance = data.rows[0].elements[0].distance?.text;
+      }
     }
   }
-
-
 
   res.json(donations)
 })
