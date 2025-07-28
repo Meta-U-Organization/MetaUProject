@@ -87,8 +87,6 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
     return res.status(401).json({ message: "Invalid User" });
   }
   const { title, description, photo, itemState, type, notificationDescription, areaId } = req.body;
-  const oneDay = 24 * 60 * 60 * 1000;
-  const now = new Date(Date.now()).getTime();
   const newDonationPost = await prisma.donationPost.create({
     data: {
       title,
@@ -109,7 +107,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   })
   manager.areaPost(userId, area, type, notificationDescription)
   for (let i = 0; i < area.users.length; i++) {
-    if (area.users[i].id !== userId && now - area.users[i].lastNotificationReceived.getTime() > oneDay) {
+    if (area.users[i].id !== userId) {
       const newNotification = await prisma.notification.create({
         data: {
           type,
