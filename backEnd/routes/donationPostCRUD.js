@@ -43,28 +43,38 @@ router.get('/users/:userId/donations/:postId', async (req, res) => {
 
 //gets all donations and calculates the distance between the user and the post
 router.get('/allDonations/:userId', async (req, res) => {
-  const donations = await prisma.donationPost.findMany({})
+  const donations = await prisma.donationPost.findMany({
+    orderBy: {
+      id: "desc"
+    }
+  })
+
   const userId = parseInt(req.params.userId);
   const signedInUser = await prisma.user.findUnique({
-    where: { id: parseInt(userId) }
+    where: { id: userId }
   });
-  const origin = signedInUser.address;
 
+  const origin = signedInUser.address;
+  const api_key = process.env.GOOGLE_API;
+  const userDistances = {};
   for (let i = 0; i < donations.length; i++) {
-    const donor = await prisma.user.findUnique({
-      where: { id: parseInt(donations[i].userId) }
-    })
-    const api_key = process.env.GOOGLE_API;
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${donor.preferredMeetLocation}&units=imperial&key=${api_key}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    if (data.rows[0].elements[0].distance?.text == undefined) {
-      donations[i].distance = "ERROR";
+    if (donations[i].userId in userDistances) {
+      donations[i].distance = userDistances[donations[i].userId];
     } else {
-      donations[i].distance = data.rows[0].elements[0].distance?.text;
+      const donor = await prisma.user.findUnique({
+        where: { id: parseInt(donations[i].userId) }
+      })
+      const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${donor.preferredMeetLocation}&units=imperial&key=${api_key}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.error_message) {
+        donations[i].distance = "ERROR";
+      } else {
+        donations[i].distance = data.rows[0].elements[0].distance?.text;
+      }
+      userDistances[donations[i].userId] = donations[i].distance;
     }
   }
-
 
   res.json(donations)
 })
@@ -77,8 +87,6 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
     return res.status(401).json({ message: "Invalid User" });
   }
   const { title, description, photo, itemState, type, notificationDescription, areaId } = req.body;
-  const oneDay = 24 * 60 * 60 * 1000;
-  const now = new Date(Date.now()).getTime();
   const newDonationPost = await prisma.donationPost.create({
     data: {
       title,
@@ -99,7 +107,7 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
   })
   manager.areaPost(userId, area, type, notificationDescription)
   for (let i = 0; i < area.users.length; i++) {
-    if (area.users[i].id !== userId && now - area.users[i].lastNotificationReceived.getTime() > oneDay) {
+    if (area.users[i].id !== userId) {
       const newNotification = await prisma.notification.create({
         data: {
           type,
