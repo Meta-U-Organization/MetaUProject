@@ -6,18 +6,18 @@ import useUpdateUser from "./utils/useUpdateUser";
 //main page layout for the page
 function SettingsPage() {
   const { signedInUser, setSignedInUser } = useContext(Context);
-  const {fetchUpdateUser, updateduser, error} = useUpdateUser(signedInUser.id);
+  const {fetchUpdateUser, errorMsg} = useUpdateUser(signedInUser.id);
 
-  const updateUserName = () => {
+  const updateUserName = async() => {
     const username = document.querySelector("#username").value;
     fetchUpdateUser(
         JSON.stringify({username})
     )
-    document.querySelector("#username").value = ""
-    document.querySelector("#username").placeholder = username;
-    signedInUser.username = username;
-    sessionStorage.setItem("user", JSON.stringify(signedInUser));
-    setSignedInUser (signedInUser);
+      document.querySelector("#username").value = ""
+      document.querySelector("#username").placeholder = username;
+      signedInUser.username = username;
+      sessionStorage.setItem("user", JSON.stringify(signedInUser));
+      setSignedInUser (signedInUser);
   }
 
   const updateEmail = () => {
@@ -87,6 +87,7 @@ function SettingsPage() {
         <h1>Settings</h1>
       </header>
       <main>
+        {errorMsg !== null && <h3>{errorMsg}</h3>}
         <div id="edits" style={{ display: "grid", gridTemplateColumns:"10% 70% 20%", rowGap: "12px", columnGap: "12px", gridTemplateRows: "30px 30px"}}>
             <label className="optionLabel" htmlFor="username">Username</label>
             <input type="text" name="username" id="username" placeholder={signedInUser.username}></input>

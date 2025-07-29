@@ -11,5 +11,5 @@ export default function useUpdateUser(userId) {
         await fetchData(`${backendUrl}/users/${userId}`, "PATCH", body);
     }
 
-    return { fetchUpdateUser }
+    return { fetchUpdateUser, errorMsg }
 }

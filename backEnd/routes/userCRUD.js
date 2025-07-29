@@ -178,6 +178,25 @@ router.delete('/users/:userId', async (req, res) => {
 router.patch('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
   const { username, email, name, phoneNumber, address, preferredMeetLocation } = req.body;
+  if (username) {
+    const existingUser = await prisma.user.findUnique({
+      where: { username }
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already taken." });
+    }
+  }
+
+  if (email) {
+    const existingEmail = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email already in use." });
+    }
+  }
   const updatedUser = await prisma.user.update({
     where: { id: parseInt(userId) },
     data: {
