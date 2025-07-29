@@ -31,7 +31,7 @@ function MyPosts() {
       <header>
         <Navigation />
         <h1>My Posts</h1>
-        <button  title="Change Post Type" id="changeItemButton" onClick={changeItemType}>
+        <button className="buttonStyle"  title="Change Post Type" id="changeItemButton" onClick={changeItemType}>
           Go to Requests
         </button>
       </header>

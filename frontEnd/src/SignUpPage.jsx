@@ -31,7 +31,7 @@ function SignUpPage() {
           {confirmMessage != null && (
             <div>
               <h3>{confirmMessage}</h3>
-              <button onClick={goToSignIn}>Please Proceed to Login</button>
+              <button className="buttonStyle" onClick={goToSignIn}>Please Proceed to Login</button>
             </div>
           )}
           <label htmlFor="username">Username</label>
