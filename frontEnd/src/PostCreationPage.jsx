@@ -18,6 +18,19 @@ function PostCreationPage() {
     readableData.notificationDescription = `${signedInUser.username} in your area posted a new item titled: ${readableData.title}`
     readableData.areaId = signedInUser.areaId;
     fetchPostCreation(signedInUser.id, JSON.stringify(readableData), type);
+
+    const inputs = document.getElementsByTagName("input");
+    for(let i = 0; i < inputs.length; i++){
+      inputs[i].value = "";
+    }
+
+    setTimeout(() => {
+      document.getElementById("confirmMessage").style.display = "block";
+    },[25])
+
+    setTimeout(() => {
+      document.getElementById("confirmMessage").style.display = "none";
+    },[2000])
   };
 
   return (
@@ -40,20 +53,22 @@ function PostCreationPage() {
           <input type="text" name="title" id="title"></input>
           <label htmlFor="description">Description</label>
           <input type="text" name="description" id="description"></input>
-          <label htmlFor="">Photo</label>
-          <input type="text" name="photo" id="photo"></input>
           <label htmlFor="itemState">Use State</label>
           <select name="itemState" id="itemState">
             <option value="Used">Used</option>
             <option value="Used Like New">Used Like New</option>
             <option value="New">New</option>
           </select>
-          {loading ? (
+          <div style={{display:"flex", justifyContent:"center"}}>
+            {loading ? (
             <h3>Loading...</h3>
           ) : (
-            <button onClick={makePost} type="submit">
-              Submit
-            </button>
+            <div>
+              <h3 id="confirmMessage" style={{display:"none"}}>Post Created</h3>
+              <button onClick={makePost} type="submit">
+                Submit
+              </button>
+            </div>
           )}
         </form>
       </main>

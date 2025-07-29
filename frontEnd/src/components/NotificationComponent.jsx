@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import useUserNotifications from "../utils/useUserNotifications";
 import { Context } from "../App";
+import "../App.css";
 import Notification from "./notification";
 import { socket } from "../utils/socket";
 
@@ -42,7 +43,7 @@ function NotificationComponent() {
     }
     return (
         <div style={{display:"inline-block"}}>
-            <button style={ {backgroundColor: numNewNotifs!==0 ? "red" : "green"}} onClick={openModal}>
+            <button className="navButton" style={ {backgroundColor: numNewNotifs!==0 ? "red" : "green"}} onClick={openModal}>
                 {numNewNotifs===0 ? "Notifications" : `New Notifications: ${numNewNotifs}`}
             </button>
             {isOpen && 
