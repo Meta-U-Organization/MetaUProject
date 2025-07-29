@@ -60,7 +60,6 @@ router.get('/allDonations/:userId', async (req, res) => {
   for (let i = 0; i < donations.length; i++) {
     if (donations[i].userId in userDistances) {
       donations[i].distance = userDistances[donations[i].userId];
-      console.log(donations[i].distance);
     } else {
       const donor = await prisma.user.findUnique({
         where: { id: parseInt(donations[i].userId) }
