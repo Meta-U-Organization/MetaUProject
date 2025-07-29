@@ -74,11 +74,11 @@ function SignUpPage() {
             <option value={"Afternoon"}>Afternoon</option>
             <option value={"Evening"}>Evening</option>
           </select>
-          <button className="navButton" type="submit" onClick={signUpFunc}>
+          <button className="buttonStyle" type="submit" onClick={signUpFunc}>
             Submit
           </button>
         </form>
-        <button className="navButton"
+        <button className="buttonStyle"
           onClick={() => {
             navigate("/");
           }}

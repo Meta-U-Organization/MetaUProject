@@ -20,14 +20,14 @@ function Navigation() {
 
   return (
     <nav>
-      <button className="navButton"
+      <button className="buttonStyle"
         onClick={() => {
           navigate("/makeAPost");
         }}
       >
         Make a Post
       </button>
-      <button className="navButton"
+      <button className="buttonStyle"
         onClick={() => {
           navigate("/items");
         }}
@@ -35,28 +35,28 @@ function Navigation() {
         Donations & Requests
       </button>
 
-      <button className="navButton"
+      <button className="buttonStyle"
         onClick={() => {
           navigate("/saved");
         }}
       >
         Saved
       </button>
-      <button className="navButton"
+      <button className="buttonStyle"
         onClick={() => {
           navigate("/myPosts");
         }}
       >
         My Posts
       </button>
-      <button className="navButton"
+      <button className="buttonStyle"
         onClick={() => {
           navigate("/settings");
         }}
       >
         Settings
       </button>
-      <button className="navButton" onClick={logOut}>Log Out</button>
+      <button className="buttonStyle" onClick={logOut}>Log Out</button>
     </nav>
   );
 }

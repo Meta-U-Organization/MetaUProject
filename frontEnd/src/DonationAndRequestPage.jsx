@@ -32,7 +32,7 @@ function DonationAndRequestPage() {
         <Navigation />
         <h1>Items in Your Area</h1>
         <div>
-          <button title="Change Post Type" className="changeItemButton" onClick={changeItemType}>
+          <button title="Change Post Type" className="changeItemButton buttonStyle" onClick={changeItemType}>
             Go to Requests
           </button>
           <span className="customToolTip">Change Post Type</span>

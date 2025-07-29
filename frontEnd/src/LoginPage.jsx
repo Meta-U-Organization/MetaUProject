@@ -41,10 +41,10 @@ function LoginPage() {
             name="password"
             placeholder="Enter your password"
           ></input>
-          <button className="navButton" type="submit" onClick={loginFunc}>
+          <button className="buttonStyle" type="submit" onClick={loginFunc}>
             Submit
           </button>
-          <button className="navButton"
+          <button className="buttonStyle"
             onClick={() => {
               navigate("/signUp");
             }}

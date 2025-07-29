@@ -52,7 +52,7 @@ function PostCreationPage() {
             {loading ? (
             <h3>Loading...</h3>
             ) : (
-              <button className="navButton" style={{width:"20%"}} onClick={makePost} type="submit">
+              <button className="buttonStyle" style={{width:"20%"}} onClick={makePost} type="submit">
                 Submit
               </button>
             )}
