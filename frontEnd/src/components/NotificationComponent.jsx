@@ -43,7 +43,7 @@ function NotificationComponent() {
     }
     return (
         <div style={{display:"inline-block"}}>
-            <button className="navButton" style={ {backgroundColor: numNewNotifs!==0 ? "red" : "green"}} onClick={openModal}>
+            <button className="buttonStyle" style={ {backgroundColor: numNewNotifs!==0 ? "red" : "green"}} onClick={openModal}>
                 {numNewNotifs===0 ? "Notifications" : `New Notifications: ${numNewNotifs}`}
             </button>
             {isOpen && 

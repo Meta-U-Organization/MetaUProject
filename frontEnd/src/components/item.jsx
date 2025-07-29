@@ -86,6 +86,7 @@ function Item({ postType, userId, item }) {
                 <h3>Request has been submitted</h3>
               ) : (
                 <button
+                  className="buttonStyle"
                   onClick={requestItem}
                   style={{ marginTop: "10px", marginBottom: "10px" }}
                 >
