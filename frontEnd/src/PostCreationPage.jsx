@@ -24,6 +24,13 @@ function PostCreationPage() {
       inputs[i].value = "";
     }
 
+    setTimeout(() => {
+      document.getElementById("confirmMessage").style.display = "block";
+    },[25])
+
+    setTimeout(() => {
+      document.getElementById("confirmMessage").style.display = "none";
+    },[2000])
   };
 
   return (
@@ -55,9 +62,12 @@ function PostCreationPage() {
           {loading ? (
             <h3>Loading...</h3>
           ) : (
-            <button onClick={makePost} type="submit">
-              Submit
-            </button>
+            <div>
+              <h3 id="confirmMessage" style={{display:"none"}}>Post Created</h3>
+              <button onClick={makePost} type="submit">
+                Submit
+              </button>
+            </div>
           )}
         </form>
       </main>
