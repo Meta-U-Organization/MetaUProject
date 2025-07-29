@@ -46,7 +46,6 @@ function MyItem({ postType, userId, item, onPostChange }) {
           id: item.id,
           title: title,
           description: description,
-          photo: "",
           itemState: itemState,
           userId: userId,
         })

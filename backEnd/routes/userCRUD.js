@@ -175,18 +175,18 @@ router.delete('/users/:userId', async (req, res) => {
 })
 
 //updates User
-router.put('/users/:userId', async (req, res) => {
+router.patch('/users/:userId', async (req, res) => {
   const userId = parseInt(req.params.userId);
-  const { userName, passwordHash, email, name, phoneNumber, address } = req.body;
+  const { username, email, name, phoneNumber, address, preferredMeetLocation } = req.body;
   const updatedUser = await prisma.user.update({
     where: { id: parseInt(userId) },
     data: {
-      userName,
-      passwordHash,
+      username,
       email,
       name,
       phoneNumber,
-      address
+      address,
+      preferredMeetLocation
     }
   });
   res.json(updatedUser);

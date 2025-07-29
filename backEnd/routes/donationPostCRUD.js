@@ -91,7 +91,6 @@ router.post('/users/:userId/donations', isAuthenticated, async (req, res) => {
     data: {
       title,
       description,
-      photo,
       itemState,
       userId
     }
@@ -162,7 +161,7 @@ router.put('/users/:userId/donations/:postId', isAuthenticated, async (req, res)
   if (req.session.userId !== userId) {
     return res.status(401).json({ message: "Invalid User" });
   }
-  const { title, description, photo, itemState } = req.body;
+  const { title, description, itemState } = req.body;
   const updatedPost = await prisma.donationPost.update({
     where: {
       id: parseInt(postId),
@@ -171,7 +170,6 @@ router.put('/users/:userId/donations/:postId', isAuthenticated, async (req, res)
     data: {
       title,
       description,
-      photo,
       itemState,
       userId
     }

@@ -65,11 +65,12 @@ function PostCreationPage() {
           ) : (
             <div>
               <h3 id="confirmMessage" style={{display:"none"}}>Post Created</h3>
-              <button onClick={makePost} type="submit">
+              <button className="buttonStyle" onClick={makePost} type="submit">
                 Submit
               </button>
             </div>
           )}
+          </div>
         </form>
       </main>
     </div>
