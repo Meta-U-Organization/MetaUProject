@@ -137,8 +137,8 @@ function MyItem({ postType, userId, item, onPostChange }) {
             </select>
           </div>
           <div>
-            <button onClick={postItemEdits}>Submit Edits</button>
-            <button onClick={deleteItem}>Delete</button>
+            <button className="buttonStyle" onClick={postItemEdits}>Submit Edits</button>
+            <button className="buttonStyle" onClick={deleteItem}>Delete</button>
           </div>
           {topThreeRecipients?.length !== 0 && (
             <button onClick={fulfill}>Choose a Recipient</button>
