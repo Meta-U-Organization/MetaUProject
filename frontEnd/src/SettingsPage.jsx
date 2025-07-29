@@ -5,7 +5,7 @@ import { Context } from "./App";
 import useUpdateUser from "./utils/useUpdateUser";
 //main page layout for the page
 function SettingsPage() {
-  const { signedInUser } = useContext(Context);
+  const { signedInUser, setSignedInUser } = useContext(Context);
   const {fetchUpdateUser, updateduser, error} = useUpdateUser(signedInUser.id);
 
   const updateUserName = () => {
@@ -13,6 +13,11 @@ function SettingsPage() {
     fetchUpdateUser(
         JSON.stringify({username})
     )
+    document.querySelector("#username").value = ""
+    document.querySelector("#username").placeholder = username;
+    signedInUser.username = username;
+    sessionStorage.setItem("user", JSON.stringify(signedInUser));
+    setSignedInUser (signedInUser);
   }
 
   const updateEmail = () => {
@@ -20,6 +25,11 @@ function SettingsPage() {
     fetchUpdateUser(
         JSON.stringify({email})
     )
+    document.querySelector("#email").value = ""
+    document.querySelector("#email").placeholder = email;
+    signedInUser.email = email;
+    sessionStorage.setItem("user", JSON.stringify(signedInUser));
+    setSignedInUser(signedInUser);
   }
 
   const updateName = () => {
@@ -27,6 +37,11 @@ function SettingsPage() {
     fetchUpdateUser(
         JSON.stringify({name})
     )
+    document.querySelector("#name").value = ""
+    document.querySelector("#name").placeholder = name;
+    signedInUser.name = name;
+    sessionStorage.setItem("user", JSON.stringify(signedInUser));
+    setSignedInUser(signedInUser);
   }
 
   const updatePhone = () => {
@@ -34,6 +49,11 @@ function SettingsPage() {
     fetchUpdateUser(
         JSON.stringify({phoneNumber})
     )
+    document.querySelector("#phoneNumber").value ="";
+    document.querySelector("#phoneNumber").placeholder = phoneNumber;
+    signedInUser.phoneNumber = phoneNumber;
+    sessionStorage.setItem("user", JSON.stringify(signedInUser));
+    setSignedInUser(signedInUser);
   }
 
   const updateAddress = () => {
@@ -41,13 +61,23 @@ function SettingsPage() {
     fetchUpdateUser(
         JSON.stringify({address})
     )
+    document.querySelector("#homeAddress").value = "";
+    document.querySelector("#homeAddress").placeholder = address;
+    signedInUser.address = address;
+    sessionStorage.setItem("user", JSON.stringify(signedInUser));
+    setSignedInUser(signedInUser);
   }
 
   const updateMeet = () => {
-    const preferredMeetLocation = document.querySelector("#homeAddress").value;
+    const preferredMeetLocation = document.querySelector("#meetAddress").value;
     fetchUpdateUser(
         JSON.stringify({preferredMeetLocation})
     )
+    document.querySelector("#meetAddress").value = "";
+    document.querySelector("#meetAddress").placeholder = preferredMeetLocation;
+    signedInUser.preferredMeetLocation = preferredMeetLocation;
+    sessionStorage.setItem("user", JSON.stringify(signedInUser));
+    setSignedInUser(signedInUser);
   }
 
   return (
