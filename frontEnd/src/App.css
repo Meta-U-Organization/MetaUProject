@@ -44,8 +44,13 @@
   color: #888;
 }
 
-button {
+.navButton {
+  padding: 0.6em 1.2em;
   margin: 7px;
+}
+
+
+button {
   background-color: #ff8c42;
   color: white;
 }
@@ -53,4 +58,8 @@ button {
 body {
   background-color: #4681af;
   color: white;
+}
+
+.optionLabel {
+  margin-right: 20px;
 }

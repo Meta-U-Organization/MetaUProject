@@ -59,7 +59,8 @@ function PostCreationPage() {
             <option value="Used Like New">Used Like New</option>
             <option value="New">New</option>
           </select>
-          {loading ? (
+          <div style={{display:"flex", justifyContent:"center"}}>
+            {loading ? (
             <h3>Loading...</h3>
           ) : (
             <div>
